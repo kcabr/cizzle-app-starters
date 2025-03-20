@@ -19,7 +19,7 @@ function TestPage() {
   const testGet = async () => {
     try {
       setError(null);
-      const response = await fetch("/dotnetapi/WeatherForecast");
+      const response = await fetch("http://localhost:5155/WeatherForecast");
       const data = await response.json();
       setGetResult(data);
     } catch (err) {
