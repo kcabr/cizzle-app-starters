@@ -13,7 +13,11 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as AuthedImport } from './routes/_authed'
 import { Route as IndexImport } from './routes/index'
+import { Route as AuthedTodosImport } from './routes/_authed/todos'
+import { Route as AuthedProfileImport } from './routes/_authed/profile'
 import { Route as AuthedPostsImport } from './routes/_authed/posts'
+import { Route as AuthedNotesImport } from './routes/_authed/notes'
+import { Route as AuthedCounterImport } from './routes/_authed/counter'
 import { Route as AuthedPostsIndexImport } from './routes/_authed/posts.index'
 import { Route as AuthedProfileSplatImport } from './routes/_authed/profile.$'
 import { Route as AuthedPostsPostIdImport } from './routes/_authed/posts.$postId'
@@ -31,9 +35,33 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AuthedTodosRoute = AuthedTodosImport.update({
+  id: '/todos',
+  path: '/todos',
+  getParentRoute: () => AuthedRoute,
+} as any)
+
+const AuthedProfileRoute = AuthedProfileImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthedRoute,
+} as any)
+
 const AuthedPostsRoute = AuthedPostsImport.update({
   id: '/posts',
   path: '/posts',
+  getParentRoute: () => AuthedRoute,
+} as any)
+
+const AuthedNotesRoute = AuthedNotesImport.update({
+  id: '/notes',
+  path: '/notes',
+  getParentRoute: () => AuthedRoute,
+} as any)
+
+const AuthedCounterRoute = AuthedCounterImport.update({
+  id: '/counter',
+  path: '/counter',
   getParentRoute: () => AuthedRoute,
 } as any)
 
@@ -44,9 +72,9 @@ const AuthedPostsIndexRoute = AuthedPostsIndexImport.update({
 } as any)
 
 const AuthedProfileSplatRoute = AuthedProfileSplatImport.update({
-  id: '/profile/$',
-  path: '/profile/$',
-  getParentRoute: () => AuthedRoute,
+  id: '/$',
+  path: '/$',
+  getParentRoute: () => AuthedProfileRoute,
 } as any)
 
 const AuthedPostsPostIdRoute = AuthedPostsPostIdImport.update({
@@ -73,11 +101,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedImport
       parentRoute: typeof rootRoute
     }
+    '/_authed/counter': {
+      id: '/_authed/counter'
+      path: '/counter'
+      fullPath: '/counter'
+      preLoaderRoute: typeof AuthedCounterImport
+      parentRoute: typeof AuthedImport
+    }
+    '/_authed/notes': {
+      id: '/_authed/notes'
+      path: '/notes'
+      fullPath: '/notes'
+      preLoaderRoute: typeof AuthedNotesImport
+      parentRoute: typeof AuthedImport
+    }
     '/_authed/posts': {
       id: '/_authed/posts'
       path: '/posts'
       fullPath: '/posts'
       preLoaderRoute: typeof AuthedPostsImport
+      parentRoute: typeof AuthedImport
+    }
+    '/_authed/profile': {
+      id: '/_authed/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthedProfileImport
+      parentRoute: typeof AuthedImport
+    }
+    '/_authed/todos': {
+      id: '/_authed/todos'
+      path: '/todos'
+      fullPath: '/todos'
+      preLoaderRoute: typeof AuthedTodosImport
       parentRoute: typeof AuthedImport
     }
     '/_authed/posts/$postId': {
@@ -89,10 +145,10 @@ declare module '@tanstack/react-router' {
     }
     '/_authed/profile/$': {
       id: '/_authed/profile/$'
-      path: '/profile/$'
+      path: '/$'
       fullPath: '/profile/$'
       preLoaderRoute: typeof AuthedProfileSplatImport
-      parentRoute: typeof AuthedImport
+      parentRoute: typeof AuthedProfileImport
     }
     '/_authed/posts/': {
       id: '/_authed/posts/'
@@ -120,14 +176,32 @@ const AuthedPostsRouteWithChildren = AuthedPostsRoute._addFileChildren(
   AuthedPostsRouteChildren,
 )
 
-interface AuthedRouteChildren {
-  AuthedPostsRoute: typeof AuthedPostsRouteWithChildren
+interface AuthedProfileRouteChildren {
   AuthedProfileSplatRoute: typeof AuthedProfileSplatRoute
 }
 
-const AuthedRouteChildren: AuthedRouteChildren = {
-  AuthedPostsRoute: AuthedPostsRouteWithChildren,
+const AuthedProfileRouteChildren: AuthedProfileRouteChildren = {
   AuthedProfileSplatRoute: AuthedProfileSplatRoute,
+}
+
+const AuthedProfileRouteWithChildren = AuthedProfileRoute._addFileChildren(
+  AuthedProfileRouteChildren,
+)
+
+interface AuthedRouteChildren {
+  AuthedCounterRoute: typeof AuthedCounterRoute
+  AuthedNotesRoute: typeof AuthedNotesRoute
+  AuthedPostsRoute: typeof AuthedPostsRouteWithChildren
+  AuthedProfileRoute: typeof AuthedProfileRouteWithChildren
+  AuthedTodosRoute: typeof AuthedTodosRoute
+}
+
+const AuthedRouteChildren: AuthedRouteChildren = {
+  AuthedCounterRoute: AuthedCounterRoute,
+  AuthedNotesRoute: AuthedNotesRoute,
+  AuthedPostsRoute: AuthedPostsRouteWithChildren,
+  AuthedProfileRoute: AuthedProfileRouteWithChildren,
+  AuthedTodosRoute: AuthedTodosRoute,
 }
 
 const AuthedRouteWithChildren =
@@ -136,7 +210,11 @@ const AuthedRouteWithChildren =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof AuthedRouteWithChildren
+  '/counter': typeof AuthedCounterRoute
+  '/notes': typeof AuthedNotesRoute
   '/posts': typeof AuthedPostsRouteWithChildren
+  '/profile': typeof AuthedProfileRouteWithChildren
+  '/todos': typeof AuthedTodosRoute
   '/posts/$postId': typeof AuthedPostsPostIdRoute
   '/profile/$': typeof AuthedProfileSplatRoute
   '/posts/': typeof AuthedPostsIndexRoute
@@ -145,6 +223,10 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof AuthedRouteWithChildren
+  '/counter': typeof AuthedCounterRoute
+  '/notes': typeof AuthedNotesRoute
+  '/profile': typeof AuthedProfileRouteWithChildren
+  '/todos': typeof AuthedTodosRoute
   '/posts/$postId': typeof AuthedPostsPostIdRoute
   '/profile/$': typeof AuthedProfileSplatRoute
   '/posts': typeof AuthedPostsIndexRoute
@@ -154,7 +236,11 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/_authed': typeof AuthedRouteWithChildren
+  '/_authed/counter': typeof AuthedCounterRoute
+  '/_authed/notes': typeof AuthedNotesRoute
   '/_authed/posts': typeof AuthedPostsRouteWithChildren
+  '/_authed/profile': typeof AuthedProfileRouteWithChildren
+  '/_authed/todos': typeof AuthedTodosRoute
   '/_authed/posts/$postId': typeof AuthedPostsPostIdRoute
   '/_authed/profile/$': typeof AuthedProfileSplatRoute
   '/_authed/posts/': typeof AuthedPostsIndexRoute
@@ -162,14 +248,37 @@ export interface FileRoutesById {
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '' | '/posts' | '/posts/$postId' | '/profile/$' | '/posts/'
+  fullPaths:
+    | '/'
+    | ''
+    | '/counter'
+    | '/notes'
+    | '/posts'
+    | '/profile'
+    | '/todos'
+    | '/posts/$postId'
+    | '/profile/$'
+    | '/posts/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/posts/$postId' | '/profile/$' | '/posts'
+  to:
+    | '/'
+    | ''
+    | '/counter'
+    | '/notes'
+    | '/profile'
+    | '/todos'
+    | '/posts/$postId'
+    | '/profile/$'
+    | '/posts'
   id:
     | '__root__'
     | '/'
     | '/_authed'
+    | '/_authed/counter'
+    | '/_authed/notes'
     | '/_authed/posts'
+    | '/_authed/profile'
+    | '/_authed/todos'
     | '/_authed/posts/$postId'
     | '/_authed/profile/$'
     | '/_authed/posts/'
@@ -206,9 +315,20 @@ export const routeTree = rootRoute
     "/_authed": {
       "filePath": "_authed.tsx",
       "children": [
+        "/_authed/counter",
+        "/_authed/notes",
         "/_authed/posts",
-        "/_authed/profile/$"
+        "/_authed/profile",
+        "/_authed/todos"
       ]
+    },
+    "/_authed/counter": {
+      "filePath": "_authed/counter.tsx",
+      "parent": "/_authed"
+    },
+    "/_authed/notes": {
+      "filePath": "_authed/notes.tsx",
+      "parent": "/_authed"
     },
     "/_authed/posts": {
       "filePath": "_authed/posts.tsx",
@@ -218,13 +338,24 @@ export const routeTree = rootRoute
         "/_authed/posts/"
       ]
     },
+    "/_authed/profile": {
+      "filePath": "_authed/profile.tsx",
+      "parent": "/_authed",
+      "children": [
+        "/_authed/profile/$"
+      ]
+    },
+    "/_authed/todos": {
+      "filePath": "_authed/todos.tsx",
+      "parent": "/_authed"
+    },
     "/_authed/posts/$postId": {
       "filePath": "_authed/posts.$postId.tsx",
       "parent": "/_authed/posts"
     },
     "/_authed/profile/$": {
       "filePath": "_authed/profile.$.tsx",
-      "parent": "/_authed"
+      "parent": "/_authed/profile"
     },
     "/_authed/posts/": {
       "filePath": "_authed/posts.index.tsx",

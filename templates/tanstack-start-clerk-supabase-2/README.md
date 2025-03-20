@@ -1,72 +1,93 @@
-# Welcome to TanStack.com!
+# TanStack Start + Clerk + Supabase Starter
 
-This site is built with TanStack Router!
+A modern full-stack web application template built with TanStack Start, featuring Clerk authentication, Supabase database, Prisma ORM, Redux Toolkit, React Query, and React Server Components.
 
-- [TanStack Router Docs](https://tanstack.com/router)
+## Features
 
-It's deployed automagically with Netlify!
+- **Authentication**: Integrated Clerk authentication with user management
+- **Database**: Supabase PostgreSQL database with Prisma ORM
+- **State Management**: 
+  - Redux Toolkit for global state
+  - React Query for server state
+- **UI and Styling**: 
+  - Tailwind CSS for responsive design
+  - React Hot Toast for notifications
+- **Modern React Practices**:
+  - React Server Components (RSC) for optimized rendering
+  - Type-safe APIs with TanStack Server Functions
+- **Demonstration Pages**:
+  - Todo List (CRUD operations with Prisma & Supabase)
+  - Notes (React Server Components example)
+  - Counter (Redux state management example)
+  - Posts (React Query data fetching)
+  - User Profile (Clerk integration)
 
-- [Netlify](https://netlify.com/)
+## Getting Started
 
-## Development
+### Prerequisites
 
-From your terminal:
+- Node.js (v18 or newer)
+- npm, yarn, or pnpm
 
-```sh
-pnpm install
-pnpm dev
+### Environment Setup
+
+1. Create a `.env` file with your Clerk and Supabase credentials:
+
+```
+# Clerk
+CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+CLERK_SECRET_KEY=your_clerk_secret_key
+
+# Supabase
+SUPABASE_URL=your_supabase_url
+SUPABASE_ANON_KEY=your_supabase_anon_key
+
+# Database for Prisma
+DATABASE_URL=your_postgres_connection_string
 ```
 
-This starts your app in development mode, rebuilding assets on file changes.
+### Installation
 
-## Editing and previewing the docs of TanStack projects locally
+```bash
+# Install dependencies
+npm install
 
-The documentations for all TanStack projects except for `React Charts` are hosted on [https://tanstack.com](https://tanstack.com), powered by this TanStack Router app.
-In production, the markdown doc pages are fetched from the GitHub repos of the projects, but in development they are read from the local file system.
+# Generate Prisma client
+npm run prisma:generate
 
-Follow these steps if you want to edit the doc pages of a project (in these steps we'll assume it's [`TanStack/form`](https://github.com/tanstack/form)) and preview them locally :
+# Run database migrations
+npm run prisma:migrate
 
-1. Create a new directory called `tanstack`.
-
-```sh
-mkdir tanstack
+# Start the development server
+npm run dev
 ```
 
-2. Enter the directory and clone this repo and the repo of the project there.
+The app will be available at http://localhost:3000.
 
-```sh
-cd tanstack
-git clone git@github.com:TanStack/tanstack.com.git
-git clone git@github.com:TanStack/form.git
+## Project Structure
+
+```
+/
+├── prisma/               # Prisma schema and migrations
+├── public/               # Static assets
+└── src/
+    ├── components/       # Reusable UI components
+    ├── routes/           # File-based routing
+    │   ├── __root.tsx    # Root layout
+    │   ├── _authed/      # Protected routes
+    │   └── index.tsx     # Home page
+    ├── store/            # Redux store configuration
+    │   └── slices/       # Redux slices
+    ├── styles/           # Global styles
+    └── utils/            # Utility functions and API calls
 ```
 
-> [!NOTE]
-> Your `tanstack` directory should look like this:
->
-> ```
-> tanstack/
->    |
->    +-- form/
->    |
->    +-- tanstack.com/
-> ```
+## Development Tools
 
-> [!WARNING]
-> Make sure the name of the directory in your local file system matches the name of the project's repo. For example, `tanstack/form` must be cloned into `form` (this is the default) instead of `some-other-name`, because that way, the doc pages won't be found.
+- **Prisma Studio**: Run `npm run prisma:studio` to open a browser interface for your database
+- **TanStack Router Dev Tools**: Accessible in the app for debugging routes
+- **React Query Dev Tools**: Integrated for monitoring data fetching
 
-3. Enter the `tanstack/tanstack.com` directory, install the dependencies and run the app in dev mode:
+## License
 
-```sh
-cd tanstack.com
-pnpm i
-# The app will run on https://localhost:3000 by default
-pnpm dev
-```
-
-4. Now you can visit http://localhost:3000/form/latest/docs/overview in the browser and see the changes you make in `tanstack/form/docs`.
-
-> [!NOTE]
-> The updated pages need to be manually reloaded in the browser.
-
-> [!WARNING]
-> You will need to update the `docs/config.json` file (in the project's repo) if you add a new doc page!
+MIT
