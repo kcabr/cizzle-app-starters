@@ -10,11 +10,12 @@ function Home() {
   return (
     <Box sx={{ py: 4 }}>
       <Typography variant="h2" component="h1" align="center" gutterBottom>
-        TanStack Start Consolidated Example
+        Cizzle's Enterprise TanStack Starter
       </Typography>
       <Typography variant="h5" align="center" color="text.secondary" paragraph>
-        A comprehensive example combining Material UI, React Query, React Server
-        Components, and a persistent Counter
+        A comprehensive Tanstack Start starting point combining Material UI,
+        React Query, React Server Components, and modern best practies all to be
+        used for Enterprise Apps.
       </Typography>
 
       <Grid container spacing={4} sx={{ mt: 4 }}>

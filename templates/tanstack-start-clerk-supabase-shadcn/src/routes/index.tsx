@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../components/ui/card";
-import { Button } from "../components/ui/button";
+import { AccentButton } from "../components/AccentButton";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -92,15 +92,9 @@ function FeatureCard({
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardFooter>
-        <Button
-          className={
-            isHighlighted
-              ? "bg-primary text-primary-foreground hover:bg-primary/90"
-              : "border border-input bg-background hover:bg-accent hover:text-accent-foreground"
-          }
-        >
+        <AccentButton to={link} isHighlighted={isHighlighted}>
           Explore
-        </Button>
+        </AccentButton>
       </CardFooter>
     </Card>
   );
@@ -113,9 +107,5 @@ function FeatureCard({
     );
   }
 
-  return (
-    <Link to={link} className="block w-full">
-      {content}
-    </Link>
-  );
+  return <div className="block w-full">{content}</div>;
 }
