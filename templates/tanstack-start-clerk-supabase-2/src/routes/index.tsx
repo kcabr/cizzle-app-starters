@@ -44,12 +44,9 @@ function Home() {
               link="/profile"
             />
             <FeatureCard
-              title="Theme"
-              description="Toggle between light and dark mode. Shows Redux global state and Tailwind."
-              link="#"
-              onClick={() => {
-                // We could toggle theme here, but that's handled in the AppBar
-              }}
+              title="News"
+              description="Browse and search news articles. Shows React Query and external API integration."
+              link="/news"
             />
           </div>
         </div>
