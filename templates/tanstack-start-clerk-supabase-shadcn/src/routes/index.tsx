@@ -63,6 +63,12 @@ function Home() {
               link="/ui-showcase"
               isHighlighted={true}
             />
+            <FeatureCard
+              title="Subscription"
+              description="Manage your subscription with Stripe. Shows Stripe integration for payments."
+              link="/subscription"
+              isHighlighted={true}
+            />
           </div>
         </div>
       </main>

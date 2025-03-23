@@ -12,6 +12,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import { Provider } from "react-redux";
 import { ThemeProvider } from "~/components/ThemeProvider";
+import { StripeProvider } from "~/components/StripeProvider";
 import { useAppSelector } from "~/store/hooks";
 import { createServerFn } from "@tanstack/react-start";
 import * as React from "react";
@@ -91,10 +92,12 @@ function RootComponent() {
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <ClerkProvider>
-          <RootDocument>
-            <Outlet />
-            <ReactQueryDevtools initialIsOpen={false} />
-          </RootDocument>
+          <StripeProvider>
+            <RootDocument>
+              <Outlet />
+              <ReactQueryDevtools initialIsOpen={false} />
+            </RootDocument>
+          </StripeProvider>
         </ClerkProvider>
       </QueryClientProvider>
     </Provider>

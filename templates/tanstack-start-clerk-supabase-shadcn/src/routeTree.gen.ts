@@ -18,11 +18,13 @@ import { Route as IndexImport } from './routes/index'
 import { Route as NewsIndexImport } from './routes/news.index'
 import { Route as NewsSearchImport } from './routes/news.search'
 import { Route as AuthedTodosImport } from './routes/_authed/todos'
+import { Route as AuthedSubscriptionImport } from './routes/_authed/subscription'
 import { Route as AuthedProfileImport } from './routes/_authed/profile'
 import { Route as AuthedPostsImport } from './routes/_authed/posts'
 import { Route as AuthedNotesImport } from './routes/_authed/notes'
 import { Route as AuthedCounterImport } from './routes/_authed/counter'
 import { Route as AuthedPostsIndexImport } from './routes/_authed/posts.index'
+import { Route as AuthedSubscriptionSuccessImport } from './routes/_authed/subscription.success'
 import { Route as AuthedProfileSplatImport } from './routes/_authed/profile.$'
 import { Route as AuthedPostsPostIdImport } from './routes/_authed/posts.$postId'
 
@@ -69,6 +71,12 @@ const AuthedTodosRoute = AuthedTodosImport.update({
   getParentRoute: () => AuthedRoute,
 } as any)
 
+const AuthedSubscriptionRoute = AuthedSubscriptionImport.update({
+  id: '/subscription',
+  path: '/subscription',
+  getParentRoute: () => AuthedRoute,
+} as any)
+
 const AuthedProfileRoute = AuthedProfileImport.update({
   id: '/profile',
   path: '/profile',
@@ -97,6 +105,12 @@ const AuthedPostsIndexRoute = AuthedPostsIndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthedPostsRoute,
+} as any)
+
+const AuthedSubscriptionSuccessRoute = AuthedSubscriptionSuccessImport.update({
+  id: '/success',
+  path: '/success',
+  getParentRoute: () => AuthedSubscriptionRoute,
 } as any)
 
 const AuthedProfileSplatRoute = AuthedProfileSplatImport.update({
@@ -171,6 +185,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedProfileImport
       parentRoute: typeof AuthedImport
     }
+    '/_authed/subscription': {
+      id: '/_authed/subscription'
+      path: '/subscription'
+      fullPath: '/subscription'
+      preLoaderRoute: typeof AuthedSubscriptionImport
+      parentRoute: typeof AuthedImport
+    }
     '/_authed/todos': {
       id: '/_authed/todos'
       path: '/todos'
@@ -205,6 +226,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/profile/$'
       preLoaderRoute: typeof AuthedProfileSplatImport
       parentRoute: typeof AuthedProfileImport
+    }
+    '/_authed/subscription/success': {
+      id: '/_authed/subscription/success'
+      path: '/success'
+      fullPath: '/subscription/success'
+      preLoaderRoute: typeof AuthedSubscriptionSuccessImport
+      parentRoute: typeof AuthedSubscriptionImport
     }
     '/_authed/posts/': {
       id: '/_authed/posts/'
@@ -244,11 +272,23 @@ const AuthedProfileRouteWithChildren = AuthedProfileRoute._addFileChildren(
   AuthedProfileRouteChildren,
 )
 
+interface AuthedSubscriptionRouteChildren {
+  AuthedSubscriptionSuccessRoute: typeof AuthedSubscriptionSuccessRoute
+}
+
+const AuthedSubscriptionRouteChildren: AuthedSubscriptionRouteChildren = {
+  AuthedSubscriptionSuccessRoute: AuthedSubscriptionSuccessRoute,
+}
+
+const AuthedSubscriptionRouteWithChildren =
+  AuthedSubscriptionRoute._addFileChildren(AuthedSubscriptionRouteChildren)
+
 interface AuthedRouteChildren {
   AuthedCounterRoute: typeof AuthedCounterRoute
   AuthedNotesRoute: typeof AuthedNotesRoute
   AuthedPostsRoute: typeof AuthedPostsRouteWithChildren
   AuthedProfileRoute: typeof AuthedProfileRouteWithChildren
+  AuthedSubscriptionRoute: typeof AuthedSubscriptionRouteWithChildren
   AuthedTodosRoute: typeof AuthedTodosRoute
 }
 
@@ -257,6 +297,7 @@ const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedNotesRoute: AuthedNotesRoute,
   AuthedPostsRoute: AuthedPostsRouteWithChildren,
   AuthedProfileRoute: AuthedProfileRouteWithChildren,
+  AuthedSubscriptionRoute: AuthedSubscriptionRouteWithChildren,
   AuthedTodosRoute: AuthedTodosRoute,
 }
 
@@ -284,11 +325,13 @@ export interface FileRoutesByFullPath {
   '/notes': typeof AuthedNotesRoute
   '/posts': typeof AuthedPostsRouteWithChildren
   '/profile': typeof AuthedProfileRouteWithChildren
+  '/subscription': typeof AuthedSubscriptionRouteWithChildren
   '/todos': typeof AuthedTodosRoute
   '/news/search': typeof NewsSearchRoute
   '/news/': typeof NewsIndexRoute
   '/posts/$postId': typeof AuthedPostsPostIdRoute
   '/profile/$': typeof AuthedProfileSplatRoute
+  '/subscription/success': typeof AuthedSubscriptionSuccessRoute
   '/posts/': typeof AuthedPostsIndexRoute
 }
 
@@ -299,11 +342,13 @@ export interface FileRoutesByTo {
   '/counter': typeof AuthedCounterRoute
   '/notes': typeof AuthedNotesRoute
   '/profile': typeof AuthedProfileRouteWithChildren
+  '/subscription': typeof AuthedSubscriptionRouteWithChildren
   '/todos': typeof AuthedTodosRoute
   '/news/search': typeof NewsSearchRoute
   '/news': typeof NewsIndexRoute
   '/posts/$postId': typeof AuthedPostsPostIdRoute
   '/profile/$': typeof AuthedProfileSplatRoute
+  '/subscription/success': typeof AuthedSubscriptionSuccessRoute
   '/posts': typeof AuthedPostsIndexRoute
 }
 
@@ -317,11 +362,13 @@ export interface FileRoutesById {
   '/_authed/notes': typeof AuthedNotesRoute
   '/_authed/posts': typeof AuthedPostsRouteWithChildren
   '/_authed/profile': typeof AuthedProfileRouteWithChildren
+  '/_authed/subscription': typeof AuthedSubscriptionRouteWithChildren
   '/_authed/todos': typeof AuthedTodosRoute
   '/news/search': typeof NewsSearchRoute
   '/news/': typeof NewsIndexRoute
   '/_authed/posts/$postId': typeof AuthedPostsPostIdRoute
   '/_authed/profile/$': typeof AuthedProfileSplatRoute
+  '/_authed/subscription/success': typeof AuthedSubscriptionSuccessRoute
   '/_authed/posts/': typeof AuthedPostsIndexRoute
 }
 
@@ -336,11 +383,13 @@ export interface FileRouteTypes {
     | '/notes'
     | '/posts'
     | '/profile'
+    | '/subscription'
     | '/todos'
     | '/news/search'
     | '/news/'
     | '/posts/$postId'
     | '/profile/$'
+    | '/subscription/success'
     | '/posts/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -350,11 +399,13 @@ export interface FileRouteTypes {
     | '/counter'
     | '/notes'
     | '/profile'
+    | '/subscription'
     | '/todos'
     | '/news/search'
     | '/news'
     | '/posts/$postId'
     | '/profile/$'
+    | '/subscription/success'
     | '/posts'
   id:
     | '__root__'
@@ -366,11 +417,13 @@ export interface FileRouteTypes {
     | '/_authed/notes'
     | '/_authed/posts'
     | '/_authed/profile'
+    | '/_authed/subscription'
     | '/_authed/todos'
     | '/news/search'
     | '/news/'
     | '/_authed/posts/$postId'
     | '/_authed/profile/$'
+    | '/_authed/subscription/success'
     | '/_authed/posts/'
   fileRoutesById: FileRoutesById
 }
@@ -415,6 +468,7 @@ export const routeTree = rootRoute
         "/_authed/notes",
         "/_authed/posts",
         "/_authed/profile",
+        "/_authed/subscription",
         "/_authed/todos"
       ]
     },
@@ -451,6 +505,13 @@ export const routeTree = rootRoute
         "/_authed/profile/$"
       ]
     },
+    "/_authed/subscription": {
+      "filePath": "_authed/subscription.tsx",
+      "parent": "/_authed",
+      "children": [
+        "/_authed/subscription/success"
+      ]
+    },
     "/_authed/todos": {
       "filePath": "_authed/todos.tsx",
       "parent": "/_authed"
@@ -470,6 +531,10 @@ export const routeTree = rootRoute
     "/_authed/profile/$": {
       "filePath": "_authed/profile.$.tsx",
       "parent": "/_authed/profile"
+    },
+    "/_authed/subscription/success": {
+      "filePath": "_authed/subscription.success.tsx",
+      "parent": "/_authed/subscription"
     },
     "/_authed/posts/": {
       "filePath": "_authed/posts.index.tsx",
