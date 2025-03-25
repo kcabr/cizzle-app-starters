@@ -4,6 +4,7 @@
 import { prisma } from "./prisma";
 import { stripe } from "./stripe";
 import Stripe from "stripe";
+import { Prisma } from "@prisma/client";
 
 /**
  * Membership tiers based on Stripe subscription status
@@ -47,6 +48,7 @@ const getMembershipStatus = (
  * Retrieve subscription details from Stripe
  */
 const getSubscription = async (subscriptionId: string) => {
+  if (!stripe) throw new Error("Stripe client not initialized");
   return stripe.subscriptions.retrieve(subscriptionId, {
     expand: ["default_payment_method"],
   });
@@ -60,6 +62,10 @@ export async function updateStripeCustomer(
   subscriptionId: string,
   customerId: string
 ) {
+  console.error(
+    `TEST-updateStripeCustomer: ${userId} ${subscriptionId} ${customerId}`
+  );
+
   try {
     if (!userId || !subscriptionId || !customerId) {
       throw new Error("Missing required parameters for updateStripeCustomer");
@@ -76,6 +82,26 @@ export async function updateStripeCustomer(
         stripeCustomerId: customerId,
         stripeSubscriptionId: subscription.id,
       },
+    });
+
+    // Link subscription to user
+    await prisma.$transaction(async (tx) => {
+      const existingSubscription = await tx.subscription.findUnique({
+        where: {
+          stripeSubscriptionId: subscriptionId,
+        },
+      });
+
+      if (existingSubscription) {
+        await tx.subscription.update({
+          where: {
+            stripeSubscriptionId: subscriptionId,
+          },
+          data: {
+            userId: userId,
+          },
+        });
+      }
     });
 
     console.log(`Updated Stripe customer info for user: ${userId}`);
@@ -96,6 +122,10 @@ export async function manageSubscriptionStatusChange(
   customerId: string,
   productId: string
 ) {
+  console.error(
+    `TEST-manageSubscriptionStatusChange: ${subscriptionId} ${customerId} ${productId}`
+  );
+
   try {
     if (!subscriptionId || !customerId || !productId) {
       throw new Error(
@@ -111,11 +141,12 @@ export async function manageSubscriptionStatusChange(
     });
 
     if (!user) {
-      console.error(`No user found with Stripe customer ID: ${customerId}`);
-      return;
+      console.log(`No user found with Stripe customer ID: ${customerId}`);
+      return null;
     }
 
     const subscription = await getSubscription(subscriptionId);
+    if (!stripe) throw new Error("Stripe client not initialized");
     const product = await stripe.products.retrieve(productId);
 
     // Get membership tier from product metadata
@@ -135,11 +166,11 @@ export async function manageSubscriptionStatusChange(
     );
 
     // Calculate subscription period end
-    const subscriptionPeriodEnd = subscription.current_period_end
+    const currentPeriodEnd = subscription.current_period_end
       ? new Date(subscription.current_period_end * 1000)
       : null;
 
-    // Update user profile with subscription information
+    // Update the User model with subscription information
     const updatedUser = await prisma.user.update({
       where: {
         id: user.id,
@@ -147,8 +178,8 @@ export async function manageSubscriptionStatusChange(
       data: {
         stripeSubscriptionId: subscription.id,
         subscriptionStatus: subscriptionStatus,
-        subscriptionPeriodEnd: subscriptionPeriodEnd,
-        stripePriceId: productId,
+        subscriptionPeriodEnd: currentPeriodEnd,
+        stripePriceId: subscription.items.data[0].price.id,
       },
     });
 
@@ -171,7 +202,11 @@ export function verifyStripeWebhook(
   webhookSecret: string
 ): Stripe.Event {
   try {
-    return stripe.webhooks.constructEvent(body, signature, webhookSecret);
+    return stripe?.webhooks.constructEvent(
+      body,
+      signature,
+      webhookSecret
+    ) as Stripe.Event;
   } catch (error) {
     console.error("Error verifying Stripe webhook:", error);
     throw error;

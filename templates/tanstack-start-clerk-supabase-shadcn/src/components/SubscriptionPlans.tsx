@@ -15,7 +15,7 @@ import { Button } from "./ui/button";
 import { Alert, AlertDescription } from "./ui/alert";
 
 export function SubscriptionPlans() {
-  const { isSignedIn } = useUser();
+  const { isSignedIn, user } = useUser();
   const { isActive, planName, refetch } = useSubscription();
   const [error, setError] = useState<string | null>(null);
 
@@ -91,9 +91,12 @@ export function SubscriptionPlans() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
         {plans.map((plan) => {
           const isActivePlan = isActive && planName === plan.name;
-          const paymentLink = plan.period.toLowerCase().includes("annual")
+          let paymentLink = plan.period.toLowerCase().includes("annual")
             ? annualPaymentLink
             : monthlyPaymentLink;
+
+          // Add prefilled email and client reference id to the payment link from the clerk user
+          paymentLink = `${paymentLink}?prefilled_email=${user?.primaryEmailAddress?.emailAddress}&client_reference_id=${user?.id}`;
 
           return (
             <Card

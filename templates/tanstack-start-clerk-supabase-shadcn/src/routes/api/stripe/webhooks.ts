@@ -105,15 +105,16 @@ async function handleCheckoutSession(event: Stripe.Event) {
     );
 
     // Get subscription details
-    const subscription = await stripe.subscriptions.retrieve(subscriptionId, {
-      expand: ["default_payment_method"],
-    });
+    const subscription =
+      (await stripe?.subscriptions.retrieve(subscriptionId, {
+        expand: ["default_payment_method"],
+      })) ?? null;
 
     // Update subscription status
-    const productId = subscription.items.data[0].price.product as string;
+    const productId = subscription?.items.data[0].price.product as string;
     await manageSubscriptionStatusChange(
-      subscription.id,
-      subscription.customer as string,
+      subscription?.id ?? "",
+      (subscription?.customer as string) ?? "",
       productId
     );
   }
