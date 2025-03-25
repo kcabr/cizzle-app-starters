@@ -23,9 +23,15 @@ import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary.js";
 import { NotFound } from "~/components/NotFound.js";
 import { store } from "~/store";
 import appCss from "~/styles/app.css?url";
+import { handleSuccessfulLogin } from "~/utils/auth";
 
 const fetchClerkAuth = createServerFn({ method: "GET" }).handler(async () => {
   const { userId } = await getAuth(getWebRequest()!);
+
+  // Call our function to upsert the user in the database
+  if (userId) {
+    await handleSuccessfulLogin();
+  }
 
   return {
     userId,
