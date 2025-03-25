@@ -21,17 +21,17 @@ export const APIRoute = createAPIFileRoute("/api/stripe/webhooks")({
     const signature = request.headers.get("Stripe-Signature");
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
-    if (!signature || !webhookSecret) {
-      console.error("Webhook Error: Missing signature or webhook secret");
-      return new Response(
-        "Webhook Error: Missing signature or webhook secret",
-        { status: 400 }
-      );
-    }
+    // TESTING
+    //console.error(`Webhook TEST: ${webhookSecret}`);
+    //return;
 
     let event: Stripe.Event;
 
     try {
+      if (!signature || !webhookSecret) {
+        throw new Error("Webhook secret or signature missing");
+      }
+
       // Verify the webhook signature
       event = verifyStripeWebhook(body, signature, webhookSecret);
     } catch (err: any) {

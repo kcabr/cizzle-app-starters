@@ -9,9 +9,17 @@ import toast from "react-hot-toast";
 import Stripe from "stripe";
 
 // Initialize Stripe client
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
-  apiVersion: "2023-10-16",
-});
+export const stripe =
+  process.env.STRIPE_SECRET_KEY || import.meta.env.STRIPE_SECRET_KEY
+    ? new Stripe(
+        process.env.STRIPE_SECRET_KEY ||
+          import.meta.env.STRIPE_SECRET_KEY ||
+          "", // This has to be done. I think Tanstack Start is not loading the env vars correctly.
+        {
+          apiVersion: "2025-02-24.acacia",
+        }
+      )
+    : null;
 
 /**
  * Stripe publishable key

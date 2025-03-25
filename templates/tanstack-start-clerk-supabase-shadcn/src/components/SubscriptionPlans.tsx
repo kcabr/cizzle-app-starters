@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useUser } from "@clerk/tanstack-start";
-import { STRIPE_PLANS, stripeUtils } from "~/utils/stripe";
+import { STRIPE_PLANS } from "~/utils/stripe";
 import { useSubscription } from "./StripeProvider";
 import { CheckCircle2 } from "lucide-react";
 import {
@@ -16,36 +16,19 @@ import { Alert, AlertDescription } from "./ui/alert";
 
 export function SubscriptionPlans() {
   const { isSignedIn } = useUser();
-  const { isActive, planName, isLoading, refetch } = useSubscription();
-  const [loadingPlanId, setLoadingPlanId] = useState<string | null>(null);
+  const { isActive, planName, refetch } = useSubscription();
   const [error, setError] = useState<string | null>(null);
+
+  // Environment variables for payment links
+  const annualPaymentLink = import.meta.env.VITE_STRIPE_PAYMENT_LINK_ANNUAL_URL;
+  const monthlyPaymentLink = import.meta.env
+    .VITE_STRIPE_PAYMENT_LINK_MONTHLY_URL;
 
   // Check if the user is on a canceled page redirect
   const isCanceled =
     typeof window !== "undefined"
       ? new URLSearchParams(window.location.search).get("canceled") === "true"
       : false;
-
-  // Function to handle subscription checkout
-  const handleSubscribe = async (priceId: string, planId: string) => {
-    if (!isSignedIn) {
-      setError("You must be logged in to subscribe");
-      return;
-    }
-
-    try {
-      setLoadingPlanId(planId);
-      setError(null);
-
-      await stripeUtils.createCheckout(priceId);
-      // Redirect happens in the utility function
-    } catch (err) {
-      console.error("Error creating checkout session:", err);
-      setError("Failed to start checkout process");
-    } finally {
-      setLoadingPlanId(null);
-    }
-  };
 
   // On mount, refetch subscription status
   useEffect(() => {
@@ -108,16 +91,20 @@ export function SubscriptionPlans() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
         {plans.map((plan) => {
           const isActivePlan = isActive && planName === plan.name;
-          const isLoading = loadingPlanId === plan.id;
+          const paymentLink = plan.period.toLowerCase().includes("annual")
+            ? annualPaymentLink
+            : monthlyPaymentLink;
 
           return (
             <Card
               key={plan.id}
               className={`relative overflow-visible h-full transition-all ${
-                plan.isBestValue ? "border-primary shadow-md" : ""
+                "isBestValue" in plan && plan.isBestValue
+                  ? "border-primary shadow-md"
+                  : ""
               } ${isActivePlan ? "border-2 border-green-500" : ""}`}
             >
-              {plan.isBestValue && (
+              {"isBestValue" in plan && plan.isBestValue && (
                 <div className="absolute -top-3 right-6 bg-primary text-primary-foreground text-sm font-medium py-1 px-3 rounded-md">
                   Best Value
                 </div>
@@ -156,20 +143,21 @@ export function SubscriptionPlans() {
               <CardFooter>
                 <Button
                   className="w-full"
-                  disabled={
-                    !isSignedIn ||
-                    isLoading ||
-                    loadingPlanId !== null ||
-                    isActivePlan
+                  disabled={!isSignedIn || isActivePlan}
+                  onClick={() => {
+                    if (isSignedIn && !isActivePlan && paymentLink) {
+                      window.location.href = paymentLink;
+                    } else if (!isSignedIn) {
+                      setError("You must be logged in to subscribe");
+                    }
+                  }}
+                  variant={
+                    "isBestValue" in plan && plan.isBestValue
+                      ? "default"
+                      : "outline"
                   }
-                  onClick={() => handleSubscribe(plan.priceId, plan.id)}
-                  variant={plan.isBestValue ? "default" : "outline"}
                 >
-                  {isLoading
-                    ? "Processing..."
-                    : isActivePlan
-                      ? "Current Plan"
-                      : "Subscribe"}
+                  {isActivePlan ? "Current Plan" : "Subscribe"}
                 </Button>
               </CardFooter>
             </Card>
