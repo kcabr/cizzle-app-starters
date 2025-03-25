@@ -12,7 +12,6 @@ const relevantEvents = new Set([
   "checkout.session.completed",
   "customer.subscription.updated",
   "customer.subscription.deleted",
-  "payment_link.created",
 ]);
 
 export const APIRoute = createAPIFileRoute("/api/stripe/webhooks")({
@@ -21,17 +20,13 @@ export const APIRoute = createAPIFileRoute("/api/stripe/webhooks")({
     const signature = request.headers.get("Stripe-Signature");
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
-    if (!signature || !webhookSecret) {
-      console.error("Webhook Error: Missing signature or webhook secret");
-      return new Response(
-        "Webhook Error: Missing signature or webhook secret",
-        { status: 400 }
-      );
-    }
-
     let event: Stripe.Event;
 
     try {
+      if (!signature || !webhookSecret) {
+        throw new Error("Webhook secret or signature missing");
+      }
+
       // Verify the webhook signature
       event = verifyStripeWebhook(body, signature, webhookSecret);
     } catch (err: any) {
@@ -50,10 +45,6 @@ export const APIRoute = createAPIFileRoute("/api/stripe/webhooks")({
 
           case "checkout.session.completed":
             await handleCheckoutSession(event);
-            break;
-
-          case "payment_link.created":
-            // DONOTHING: Handle payment link created event
             break;
 
           default:

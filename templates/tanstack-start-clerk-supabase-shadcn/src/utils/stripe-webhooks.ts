@@ -1,51 +1,56 @@
 /**
  * Stripe webhook utility functions
  */
-import { prisma } from './prisma'
-import { stripe } from './stripe'
-import Stripe from 'stripe'
+import { prisma } from "./prisma";
+import { stripe } from "./stripe";
+import Stripe from "stripe";
 
 /**
- * Update user's subscription status in the database
+ * Membership tiers based on Stripe subscription status
  */
-export async function manageSubscriptionStatusChange(
-  subscriptionId: string,
-  customerId: string,
-  productId: string
-) {
-  try {
-    // Get the customer with the given Stripe customer ID
-    const user = await prisma.user.findFirst({
-      where: {
-        stripeCustomerId: customerId
-      }
-    })
+type SubscriptionStatus =
+  | "active"
+  | "trialing"
+  | "canceled"
+  | "incomplete"
+  | "incomplete_expired"
+  | "past_due"
+  | "paused"
+  | "unpaid";
 
-    if (!user) {
-      console.error(`No user found with Stripe customer ID: ${customerId}`)
-      return
-    }
+type MembershipTier = "free" | "pro";
 
-    // Update user's subscription status in the database
-    await prisma.user.update({
-      where: {
-        id: user.id
-      },
-      data: {
-        stripeSubscriptionId: subscriptionId,
-        stripePriceId: productId, // This might be product ID, adjust as needed
-        // Add additional fields as needed, such as:
-        // subscriptionStatus: 'active',
-        // subscriptionPeriodEnd: periodEnd
-      }
-    })
-
-    console.log(`Updated subscription for user: ${user.id}`)
-  } catch (error) {
-    console.error('Error updating subscription status:', error)
-    throw error
+/**
+ * Map Stripe subscription status to membership tier
+ */
+const getMembershipStatus = (
+  status: SubscriptionStatus,
+  membership: MembershipTier
+): MembershipTier => {
+  switch (status) {
+    case "active":
+    case "trialing":
+      return membership;
+    case "canceled":
+    case "incomplete":
+    case "incomplete_expired":
+    case "past_due":
+    case "paused":
+    case "unpaid":
+      return "free";
+    default:
+      return "free";
   }
-}
+};
+
+/**
+ * Retrieve subscription details from Stripe
+ */
+const getSubscription = async (subscriptionId: string) => {
+  return stripe.subscriptions.retrieve(subscriptionId, {
+    expand: ["default_payment_method"],
+  });
+};
 
 /**
  * Update user's Stripe customer information in the database
@@ -56,21 +61,104 @@ export async function updateStripeCustomer(
   customerId: string
 ) {
   try {
-    // Update user with Stripe customer ID and subscription ID
-    await prisma.user.update({
+    if (!userId || !subscriptionId || !customerId) {
+      throw new Error("Missing required parameters for updateStripeCustomer");
+    }
+
+    const subscription = await getSubscription(subscriptionId);
+
+    // Update user profile with Stripe information
+    const updatedUser = await prisma.user.update({
       where: {
-        id: userId
+        id: userId,
       },
       data: {
         stripeCustomerId: customerId,
-        stripeSubscriptionId: subscriptionId
-      }
-    })
+        stripeSubscriptionId: subscription.id,
+      },
+    });
 
-    console.log(`Updated Stripe customer info for user: ${userId}`)
+    console.log(`Updated Stripe customer info for user: ${userId}`);
+    return updatedUser;
   } catch (error) {
-    console.error('Error updating Stripe customer info:', error)
-    throw error
+    console.error("Error in updateStripeCustomer:", error);
+    throw error instanceof Error
+      ? error
+      : new Error("Failed to update Stripe customer");
+  }
+}
+
+/**
+ * Update user's subscription status in the database
+ */
+export async function manageSubscriptionStatusChange(
+  subscriptionId: string,
+  customerId: string,
+  productId: string
+) {
+  try {
+    if (!subscriptionId || !customerId || !productId) {
+      throw new Error(
+        "Missing required parameters for manageSubscriptionStatusChange"
+      );
+    }
+
+    // Get the customer with the given Stripe customer ID
+    const user = await prisma.user.findFirst({
+      where: {
+        stripeCustomerId: customerId,
+      },
+    });
+
+    if (!user) {
+      console.error(`No user found with Stripe customer ID: ${customerId}`);
+      return;
+    }
+
+    const subscription = await getSubscription(subscriptionId);
+    const product = await stripe.products.retrieve(productId);
+
+    // Get membership tier from product metadata
+    const membership =
+      (product.metadata.membership as MembershipTier) || "free";
+
+    if (!["free", "pro"].includes(membership)) {
+      console.warn(
+        `Invalid membership type in product metadata: ${membership}, defaulting to free`
+      );
+    }
+
+    // Determine the user's subscription status based on Stripe status
+    const subscriptionStatus = getMembershipStatus(
+      subscription.status as SubscriptionStatus,
+      membership as MembershipTier
+    );
+
+    // Calculate subscription period end
+    const subscriptionPeriodEnd = subscription.current_period_end
+      ? new Date(subscription.current_period_end * 1000)
+      : null;
+
+    // Update user profile with subscription information
+    const updatedUser = await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        stripeSubscriptionId: subscription.id,
+        subscriptionStatus: subscriptionStatus,
+        subscriptionPeriodEnd: subscriptionPeriodEnd,
+        stripePriceId: productId,
+      },
+    });
+
+    console.log(`Updated subscription for user: ${user.id}`);
+    return subscriptionStatus;
+  } catch (error) {
+    console.error("Error in manageSubscriptionStatusChange:", error);
+    throw error instanceof Error
+      ? error
+      : new Error("Failed to update subscription status");
   }
 }
 
@@ -83,9 +171,9 @@ export function verifyStripeWebhook(
   webhookSecret: string
 ): Stripe.Event {
   try {
-    return stripe.webhooks.constructEvent(body, signature, webhookSecret)
+    return stripe.webhooks.constructEvent(body, signature, webhookSecret);
   } catch (error) {
-    console.error('Error verifying Stripe webhook:', error)
-    throw error
+    console.error("Error verifying Stripe webhook:", error);
+    throw error;
   }
 }
