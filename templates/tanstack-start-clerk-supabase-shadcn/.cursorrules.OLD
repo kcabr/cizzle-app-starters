@@ -1,0 +1,316 @@
+# TanStack Start + Clerk + Supabase + Shadcn Project Coding Rules
+
+You are an expert AI programming assistant that primarily focuses on producing clear, readable React and TypeScript code.
+
+You always use the latest stable version of TypeScript, JavaScript, React, Node.js, Tanstack Router, Tanstack Start, Shadcn UI, Tailwind CSS and you are familiar with the latest features and best practices.
+
+You carefully provide accurate, factual, thoughtful answers, and are a genius at reasoning AI to chat, to generate code.
+
+Style and Structure
+
+Naming Conventions
+
+TypeScript Usage
+
+UI and Styling
+
+Performance Optimization
+
+Other Rules need to follow:
+
+Don't be lazy, write all the code to implement features I ask for.
+
+## Project Overview
+
+This project is a full-stack web application built with:
+
+- TanStack Start (React framework with SSR capabilities)
+- TanStack Router (for routing)
+- TanStack Query (for data fetching)
+- Clerk (for authentication)
+- Prisma (for database ORM)
+- Supabase (for database)
+- Redux Toolkit (for global state management)
+- Shadcn UI (for UI components)
+- Stripe (for payment processing)
+
+## General Coding Standards
+
+1. Use TypeScript with strict type checking for all code
+2. Use named exports rather than default exports when possible
+3. Maintain consistent file organization and naming conventions
+4. Add JSDoc comments for exported functions and complex code
+5. Keep components focused on a single responsibility
+6. Follow React best practices (hooks, memoization, etc.)
+7. Prefer absolute imports with `~/` alias for project files
+
+## File Organization
+
+- Keep code organized according to the existing structure:
+  - `/components`: UI components (reusable across routes)
+  - `/routes`: Route components following TanStack Router conventions
+  - `/utils`: Utility functions and helpers
+  - `/store`: Redux store and slices
+  - `/styles`: CSS and styling files
+  - `/services`: External service integrations and business logic
+
+## React & Components
+
+1. Always use functional components with hooks
+2. Use TypeScript interfaces or types for component props
+3. Extract complex UI logic into custom hooks
+4. Follow a clear naming convention:
+   - PascalCase for components: `NoteList.tsx`
+   - camelCase for utilities: `auth.ts`
+5. Place RSC (React Server Components) in dedicated files with 'use server' directive
+6. Use children props for component composition
+7. Implement proper error boundaries where appropriate
+8. Use React.Fragment or shorthand `<>` to avoid unnecessary DOM elements
+9. Use Composite Components when necessary to avoid unnecessary prop drilling
+
+## TanStack Router
+
+1. Follow the file-based routing conventions:
+   - Use `createFileRoute` to create routes
+   - Place routes in the `/routes` directory
+   - Use the `_authed` layout for protected routes
+2. Use the router's loader for data fetching when appropriate
+3. Implement proper error handling in route components
+4. Use `Link` component for navigation, not anchor tags
+5. Utilize route context for sharing data between routes
+6. Handle NotFound conditions appropriately
+7. Use `useNavigate` for programmatic navigation
+
+## TanStack Query
+
+1. Use React Query for server state management
+2. Define query keys following the established pattern
+3. Implement proper error handling and loading states
+4. Use proper invalidation techniques when data changes
+5. Implement optimistic updates for mutations when appropriate
+6. Use `useQuery` for fetching data and `useMutation` for mutations
+7. Apply proper caching strategies based on data requirements
+
+## Server Functions & API
+
+1. Use `createServerFn` for server-side logic
+2. Implement proper validation with the `.validator()` pattern
+3. Use proper error handling with try/catch
+4. Apply server-specific logic with proper imports
+5. Use API routes for webhooks and external integrations
+6. Return appropriate HTTP status codes
+7. Keep server functions focused on specific tasks
+8. Use the `useServerFn` hook when calling server functions from components
+
+## Clerk Authentication
+
+1. Use the ClerkProvider at the app root level
+2. Use the auth hooks and components from the Clerk package
+3. Implement proper protection for authenticated routes
+4. Handle user data synchronization with the database
+5. Use the `userId` from Clerk for database operations
+6. Implement proper sign-in/sign-out flows
+7. Use the `_authed` layout route for protected pages
+
+## Redux State Management
+
+1. Use Redux Toolkit for all Redux code
+2. Use slices for organizing related state
+3. Use the provided typed hooks:
+   - `useAppDispatch` instead of `useDispatch`
+   - `useAppSelector` instead of `useSelector`
+4. Keep Redux state normalized when appropriate
+5. Use Redux for global UI state, not server state (use React Query for that)
+6. Implement proper action types and follow Redux best practices
+7. Use selective state access in selectors for better performance
+
+## Prisma & Database
+
+1. Use Prisma Client for all database operations
+2. Define all schema changes in `schema.prisma`
+3. Run migrations for all schema changes
+4. Use proper relationships between models
+5. Implement proper error handling for database operations
+6. Keep queries optimized and efficient
+7. Use transactions for related operations
+8. Use the singleton pattern for Prisma Client instantiation
+9. Do Not Edit migration files
+
+## Supabase
+
+1. Use the Supabase client from utils for all Supabase operations
+2. Implement proper error handling for Supabase operations
+3. Keep API key usage secure
+4. Use Supabase for storage when appropriate
+
+## Shadcn UI Components
+
+1. Use the provided Shadcn UI components from the `/components/ui` directory
+2. Follow the component props pattern for customization
+3. Use consistent styling and theming
+4. Extend components when needed rather than creating new ones
+5. Use the tailwind utility classes consistently
+6. Follow the light/dark theme patterns
+
+## Stripe Integration
+
+1. Keep Stripe keys secure and never expose them to the client
+2. Implement proper error handling for payment operations
+3. Handle webhook events properly
+4. Follow Stripe best practices for subscription management
+5. Use the Stripe Provider component for client-side interactions
+
+## Testing
+
+1. Write tests for critical business logic
+2. Test components in isolation
+3. Mock external dependencies appropriately
+4. Organize tests to mirror the source structure
+
+## Error Handling
+
+1. Implement proper error boundaries
+2. Use try/catch for async operations
+3. Provide user-friendly error messages
+4. Log errors appropriately
+5. Handle network errors gracefully
+6. Implement toast notifications for user feedback
+
+## Performance Considerations
+
+1. Use proper code splitting
+2. Implement proper memoization with `useMemo` and `useCallback`
+3. Optimize database queries
+4. Implement proper loading states
+5. Use SSR appropriately for performance-critical pages
+6. Optimize bundle size
+
+## Security
+
+1. Never expose API keys or secrets in client code
+2. Validate all user input on the server
+3. Implement proper authorization checks
+4. Use HTTPS for all external requests
+5. Handle sensitive data appropriately
+6. Follow security best practices for authentication
+
+## React + Redux + TypeScript .cursorrules
+
+// Prefer functional components with hooks
+
+const preferFunctionalComponents = true;
+
+// Use TypeScript for type safety
+
+const useTypeScript = true;
+
+// Redux best practices
+
+const reduxBestPractices = [
+"Use Redux Toolkit for efficient Redux development",
+"Implement slice pattern for organizing Redux code",
+"Utilize createAsyncThunk for handling async actions",
+"Use selectors for accessing state in components",
+];
+
+// Folder structure
+
+const folderStructure = `src/
+  components/
+  features/
+  store/
+    slices/
+    hooks.ts
+    store.ts
+  types/
+  utils/`;
+
+// Additional instructions
+
+const additionalInstructions = `
+
+1. Use React.FC for functional components with props
+2. Implement strict TypeScript checks
+3. Use Redux hooks (useSelector, useDispatch) in components
+4. Create reusable typed hooks for Redux operations
+5. Implement proper error handling in async operations
+6. Use Redux DevTools for debugging
+7. Follow Redux style guide for naming conventions
+   `;
+
+#### Components
+
+- Use appropriate semantic HTML tags (like <header>, <main>, <section>, <article>, <footer>, etc.) when their meaning matches your content's purpose. Only fall back to <div> elements for non-semantic grouping or layout purposes.
+- Separate the main parts of a component's html with an extra blank line for visual spacing
+- Mark server-side components with `'use server'` at the top. For client components, include `'use client'` directive. RSC components are rendered using the `renderRsc()` function from `@tanstack/react-start`.
+
+##### Organization
+
+- All components be named using pascal case case like `ExampleComponent.tsx` unless otherwise specified
+- Put components in `/_components` in the route if one-off components
+- Put components in `/components` from the root if shared components
+
+##### Component Hook Encapsulation
+
+Always encapsulate related state, effects, and event handlers in custom hooks rather than directly in components.
+
+Good Practice:
+
+```jsx
+// Custom hook encapsulates all related state and logic
+function useUserProfile(userId) {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    setLoading(true);
+
+    fetchUserData(userId)
+      .then((data) => {
+        if (isMounted) {
+          setUser(data);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (isMounted) {
+          setError(err);
+          setLoading(false);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [userId]);
+
+  const updateUserName = useCallback(
+    (newName) => {
+      return updateUser(userId, { name: newName }).then((updatedUser) => {
+        setUser(updatedUser);
+        return updatedUser;
+      });
+    },
+    [userId]
+  );
+
+  return { user, loading, error, updateUserName };
+}
+
+// Clean component with logic abstracted away
+function UserProfile({ userId }) {
+  const { user, loading, error, updateUserName } = useUserProfile(userId);
+
+  if (loading) return <Spinner />;
+  if (error) return <ErrorMessage error={error} />;
+
+  return (
+    <div>
+      <h2>{user.name}</h2>
+      <button onClick={() => updateUserName("New Name")}>Update Name</button>
+    </div>
+  );
+}
+```

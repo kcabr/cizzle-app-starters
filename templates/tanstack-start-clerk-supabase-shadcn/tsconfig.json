@@ -1,5 +1,10 @@
 {
-  "include": ["**/*.ts", "**/*.tsx", "src/routes/api/stripe/webhooks.ts.old"],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "src/routes/api/stripe/webhooks.ts.old",
+    "src/routes/ai-test.tsx.old"
+  ],
   "compilerOptions": {
     "strict": true,
     "esModuleInterop": true,

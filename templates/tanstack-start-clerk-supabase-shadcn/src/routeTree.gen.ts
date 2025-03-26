@@ -12,7 +12,9 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as UiShowcaseImport } from './routes/ui-showcase'
+import { Route as TestImport } from './routes/test'
 import { Route as NewsImport } from './routes/news'
+import { Route as FormImport } from './routes/form'
 import { Route as AuthedImport } from './routes/_authed'
 import { Route as IndexImport } from './routes/index'
 import { Route as NewsIndexImport } from './routes/news.index'
@@ -36,9 +38,21 @@ const UiShowcaseRoute = UiShowcaseImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const TestRoute = TestImport.update({
+  id: '/test',
+  path: '/test',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const NewsRoute = NewsImport.update({
   id: '/news',
   path: '/news',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const FormRoute = FormImport.update({
+  id: '/form',
+  path: '/form',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -143,11 +157,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedImport
       parentRoute: typeof rootRoute
     }
+    '/form': {
+      id: '/form'
+      path: '/form'
+      fullPath: '/form'
+      preLoaderRoute: typeof FormImport
+      parentRoute: typeof rootRoute
+    }
     '/news': {
       id: '/news'
       path: '/news'
       fullPath: '/news'
       preLoaderRoute: typeof NewsImport
+      parentRoute: typeof rootRoute
+    }
+    '/test': {
+      id: '/test'
+      path: '/test'
+      fullPath: '/test'
+      preLoaderRoute: typeof TestImport
       parentRoute: typeof rootRoute
     }
     '/ui-showcase': {
@@ -319,7 +347,9 @@ const NewsRouteWithChildren = NewsRoute._addFileChildren(NewsRouteChildren)
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof AuthedRouteWithChildren
+  '/form': typeof FormRoute
   '/news': typeof NewsRouteWithChildren
+  '/test': typeof TestRoute
   '/ui-showcase': typeof UiShowcaseRoute
   '/counter': typeof AuthedCounterRoute
   '/notes': typeof AuthedNotesRoute
@@ -338,6 +368,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof AuthedRouteWithChildren
+  '/form': typeof FormRoute
+  '/test': typeof TestRoute
   '/ui-showcase': typeof UiShowcaseRoute
   '/counter': typeof AuthedCounterRoute
   '/notes': typeof AuthedNotesRoute
@@ -356,7 +388,9 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/_authed': typeof AuthedRouteWithChildren
+  '/form': typeof FormRoute
   '/news': typeof NewsRouteWithChildren
+  '/test': typeof TestRoute
   '/ui-showcase': typeof UiShowcaseRoute
   '/_authed/counter': typeof AuthedCounterRoute
   '/_authed/notes': typeof AuthedNotesRoute
@@ -377,7 +411,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | ''
+    | '/form'
     | '/news'
+    | '/test'
     | '/ui-showcase'
     | '/counter'
     | '/notes'
@@ -395,6 +431,8 @@ export interface FileRouteTypes {
   to:
     | '/'
     | ''
+    | '/form'
+    | '/test'
     | '/ui-showcase'
     | '/counter'
     | '/notes'
@@ -411,7 +449,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authed'
+    | '/form'
     | '/news'
+    | '/test'
     | '/ui-showcase'
     | '/_authed/counter'
     | '/_authed/notes'
@@ -431,14 +471,18 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthedRoute: typeof AuthedRouteWithChildren
+  FormRoute: typeof FormRoute
   NewsRoute: typeof NewsRouteWithChildren
+  TestRoute: typeof TestRoute
   UiShowcaseRoute: typeof UiShowcaseRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthedRoute: AuthedRouteWithChildren,
+  FormRoute: FormRoute,
   NewsRoute: NewsRouteWithChildren,
+  TestRoute: TestRoute,
   UiShowcaseRoute: UiShowcaseRoute,
 }
 
@@ -454,7 +498,9 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/_authed",
+        "/form",
         "/news",
+        "/test",
         "/ui-showcase"
       ]
     },
@@ -472,12 +518,18 @@ export const routeTree = rootRoute
         "/_authed/todos"
       ]
     },
+    "/form": {
+      "filePath": "form.tsx"
+    },
     "/news": {
       "filePath": "news.tsx",
       "children": [
         "/news/search",
         "/news/"
       ]
+    },
+    "/test": {
+      "filePath": "test.tsx"
     },
     "/ui-showcase": {
       "filePath": "ui-showcase.tsx"

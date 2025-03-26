@@ -1,31 +1,35 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
 Below represents the documentation for Tanstack Start the fullstack react framework. Use it to model best practices when generating code.
 
 ================================================================
 File Summary
 ================================================================
 
-## Purpose:
-
+Purpose:
+--------
 This file contains a packed representation of the entire repository's contents.
 It is designed to be easily consumable by AI systems for analysis, code review,
 or other automated processes.
 
-## File Format:
-
+File Format:
+------------
 The content is organized as follows:
-
 1. This summary section
 2. Repository information
 3. Directory structure
 4. Multiple file entries, each consisting of:
-   a. A separator line (================)
-   b. The file path (File: path/to/file)
-   c. Another separator line
-   d. The full contents of the file
-   e. A blank line
+  a. A separator line (================)
+  b. The file path (File: path/to/file)
+  c. Another separator line
+  d. The full contents of the file
+  e. A blank line
 
-## Usage Guidelines:
-
+Usage Guidelines:
+-----------------
 - This file should be treated as read-only. Any changes should be made to the
   original repository files, not this packed version.
 - When processing this file, use the file path to distinguish
@@ -33,15 +37,16 @@ The content is organized as follows:
 - Be aware that this file may contain sensitive information. Handle it with
   the same level of security as you would the original repository.
 
-## Notes:
-
+Notes:
+------
 - Some files may have been excluded based on .gitignore rules and Repomix's configuration
 - Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
-- Files matching these patterns are excluded: \*\*/config.json
+- Files matching these patterns are excluded: **/config.json
 - Files matching patterns in .gitignore are excluded
 - Files matching default ignore patterns are excluded
 
-## Additional Info:
+Additional Info:
+----------------
 
 ================================================================
 Directory Structure
@@ -70,12 +75,9 @@ Files
 ================
 File: framework/react/api-routes.md
 ================
-
 ---
-
 id: api-routes
 title: API Routes
-
 ---
 
 API Routes are a powerful feature of TanStack Start that allow you to create server-side endpoints in your application without the need for a separate server. API Routes are useful for handling form submissions, user authentication, and more.
@@ -110,7 +112,7 @@ It's important to remember that each route can only have a single handler file a
 
 ## Nested Directories vs File-names
 
-In the examples above, you may have noticed that the file naming conventions are flexible and allow you to mix and match directories and file names. This is intentional and allows you to organize your API Routes in a way that makes sense for your application. You can read more about this in the [TanStack Router File-based Routing Guide](/router/latest/docs/framework/react/routing/file-based-routing#s-or-s).
+In the examples above, you may have noticed that the file naming conventions are flexible and allow you to mix and match directories and file names. This is intentional and allows you to organize your API Routes in a way that makes sense for your application. You can read more about this in the [TanStack Router File-based Routing Guide](mdc:router/latest/docs/framework/react/routing/file-based-routing#s-or-s).
 
 ## Setting up the entry handler
 
@@ -123,9 +125,9 @@ Here's an example implementation:
 import {
   createStartAPIHandler,
   defaultAPIFileRouteHandler,
-} from "@tanstack/react-start/api";
+} from '@tanstack/react-start/api'
 
-export default createStartAPIHandler(defaultAPIFileRouteHandler);
+export default createStartAPIHandler(defaultAPIFileRouteHandler)
 ```
 
 This file is responsible for creating the API handler that will be used to route incoming requests to the appropriate API route handler. The `defaultAPIFileRouteHandler` is a helper function that will automatically load and execute the appropriate API route handler based on the incoming request.
@@ -139,21 +141,21 @@ API Routes export an APIRoute instance by calling the `createAPIFileRoute` funct
 
 ```ts
 // routes/api/hello.ts
-import { createAPIFileRoute } from "@tanstack/react-start/api";
+import { createAPIFileRoute } from '@tanstack/react-start/api'
 
-export const APIRoute = createAPIFileRoute("/api/hello")({
+export const APIRoute = createAPIFileRoute('/api/hello')({
   GET: async ({ request }) => {
-    return new Response("Hello, World! from " + request.url);
+    return new Response('Hello, World! from ' + request.url)
   },
-});
+})
 ```
 
 Each HTTP method handler receives an object with the following properties:
 
-- `request`: The incoming request object. You can read more about the `Request` object in the [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/API/Request).
+- `request`: The incoming request object. You can read more about the `Request` object in the [MDN Web Docs](mdc:https:/developer.mozilla.org/en-US/docs/Web/API/Request).
 - `params`: An object containing the dynamic path parameters of the route. For example, if the route path is `/users/$id`, and the request is made to `/users/123`, then `params` will be `{ id: '123' }`. We'll cover dynamic path parameters and wildcard parameters later in this guide.
 
-Once you've processed the request, you need to return a `Response` object or `Promise<Response>`. This can be done by creating a new `Response` object and returning it from the handler. You can read more about the `Response` object in the [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/API/Response).
+Once you've processed the request, you need to return a `Response` object or `Promise<Response>`. This can be done by creating a new `Response` object and returning it from the handler. You can read more about the `Response` object in the [MDN Web Docs](mdc:https:/developer.mozilla.org/en-US/docs/Web/API/Response).
 
 ## Dynamic Path Params
 
@@ -161,14 +163,14 @@ API Routes support dynamic path parameters, which are denoted by a `$` followed 
 
 ```ts
 // routes/api/users/$id.ts
-import { createAPIFileRoute } from "@tanstack/react-start/api";
+import { createAPIFileRoute } from '@tanstack/react-start/api'
 
-export const APIRoute = createAPIFileRoute("/users/$id")({
+export const APIRoute = createAPIFileRoute('/users/$id')({
   GET: async ({ params }) => {
-    const { id } = params;
-    return new Response(`User ID: ${id}`);
+    const { id } = params
+    return new Response(`User ID: ${id}`)
   },
-});
+})
 
 // Visit /api/users/123 to see the response
 // User ID: 123
@@ -178,14 +180,14 @@ You can also have multiple dynamic path parameters in a single route. For exampl
 
 ```ts
 // routes/api/users/$id/posts/$postId.ts
-import { createAPIFileRoute } from "@tanstack/react-start/api";
+import { createAPIFileRoute } from '@tanstack/react-start/api'
 
-export const APIRoute = createAPIFileRoute("/users/$id/posts/$postId")({
+export const APIRoute = createAPIFileRoute('/users/$id/posts/$postId')({
   GET: async ({ params }) => {
-    const { id, postId } = params;
-    return new Response(`User ID: ${id}, Post ID: ${postId}`);
+    const { id, postId } = params
+    return new Response(`User ID: ${id}, Post ID: ${postId}`)
   },
-});
+})
 
 // Visit /api/users/123/posts/456 to see the response
 // User ID: 123, Post ID: 456
@@ -197,14 +199,14 @@ API Routes also support wildcard parameters at the end of the path, which are de
 
 ```ts
 // routes/api/file/$.ts
-import { createAPIFileRoute } from "@tanstack/react-start/api";
+import { createAPIFileRoute } from '@tanstack/react-start/api'
 
-export const APIRoute = createAPIFileRoute("/file/$")({
+export const APIRoute = createAPIFileRoute('/file/$')({
   GET: async ({ params }) => {
-    const { _splat } = params;
-    return new Response(`File: ${_splat}`);
+    const { _splat } = params
+    return new Response(`File: ${_splat}`)
   },
-});
+})
 
 // Visit /api/file/hello.txt to see the response
 // File: hello.txt
@@ -216,14 +218,14 @@ To handle POST requests,you can add a `POST` handler to the route object. The ha
 
 ```ts
 // routes/api/hello.ts
-import { createAPIFileRoute } from "@tanstack/react-start/api";
+import { createAPIFileRoute } from '@tanstack/react-start/api'
 
-export const APIRoute = createAPIFileRoute("/api/hello")({
+export const APIRoute = createAPIFileRoute('/api/hello')({
   POST: async ({ request }) => {
-    const body = await request.json();
-    return new Response(`Hello, ${body.name}!`);
+    const body = await request.json()
+    return new Response(`Hello, ${body.name}!`)
   },
-});
+})
 
 // Send a POST request to /api/hello with a JSON body like { "name": "Tanner" }
 // Hello, Tanner!
@@ -241,17 +243,17 @@ When returning JSON using a Response object, this is a common pattern:
 
 ```ts
 // routes/api/hello.ts
-import { createAPIFileRoute } from "@tanstack/react-start/api";
+import { createAPIFileRoute } from '@tanstack/react-start/api'
 
-export const APIRoute = createAPIFileRoute("/api/hello")({
+export const APIRoute = createAPIFileRoute('/api/hello')({
   GET: async ({ request }) => {
-    return new Response(JSON.stringify({ message: "Hello, World!" }), {
+    return new Response(JSON.stringify({ message: 'Hello, World!' }), {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
-    });
+    })
   },
-});
+})
 
 // Visit /api/hello to see the response
 // {"message":"Hello, World!"}
@@ -263,14 +265,14 @@ Or you can use the `json` helper function to automatically set the `Content-Type
 
 ```ts
 // routes/api/hello.ts
-import { json } from "@tanstack/react-start";
-import { createAPIFileRoute } from "@tanstack/react-start/api";
+import { json } from '@tanstack/react-start'
+import { createAPIFileRoute } from '@tanstack/react-start/api'
 
-export const APIRoute = createAPIFileRoute("/api/hello")({
+export const APIRoute = createAPIFileRoute('/api/hello')({
   GET: async ({ request }) => {
-    return json({ message: "Hello, World!" });
+    return json({ message: 'Hello, World!' })
   },
-});
+})
 
 // Visit /api/hello to see the response
 // {"message":"Hello, World!"}
@@ -284,40 +286,40 @@ You can set the status code of the response by either:
 
   ```ts
   // routes/api/hello.ts
-  import { json } from "@tanstack/react-start";
-  import { createAPIFileRoute } from "@tanstack/react-start/api";
+  import { json } from '@tanstack/react-start'
+  import { createAPIFileRoute } from '@tanstack/react-start/api'
 
-  export const APIRoute = createAPIFileRoute("/users/$id")({
+  export const APIRoute = createAPIFileRoute('/users/$id')({
     GET: async ({ request, params }) => {
-      const user = await findUser(params.id);
+      const user = await findUser(params.id)
       if (!user) {
-        return new Response("User not found", {
+        return new Response('User not found', {
           status: 404,
-        });
+        })
       }
-      return json(user);
+      return json(user)
     },
-  });
+  })
   ```
 
 - Using the `setResponseStatus` helper function from `@tanstack/react-start/server`
 
   ```ts
   // routes/api/hello.ts
-  import { json } from "@tanstack/react-start";
-  import { createAPIFileRoute } from "@tanstack/react-start/api";
-  import { setResponseStatus } from "@tanstack/react-start/server";
+  import { json } from '@tanstack/react-start'
+  import { createAPIFileRoute } from '@tanstack/react-start/api'
+  import { setResponseStatus } from '@tanstack/react-start/server'
 
-  export const APIRoute = createAPIFileRoute("/users/$id")({
+  export const APIRoute = createAPIFileRoute('/users/$id')({
     GET: async ({ request, params }) => {
-      const user = await findUser(params.id);
+      const user = await findUser(params.id)
       if (!user) {
-        setResponseStatus(404);
-        return new Response("User not found");
+        setResponseStatus(404)
+        return new Response('User not found')
       }
-      return json(user);
+      return json(user)
     },
-  });
+  })
   ```
 
 In this example, we're returning a `404` status code if the user is not found. You can set any valid HTTP status code using this method.
@@ -330,17 +332,17 @@ Sometimes you may need to set headers in the response. You can do this by either
 
   ```ts
   // routes/api/hello.ts
-  import { createAPIFileRoute } from "@tanstack/react-start/api";
+  import { createAPIFileRoute } from '@tanstack/react-start/api'
 
-  export const APIRoute = createAPIFileRoute("/api/hello")({
+  export const APIRoute = createAPIFileRoute('/api/hello')({
     GET: async ({ request }) => {
-      return new Response("Hello, World!", {
+      return new Response('Hello, World!', {
         headers: {
-          "Content-Type": "text/plain",
+          'Content-Type': 'text/plain',
         },
-      });
+      })
     },
-  });
+  })
 
   // Visit /api/hello to see the response
   // Hello, World!
@@ -350,28 +352,25 @@ Sometimes you may need to set headers in the response. You can do this by either
 
   ```ts
   // routes/api/hello.ts
-  import { createAPIFileRoute } from "@tanstack/react-start/api";
-  import { setHeaders } from "@tanstack/react-start/server";
+  import { createAPIFileRoute } from '@tanstack/react-start/api'
+  import { setHeaders } from '@tanstack/react-start/server'
 
-  export const APIRoute = createAPIFileRoute("/api/hello")({
+  export const APIRoute = createAPIFileRoute('/api/hello')({
     GET: async ({ request }) => {
       setHeaders({
-        "Content-Type": "text/plain",
-      });
-      return new Response("Hello, World!");
+        'Content-Type': 'text/plain',
+      })
+      return new Response('Hello, World!')
     },
-  });
+  })
   ```
 
 ================
 File: framework/react/authentication.md
 ================
-
 ---
-
 id: authentication
 title: Authentication
-
 ---
 
 <!-- We need some placeholder content here for authentication. One of our partners, Clerk, should get preferential treatment as the "preferred" way of doing auth with TanStack, but we'll support any and all other authentication providers and strategies. Write some general authentication content here until we have docs for both Clerk and other auth providers: -->
@@ -382,7 +381,7 @@ Authentication is the process of verifying the identity of a user. This is a cri
 
 TanStack Start is **designed to work with any authentication provider**, so if you already have an authentication provider or strategy in mind, you can use either find an existing example or implement your own authentication logic using the full-stack APIs provided by TanStack Start.
 
-That said, authentication is not something to be taken lightly. After much vetting, usage and reviewing on our end, we highly recommend using [Clerk](https://clerk.dev) for the best possible authentication experience. Clerk provides a full suite of authentication APIs and UI components that make it easy to implement authentication in your application and provide a seamless user experience.
+That said, authentication is not something to be taken lightly. After much vetting, usage and reviewing on our end, we highly recommend using [Clerk](mdc:https:/clerk.dev) for the best possible authentication experience. Clerk provides a full suite of authentication APIs and UI components that make it easy to implement authentication in your application and provide a seamless user experience.
 
 ## What is Clerk?
 
@@ -396,27 +395,24 @@ That said, authentication is not something to be taken lightly. After much vetti
 
 Clerk is a modern authentication platform that provides a full suite of authentication APIs and UI components to help you implement authentication in your application. Clerk is designed to be easy to use and provides a seamless user experience. With Clerk, you can implement authentication in your application in minutes and provide your users with a secure and reliable authentication experience.
 
-- To learn more about Clerk, visit the [Clerk website](https://go.clerk.com/wOwHtuJ)
-- To sign up, visit the [Clerk dashboard](https://go.clerk.com/PrSDXti)
-- To get started with Clerk, check out our [official Start + Clerk examples!](../examples/start-clerk-basic/)
+- To learn more about Clerk, visit the [Clerk website](mdc:https:/go.clerk.com/wOwHtuJ)
+- To sign up, visit the [Clerk dashboard](mdc:https:/go.clerk.com/PrSDXti)
+- To get started with Clerk, check out our [official Start + Clerk examples!](mdc:../examples/start-clerk-basic)
 
 ## Documentation & APIs
 
-Documentation for implementing your own authentication logic with TanStack Start is coming soon! In the meantime, you can check out any of the `-auth` prefixed [examples](../examples) for a starting point.
+Documentation for implementing your own authentication logic with TanStack Start is coming soon! In the meantime, you can check out any of the `-auth` prefixed [examples](mdc:../examples) for a starting point.
 
 ================
 File: framework/react/build-from-scratch.md
 ================
-
 ---
-
 id: build-from-scratch
 title: Build a Project from Scratch
-
 ---
 
 > [!NOTE]
-> If you chose to quick start with an example or cloned project, you can skip this guide and move on to the [Learn the Basics](../learn-the-basics) guide.
+> If you chose to quick start with an example or cloned project, you can skip this guide and move on to the [Learn the Basics](mdc:../learn-the-basics) guide.
 
 _So you want to build a TanStack Start project from scratch?_
 
@@ -426,7 +422,7 @@ This guide will help you build a **very** basic TanStack Start web application. 
 - Which displays a counter...
 - With a button to increment the counter persistently.
 
-[Here is what that will look like](https://stackblitz.com/github/tanstack/router/tree/main/examples/react/start-counter)
+[Here is what that will look like](mdc:https:/stackblitz.com/github/tanstack/router/tree/main/examples/react/start-counter)
 
 Let's create a new project directory and initialize it.
 
@@ -459,7 +455,7 @@ We highly recommend using TypeScript with TanStack Start. Create a `tsconfig.jso
 
 ## Install Dependencies
 
-TanStack Start is (currently\*) powered by [Vinxi](https://vinxi.vercel.app/) and [TanStack Router](https://tanstack.com/router) and requires them as dependencies.
+TanStack Start is (currently\*) powered by [Vinxi](mdc:https:/vinxi.vercel.app) and [TanStack Router](mdc:https:/tanstack.com/router) and requires them as dependencies.
 
 > [!NOTE] > \*Vinxi will be removed before version 1.0.0 is released and TanStack will rely only on Vite and Nitro. The commands and APIs that use Vinxi will likely be replaced with a Vite plugin or dedicated TanStack Start CLI.
 
@@ -502,18 +498,18 @@ Then configure TanStack Start's `app.config.ts` file:
 
 ```typescript
 // app.config.ts
-import { defineConfig } from "@tanstack/react-start/config";
-import tsConfigPaths from "vite-tsconfig-paths";
+import { defineConfig } from '@tanstack/react-start/config'
+import tsConfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
   vite: {
     plugins: [
       tsConfigPaths({
-        projects: ["./tsconfig.json"],
+        projects: ['./tsconfig.json'],
       }),
     ],
   },
-});
+})
 ```
 
 ## Add the Basic Templating
@@ -545,25 +541,25 @@ Once configuration is done, we'll have a file tree that looks like the following
 ## The Router Configuration
 
 This is the file that will dictate the behavior of TanStack Router used within Start. Here, you can configure everything
-from the default [preloading functionality](../guide/preloading.md) to [caching staleness](../guide/data-loading.md).
+from the default [preloading functionality](mdc:../guide/preloading.md) to [caching staleness](mdc:../guide/data-loading.md).
 
 ```tsx
 // app/router.tsx
-import { createRouter as createTanStackRouter } from "@tanstack/react-router";
-import { routeTree } from "./routeTree.gen";
+import { createRouter as createTanStackRouter } from '@tanstack/react-router'
+import { routeTree } from './routeTree.gen'
 
 export function createRouter() {
   const router = createTanStackRouter({
     routeTree,
     scrollRestoration: true,
-  });
+  })
 
-  return router;
+  return router
 }
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface Register {
-    router: ReturnType<typeof createRouter>;
+    router: ReturnType<typeof createRouter>
   }
 }
 ```
@@ -573,7 +569,7 @@ declare module "@tanstack/react-router" {
 
 ## The Server Entry Point
 
-As TanStack Start is an [SSR](https://unicorn-utterances.com/posts/what-is-ssr-and-ssg) framework, we need to pipe this router
+As TanStack Start is an [SSR](mdc:https:/unicorn-utterances.com/posts/what-is-ssr-and-ssg) framework, we need to pipe this router
 information to our server entry point:
 
 ```tsx
@@ -581,15 +577,15 @@ information to our server entry point:
 import {
   createStartHandler,
   defaultStreamHandler,
-} from "@tanstack/react-start/server";
-import { getRouterManifest } from "@tanstack/react-start/router-manifest";
+} from '@tanstack/react-start/server'
+import { getRouterManifest } from '@tanstack/react-start/router-manifest'
 
-import { createRouter } from "./router";
+import { createRouter } from './router'
 
 export default createStartHandler({
   createRouter,
   getRouterManifest,
-})(defaultStreamHandler);
+})(defaultStreamHandler)
 ```
 
 This allows us to know what routes and loaders we need to execute when the user hits a given route.
@@ -602,13 +598,13 @@ router information to our client entry point:
 ```tsx
 // app/client.tsx
 /// <reference types="vinxi/types/client" />
-import { hydrateRoot } from "react-dom/client";
-import { StartClient } from "@tanstack/react-start";
-import { createRouter } from "./router";
+import { hydrateRoot } from 'react-dom/client'
+import { StartClient } from '@tanstack/react-start'
+import { createRouter } from './router'
 
-const router = createRouter();
+const router = createRouter()
 
-hydrateRoot(document, <StartClient router={router} />);
+hydrateRoot(document, <StartClient router={router} />)
 ```
 
 This enables us to kick off client-side routing once the user's initial server request has fulfilled.
@@ -619,38 +615,38 @@ Finally, we need to create the root of our application. This is the entry point 
 
 ```tsx
 // app/routes/__root.tsx
-import type { ReactNode } from "react";
+import type { ReactNode } from 'react'
 import {
   Outlet,
   createRootRoute,
   HeadContent,
   Scripts,
-} from "@tanstack/react-router";
+} from '@tanstack/react-router'
 
 export const Route = createRootRoute({
   head: () => ({
     meta: [
       {
-        charSet: "utf-8",
+        charSet: 'utf-8',
       },
       {
-        name: "viewport",
-        content: "width=device-width, initial-scale=1",
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1',
       },
       {
-        title: "TanStack Start Starter",
+        title: 'TanStack Start Starter',
       },
     ],
   }),
   component: RootComponent,
-});
+})
 
 function RootComponent() {
   return (
     <RootDocument>
       <Outlet />
     </RootDocument>
-  );
+  )
 }
 
 function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
@@ -664,7 +660,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
         <Scripts />
       </body>
     </html>
-  );
+  )
 }
 ```
 
@@ -674,52 +670,52 @@ Now that we have the basic templating setup, we can write our first route. This 
 
 ```tsx
 // app/routes/index.tsx
-import * as fs from "node:fs";
-import { createFileRoute, useRouter } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
+import * as fs from 'node:fs'
+import { createFileRoute, useRouter } from '@tanstack/react-router'
+import { createServerFn } from '@tanstack/react-start'
 
-const filePath = "count.txt";
+const filePath = 'count.txt'
 
 async function readCount() {
   return parseInt(
-    await fs.promises.readFile(filePath, "utf-8").catch(() => "0")
-  );
+    await fs.promises.readFile(filePath, 'utf-8').catch(() => '0'),
+  )
 }
 
 const getCount = createServerFn({
-  method: "GET",
+  method: 'GET',
 }).handler(() => {
-  return readCount();
-});
+  return readCount()
+})
 
-const updateCount = createServerFn({ method: "POST" })
+const updateCount = createServerFn({ method: 'POST' })
   .validator((d: number) => d)
   .handler(async ({ data }) => {
-    const count = await readCount();
-    await fs.promises.writeFile(filePath, `${count + data}`);
-  });
+    const count = await readCount()
+    await fs.promises.writeFile(filePath, `${count + data}`)
+  })
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute('/')({
   component: Home,
   loader: async () => await getCount(),
-});
+})
 
 function Home() {
-  const router = useRouter();
-  const state = Route.useLoaderData();
+  const router = useRouter()
+  const state = Route.useLoaderData()
 
   return (
     <button
       type="button"
       onClick={() => {
         updateCount({ data: 1 }).then(() => {
-          router.invalidate();
-        });
+          router.invalidate()
+        })
       }}
     >
       Add 1 to {state}?
     </button>
-  );
+  )
 }
 ```
 
@@ -727,17 +723,14 @@ That's it! 🤯 You've now set up a TanStack Start project and written your firs
 
 You can now run `npm run dev` to start your server and navigate to `http://localhost:3000` to see your route in action.
 
-You want to deploy your application? Check out the [hosting guide](./hosting.md).
+You want to deploy your application? Check out the [hosting guide](mdc:hosting.md).
 
 ================
 File: framework/react/databases.md
 ================
-
 ---
-
 id: databases
 title: Databases
-
 ---
 
 Databases are at the core of any dynamic application, providing the necessary infrastructure to store, retrieve, and manage data. TanStack Start makes it easy to integrate with a variety of databases, offering a flexible approach to managing your application's data layer.
@@ -746,7 +739,7 @@ Databases are at the core of any dynamic application, providing the necessary in
 
 TanStack Start is **designed to work with any database provider**, so if you already have a preferred database system, you can integrate it with TanStack Start using the provided full-stack APIs. Whether you're working with SQL, NoSQL, or other types of databases, TanStack Start can handle your needs.
 
-That said, the choice of a database is critical to your application's performance, scalability, and reliability, which is we highly recommend using [Convex](https://convex.dev?utm_source=tanstack) for the best possible database experience.
+That said, the choice of a database is critical to your application's performance, scalability, and reliability, which is we highly recommend using [Convex](mdc:https:/convex.dev?utm_source=tanstack) for the best possible database experience.
 
 ## What is Convex?
 
@@ -762,8 +755,8 @@ Convex is a powerful, serverless database platform that simplifies the process o
 
 Convex’s declarative data model and automatic conflict resolution ensure that your application remains consistent and responsive, even at scale. It’s designed to be developer-friendly, with a focus on simplicity and productivity.
 
-- To learn more about Convex, visit the [Convex website](https://convex.dev?utm_source=tanstack)
-- To sign up, visit the [Convex dashboard](https://dashboard.convex.dev/signup?utm_source=tanstack)
+- To learn more about Convex, visit the [Convex website](mdc:https:/convex.dev?utm_source=tanstack)
+- To sign up, visit the [Convex dashboard](mdc:https:/dashboard.convex.dev/signup?utm_source=tanstack)
 
 ## Documentation & APIs
 
@@ -772,39 +765,33 @@ Documentation for integrating different databases with TanStack Start is coming 
 ================
 File: framework/react/getting-started.md
 ================
-
 ---
-
 id: getting-started
 title: Getting Started
-
 ---
 
 To set up a TanStack Start project, you can:
 
-<!-- - Use the [TanStack Start CLI](https://github.com/tanstack/start/tree/main/packages/start-cli) to generate a new project and learn as you go -->
+<!-- - Use the [TanStack Start CLI](mdc:https:/github.com/tanstack/start/tree/main/packages/start-cli) to generate a new project and learn as you go -->
 
-- Use the [Quick Start Examples](../quick-start) to rapidly learn as you go
-- [Build a project from scratch](../build-from-scratch) to learn how TanStack Start works from the ground up
+- Use the [Quick Start Examples](mdc:../quick-start) to rapidly learn as you go
+- [Build a project from scratch](mdc:../build-from-scratch) to learn how TanStack Start works from the ground up
 
 ================
 File: framework/react/hosting.md
 ================
-
 ---
-
 id: hosting
 title: Hosting
-
 ---
 
-Hosting is the process of deploying your application to the internet so that users can access it. This is a critical part of any web development project, ensuring your application is available to the world. TanStack Start is built on [Nitro](https://nitro.unjs.io/), a powerful server toolkit for deploying web applications anywhere. Nitro allows TanStack Start to provide a unified API for SSR, streaming, and hydration on any hosting provider.
+Hosting is the process of deploying your application to the internet so that users can access it. This is a critical part of any web development project, ensuring your application is available to the world. TanStack Start is built on [Nitro](mdc:https:/nitro.unjs.io), a powerful server toolkit for deploying web applications anywhere. Nitro allows TanStack Start to provide a unified API for SSR, streaming, and hydration on any hosting provider.
 
 ## What should I use?
 
 TanStack Start is **designed to work with any hosting provider**, so if you already have a hosting provider in mind, you can deploy your application there using the full-stack APIs provided by TanStack Start.
 
-However, since hosting is one of the most crucial aspects of your application's performance, reliability, and scalability, we highly recommend using our Official Hosting Partner [Netlify](https://www.netlify.com?utm_source=tanstack).
+However, since hosting is one of the most crucial aspects of your application's performance, reliability, and scalability, we highly recommend using our Official Hosting Partner [Netlify](mdc:https:/www.netlify.com?utm_source=tanstack).
 
 ## What is Netlify?
 
@@ -818,8 +805,8 @@ However, since hosting is one of the most crucial aspects of your application's 
 
 Netlify is a leading hosting platform that provides a fast, secure, and reliable environment for deploying your web applications. With Netlify, you can deploy your TanStack Start application in just a few clicks and benefit from features like a global edge network, automatic scaling, and seamless integrations with GitHub and GitLab. Netlify is designed to make your development process as smooth as possible, from local development to production deployment.
 
-- To learn more about Netlify, visit the [Netlify website](https://www.netlify.com?utm_source=tanstack)
-- To sign up, visit the [Netlify dashboard](https://www.netlify.com/signup?utm_source=tanstack)
+- To learn more about Netlify, visit the [Netlify website](mdc:https:/www.netlify.com?utm_source=tanstack)
+- To sign up, visit the [Netlify dashboard](mdc:https:/www.netlify.com/signup?utm_source=tanstack)
 
 ## Deployment
 
@@ -828,11 +815,11 @@ Netlify is a leading hosting platform that provides a fast, secure, and reliable
 
 When a TanStack Start application is being deployed, the `server.preset` value in the `app.config.ts` file determines the deployment target. The deployment target can be set to one of the following values:
 
-- [`netlify`](#netlify): Deploy to Netlify
-- [`vercel`](#vercel): Deploy to Vercel
-- [`cloudflare-pages`](#cloudflare-pages): Deploy to Cloudflare Pages
-- [`node-server`](#nodejs): Deploy to a Node.js server
-- [`bun`](#bun): Deploy to a Bun server
+- [`netlify`](mdc:#netlify): Deploy to Netlify
+- [`vercel`](mdc:#vercel): Deploy to Vercel
+- [`cloudflare-pages`](mdc:#cloudflare-pages): Deploy to Cloudflare Pages
+- [`node-server`](mdc:#nodejs): Deploy to a Node.js server
+- [`bun`](mdc:#bun): Deploy to a Bun server
 - ... and more to come!
 
 Once you've chosen a deployment target, you can follow the deployment guidelines below to deploy your TanStack Start application to the hosting provider of your choice.
@@ -843,13 +830,13 @@ Set the `server.preset` value to `netlify` in your `app.config.ts` file.
 
 ```ts
 // app.config.ts
-import { defineConfig } from "@tanstack/react-start/config";
+import { defineConfig } from '@tanstack/react-start/config'
 
 export default defineConfig({
   server: {
-    preset: "netlify",
+    preset: 'netlify',
   },
-});
+})
 ```
 
 Or you can use the `--preset` flag with the `build` command to specify the deployment target when building the application:
@@ -866,13 +853,13 @@ Deploying your TanStack Start application to Vercel is easy and straightforward.
 
 ```ts
 // app.config.ts
-import { defineConfig } from "@tanstack/react-start/config";
+import { defineConfig } from '@tanstack/react-start/config'
 
 export default defineConfig({
   server: {
-    preset: "vercel",
+    preset: 'vercel',
   },
-});
+})
 ```
 
 Or you can use the `--preset` flag with the `build` command to specify the deployment target when building the application:
@@ -901,15 +888,15 @@ Set the `server.preset` value to `cloudflare-pages` and the `server.unenv` value
 
 ```ts
 // app.config.ts
-import { defineConfig } from "@tanstack/react-start/config";
-import { cloudflare } from "unenv";
+import { defineConfig } from '@tanstack/react-start/config'
+import { cloudflare } from 'unenv'
 
 export default defineConfig({
   server: {
-    preset: "cloudflare-pages",
+    preset: 'cloudflare-pages',
     unenv: cloudflare,
   },
-});
+})
 ```
 
 3. Add a `wrangler.toml` config file
@@ -930,13 +917,13 @@ Set the `server.preset` value to `node-server` in your `app.config.ts` file.
 
 ```ts
 // app.config.ts
-import { defineConfig } from "@tanstack/react-start/config";
+import { defineConfig } from '@tanstack/react-start/config'
 
 export default defineConfig({
   server: {
-    preset: "node-server",
+    preset: 'node-server',
   },
-});
+})
 
 // Or you can use the --preset flag with the build command
 // to specify the deployment target when building the application:
@@ -958,7 +945,7 @@ node .output/server/index.mjs
 ### Bun
 
 > [!IMPORTANT]
-> Currently, the Bun specific deployment guidelines only work with React 19. If you are using React 18, please refer to the [Node.js](#nodejs) deployment guidelines.
+> Currently, the Bun specific deployment guidelines only work with React 19. If you are using React 18, please refer to the [Node.js](mdc:#nodejs) deployment guidelines.
 
 Make sure that your `react` and `react-dom` packages are set to version 19.0.0 or higher in your `package.json` file. If not, run the following command to upgrade the packages:
 
@@ -970,13 +957,13 @@ Set the `server.preset` value to `bun` in your `app.config.ts` file.
 
 ```ts
 // app.config.ts
-import { defineConfig } from "@tanstack/react-start/config";
+import { defineConfig } from '@tanstack/react-start/config'
 
 export default defineConfig({
   server: {
-    preset: "bun",
+    preset: 'bun',
   },
-});
+})
 
 // Or you can use the --preset flag with the build command
 // to specify the deployment target when building the application:
@@ -998,19 +985,16 @@ bun run .output/server/index.mjs
 ================
 File: framework/react/learn-the-basics.md
 ================
-
 ---
-
 id: learn-the-basics
 title: Learn the Basics
-
 ---
 
 This guide will help you learn the basics behind how TanStack Start works, regardless of how you set up your project.
 
 ## Dependencies
 
-TanStack Start is (currently\*) powered by [Vinxi](https://vinxi.vercel.app/), [Nitro](https://nitro.unjs.io/) and [TanStack Router](https://tanstack.com/router).
+TanStack Start is (currently\*) powered by [Vinxi](mdc:https:/vinxi.vercel.app), [Nitro](mdc:https:/nitro.unjs.io) and [TanStack Router](mdc:https:/tanstack.com/router).
 
 - **TanStack Router**: A router for building web applications.
 - **Nitro**: A framework for building server applications.
@@ -1021,25 +1005,25 @@ TanStack Start is (currently\*) powered by [Vinxi](https://vinxi.vercel.app/), [
 ## It all "Starts" with the Router
 
 This is the file that will dictate the behavior of TanStack Router used within Start. Here, you can configure everything
-from the default [preloading functionality](/router/latest/docs/framework/react/guide/preloading) to [caching staleness](/router/latest/docs/framework/react/guide/data-loading).
+from the default [preloading functionality](mdc:router/latest/docs/framework/react/guide/preloading) to [caching staleness](mdc:router/latest/docs/framework/react/guide/data-loading).
 
 ```tsx
 // app/router.tsx
-import { createRouter as createTanStackRouter } from "@tanstack/react-router";
-import { routeTree } from "./routeTree.gen";
+import { createRouter as createTanStackRouter } from '@tanstack/react-router'
+import { routeTree } from './routeTree.gen'
 
 export function createRouter() {
   const router = createTanStackRouter({
     routeTree,
     scrollRestoration: true,
-  });
+  })
 
-  return router;
+  return router
 }
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface Register {
-    router: ReturnType<typeof createRouter>;
+    router: ReturnType<typeof createRouter>
   }
 }
 ```
@@ -1061,15 +1045,15 @@ This is done via the `app/ssr.tsx` file:
 import {
   createStartHandler,
   defaultStreamHandler,
-} from "@tanstack/react-start/server";
-import { getRouterManifest } from "@tanstack/react-start/router-manifest";
+} from '@tanstack/react-start/server'
+import { getRouterManifest } from '@tanstack/react-start/router-manifest'
 
-import { createRouter } from "./router";
+import { createRouter } from './router'
 
 export default createStartHandler({
   createRouter,
   getRouterManifest,
-})(defaultStreamHandler);
+})(defaultStreamHandler)
 ```
 
 Whether we are statically generating our app or serving it dynamically, the `ssr.tsx` file is the entry point for doing all SSR-related work.
@@ -1084,13 +1068,13 @@ Getting our html to the client is only half the battle. Once there, we need to h
 
 ```tsx
 // app/client.tsx
-import { hydrateRoot } from "react-dom/client";
-import { StartClient } from "@tanstack/react-start";
-import { createRouter } from "./router";
+import { hydrateRoot } from 'react-dom/client'
+import { StartClient } from '@tanstack/react-start'
+import { createRouter } from './router'
 
-const router = createRouter();
+const router = createRouter()
 
-hydrateRoot(document, <StartClient router={router} />);
+hydrateRoot(document, <StartClient router={router} />)
 ```
 
 This enables us to kick off client-side routing once the user's initial server request has fulfilled.
@@ -1108,33 +1092,33 @@ import {
   createRootRoute,
   HeadContent,
   Scripts,
-} from "@tanstack/react-router";
-import type { ReactNode } from "react";
+} from '@tanstack/react-router'
+import type { ReactNode } from 'react'
 
 export const Route = createRootRoute({
   head: () => ({
     meta: [
       {
-        charSet: "utf-8",
+        charSet: 'utf-8',
       },
       {
-        name: "viewport",
-        content: "width=device-width, initial-scale=1",
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1',
       },
       {
-        title: "TanStack Start Starter",
+        title: 'TanStack Start Starter',
       },
     ],
   }),
   component: RootComponent,
-});
+})
 
 function RootComponent() {
   return (
     <RootDocument>
       <Outlet />
     </RootDocument>
-  );
+  )
 }
 
 function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
@@ -1148,7 +1132,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
         <Scripts />
       </body>
     </html>
-  );
+  )
 }
 ```
 
@@ -1157,7 +1141,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
 
 ## Routes
 
-Routes are an extensive feature of TanStack Router, and are covered thoroughly in the [Routing Guide](/router/latest/docs/framework/react/routing/file-based-routing). As a summary:
+Routes are an extensive feature of TanStack Router, and are covered thoroughly in the [Routing Guide](mdc:router/latest/docs/framework/react/routing/file-based-routing). As a summary:
 
 - Routes are defined using the `createFileRoute` function.
 - Routes are automatically code-split and lazy-loaded.
@@ -1166,52 +1150,52 @@ Routes are an extensive feature of TanStack Router, and are covered thoroughly i
 
 ```tsx
 // app/routes/index.tsx
-import * as fs from "node:fs";
-import { createFileRoute, useRouter } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
+import * as fs from 'node:fs'
+import { createFileRoute, useRouter } from '@tanstack/react-router'
+import { createServerFn } from '@tanstack/react-start'
 
-const filePath = "count.txt";
+const filePath = 'count.txt'
 
 async function readCount() {
   return parseInt(
-    await fs.promises.readFile(filePath, "utf-8").catch(() => "0")
-  );
+    await fs.promises.readFile(filePath, 'utf-8').catch(() => '0'),
+  )
 }
 
 const getCount = createServerFn({
-  method: "GET",
+  method: 'GET',
 }).handler(() => {
-  return readCount();
-});
+  return readCount()
+})
 
-const updateCount = createServerFn({ method: "POST" })
+const updateCount = createServerFn({ method: 'POST' })
   .validator((d: number) => d)
   .handler(async ({ data }) => {
-    const count = await readCount();
-    await fs.promises.writeFile(filePath, `${count + data}`);
-  });
+    const count = await readCount()
+    await fs.promises.writeFile(filePath, `${count + data}`)
+  })
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute('/')({
   component: Home,
   loader: async () => await getCount(),
-});
+})
 
 function Home() {
-  const router = useRouter();
-  const state = Route.useLoaderData();
+  const router = useRouter()
+  const state = Route.useLoaderData()
 
   return (
     <button
       type="button"
       onClick={() => {
         updateCount({ data: 1 }).then(() => {
-          router.invalidate();
-        });
+          router.invalidate()
+        })
       }}
     >
       Add 1 to {state}?
     </button>
-  );
+  )
 }
 ```
 
@@ -1227,14 +1211,14 @@ TanStack Start builds 100% on top of TanStack Router, so all of the navigation f
 Here's a quick example of how you can use the `Link` component to navigate to a new route:
 
 ```tsx
-import { Link } from "@tanstack/react-router";
+import { Link } from '@tanstack/react-router'
 
 function Home() {
-  return <Link to="/about">About</Link>;
+  return <Link to="/about">About</Link>
 }
 ```
 
-For more in-depth information on navigation, check out the [navigation guide](/router/latest/docs/framework/react/guide/navigation).
+For more in-depth information on navigation, check out the [navigation guide](mdc:router/latest/docs/framework/react/guide/navigation).
 
 ## Server Functions (RPCs)
 
@@ -1249,23 +1233,23 @@ Here's a quick overview of how server functions work:
 Here's a quick example of how you can use server functions to fetch and return data from the server:
 
 ```tsx
-import { createServerFn } from "@tanstack/react-start";
-import * as fs from "node:fs";
-import { z } from "zod";
+import { createServerFn } from '@tanstack/react-start'
+import * as fs from 'node:fs'
+import { z } from 'zod'
 
-const getUserById = createServerFn({ method: "GET" })
+const getUserById = createServerFn({ method: 'GET' })
   // Always validate data sent to the function, here we use Zod
   .validator(z.string())
   // The handler function is where you perform the server-side logic
   .handler(async ({ data }) => {
-    return db.query.users.findFirst({ where: eq(users.id, data) });
-  });
+    return db.query.users.findFirst({ where: eq(users.id, data) })
+  })
 
 // Somewhere else in your application
-const user = await getUserById({ data: "1" });
+const user = await getUserById({ data: '1' })
 ```
 
-To learn more about server functions, check out the [server functions guide](../server-functions).
+To learn more about server functions, check out the [server functions guide](mdc:../server-functions).
 
 ### Mutations
 
@@ -1277,27 +1261,27 @@ Server Functions can also be used to perform mutations on the server. This is al
 Here's a quick example of how you can use server functions to perform a mutation on the server and invalidate the data on the client:
 
 ```tsx
-import { createServerFn } from "@tanstack/react-start";
+import { createServerFn } from '@tanstack/react-start'
 
 const UserSchema = z.object({
   id: z.string(),
   name: z.string(),
-});
+})
 
-const updateUser = createServerFn({ method: "POST" })
+const updateUser = createServerFn({ method: 'POST' })
   .validator(UserSchema)
   .handler(async ({ data }) => {
     return db
       .update(users)
       .set({ name: data.name })
-      .where(eq(users.id, data.id));
-  });
+      .where(eq(users.id, data.id))
+  })
 
 // Somewhere else in your application
-await updateUser({ data: { id: "1", name: "John" } });
+await updateUser({ data: { id: '1', name: 'John' } })
 ```
 
-To learn more about mutations, check out the [mutations guide](/router/latest/docs/framework/react/guide/data-mutations).
+To learn more about mutations, check out the [mutations guide](mdc:router/latest/docs/framework/react/guide/data-mutations).
 
 ## Data Loading
 
@@ -1310,17 +1294,14 @@ Here's a quick overview of how data loading works:
 - For performing server-only logic, call a server function from within the loader.
 - Similar to TanStack Query, data loaders are cached on the client and are re-used and even re-fetched in the background when the data is stale.
 
-To learn more about data loading, check out the [data loading guide](/router/latest/docs/framework/react/guide/data-loading).
+To learn more about data loading, check out the [data loading guide](mdc:router/latest/docs/framework/react/guide/data-loading).
 
 ================
 File: framework/react/middleware.md
 ================
-
 ---
-
 id: middleware
 title: Middleware
-
 ---
 
 ## What is Server Function Middleware?
@@ -1342,14 +1323,14 @@ Middleware allows you to customize the behavior of server functions created with
 Middleware is defined using the `createMiddleware` function. This function returns a `Middleware` object that can be used to continue customizing the middleware with methods like `middleware`, `validator`, `server`, and `client`.
 
 ```tsx
-import { createMiddleware } from "@tanstack/react-start";
+import { createMiddleware } from '@tanstack/react-start'
 
 const loggingMiddleware = createMiddleware().server(async ({ next, data }) => {
-  console.log("Request received:", data);
-  const result = await next();
-  console.log("Response processed:", result);
-  return result;
-});
+  console.log('Request received:', data)
+  const result = await next()
+  console.log('Response processed:', result)
+  return result
+})
 ```
 
 ## Using Middleware in Your Server Functions
@@ -1357,14 +1338,14 @@ const loggingMiddleware = createMiddleware().server(async ({ next, data }) => {
 Once you've defined your middleware, you can use it in combination with the `createServerFn` function to customize the behavior of your server functions.
 
 ```tsx
-import { createServerFn } from "@tanstack/react-start";
-import { loggingMiddleware } from "./middleware";
+import { createServerFn } from '@tanstack/react-start'
+import { loggingMiddleware } from './middleware'
 
 const fn = createServerFn()
   .middleware([loggingMiddleware])
   .handler(async () => {
     // ...
-  });
+  })
 ```
 
 ## Middleware Methods
@@ -1381,12 +1362,12 @@ Several methods are available to customize the middleware. If you are (hopefully
 The `middleware` method is used to dependency middleware to the chain that will executed **before** the current middleware. Just call the `middleware` method with an array of middleware objects.
 
 ```tsx
-import { createMiddleware } from "@tanstack/react-start";
+import { createMiddleware } from '@tanstack/react-start'
 
 const loggingMiddleware = createMiddleware().middleware([
   authMiddleware,
   loggingMiddleware,
-]);
+])
 ```
 
 Type-safe context and payload validation are also inherited from parent middlewares!
@@ -1396,20 +1377,20 @@ Type-safe context and payload validation are also inherited from parent middlewa
 The `validator` method is used to modify the data object before it is passed to this middleware, nested middleware, and ultimately the server function. This method should receive a function that takes the data object and returns a validated (and optionally modified) data object. It's common to use a validation library like `zod` to do this. Here is an example:
 
 ```tsx
-import { createMiddleware } from "@tanstack/react-start";
-import { zodValidator } from "@tanstack/zod-adapter";
-import { z } from "zod";
+import { createMiddleware } from '@tanstack/react-start'
+import { zodValidator } from '@tanstack/zod-adapter'
+import { z } from 'zod'
 
 const mySchema = z.object({
   workspaceId: z.string(),
-});
+})
 
 const workspaceMiddleware = createMiddleware()
   .validator(zodValidator(mySchema))
   .server(({ next, data }) => {
-    console.log("Workspace ID:", data.workspaceId);
-    return next();
-  });
+    console.log('Workspace ID:', data.workspaceId)
+    return next()
+  })
 ```
 
 ## The `server` method
@@ -1425,14 +1406,14 @@ The `server` method is used to define **server-side** logic that the middleware 
 The `next` function is used to execute the next middleware in the chain. **You must await and return (or return directly) the result of the `next` function provided to you** for the chain to continue executing.
 
 ```tsx
-import { createMiddleware } from "@tanstack/react-start";
+import { createMiddleware } from '@tanstack/react-start'
 
 const loggingMiddleware = createMiddleware().server(async ({ next }) => {
-  console.log("Request received");
-  const result = await next();
-  console.log("Response processed");
-  return result;
-});
+  console.log('Request received')
+  const result = await next()
+  console.log('Response processed')
+  return result
+})
 ```
 
 ## Providing context to the next middleware via `next`
@@ -1440,22 +1421,22 @@ const loggingMiddleware = createMiddleware().server(async ({ next }) => {
 The `next` function can be optionally called with an object that has a `context` property with an object value. Whatever properties you pass to this `context` value will be merged into the parent `context` and provided to the next middleware.
 
 ```tsx
-import { createMiddleware } from "@tanstack/react-start";
+import { createMiddleware } from '@tanstack/react-start'
 
 const awesomeMiddleware = createMiddleware().server(({ next }) => {
   return next({
     context: {
       isAwesome: Math.random() > 0.5,
     },
-  });
-});
+  })
+})
 
 const loggingMiddleware = createMiddleware().server(
   async ({ next, context }) => {
-    console.log("Is awesome?", context.isAwesome);
-    return next();
-  }
-);
+    console.log('Is awesome?', context.isAwesome)
+    return next()
+  },
+)
 ```
 
 ## Client-Side Logic
@@ -1471,16 +1452,16 @@ By default, middleware validation is only performed on the server to keep the cl
 > The client-side validation schema is derived from the server-side schema. This is because the client-side validation schema is used to validate the data before it is sent to the server. If the client-side schema were different from the server-side schema, the server would receive data that it did not expect, which could lead to unexpected behavior.
 
 ```tsx
-import { createMiddleware } from "@tanstack/react-start";
-import { zodValidator } from "@tanstack/zod-adapter";
-import { z } from "zod";
+import { createMiddleware } from '@tanstack/react-start'
+import { zodValidator } from '@tanstack/zod-adapter'
+import { z } from 'zod'
 
 const workspaceMiddleware = createMiddleware({ validateClient: true })
   .validator(zodValidator(mySchema))
   .server(({ next, data }) => {
-    console.log("Workspace ID:", data.workspaceId);
-    return next();
-  });
+    console.log('Workspace ID:', data.workspaceId)
+    return next()
+  })
 ```
 
 ## The `client` method
@@ -1501,11 +1482,11 @@ Similar to the `server` function, it also receives an object with the following 
 
 ```tsx
 const loggingMiddleware = createMiddleware().client(async ({ next }) => {
-  console.log("Request sent");
-  const result = await next();
-  console.log("Response received");
-  return result;
-});
+  console.log('Request sent')
+  const result = await next()
+  console.log('Response received')
+  return result
+})
 ```
 
 ## Sending client context to the server
@@ -1520,13 +1501,13 @@ const requestLogger = createMiddleware()
         // Send the workspace ID to the server
         workspaceId: context.workspaceId,
       },
-    });
+    })
   })
   .server(async ({ next, data, context }) => {
     // Woah! We have the workspace ID from the client!
-    console.log("Workspace ID:", context.workspaceId);
-    return next();
-  });
+    console.log('Workspace ID:', context.workspaceId)
+    return next()
+  })
 ```
 
 ## Client-Sent Context Security
@@ -1534,8 +1515,8 @@ const requestLogger = createMiddleware()
 You may have noticed that in the example above that while client-sent context is type-safe, it is is not required to be validated at runtime. If you pass dynamic user-generated data via context, that could pose a security concern, so **if you are sending dynamic data from the client to the server via context, you should validate it in the server-side middleware before using it.** Here's an example:
 
 ```tsx
-import { zodValidator } from "@tanstack/zod-adapter";
-import { z } from "zod";
+import { zodValidator } from '@tanstack/zod-adapter'
+import { z } from 'zod'
 
 const requestLogger = createMiddleware()
   .client(async ({ next, context }) => {
@@ -1543,14 +1524,14 @@ const requestLogger = createMiddleware()
       sendContext: {
         workspaceId: context.workspaceId,
       },
-    });
+    })
   })
   .server(async ({ next, data, context }) => {
     // Validate the workspace ID before using it
-    const workspaceId = zodValidator(z.number()).parse(context.workspaceId);
-    console.log("Workspace ID:", workspaceId);
-    return next();
-  });
+    const workspaceId = zodValidator(z.number()).parse(context.workspaceId)
+    console.log('Workspace ID:', workspaceId)
+    return next()
+  })
 ```
 
 ## Sending server context to the client
@@ -1567,23 +1548,23 @@ const serverTimer = createMiddleware().server(async ({ next }) => {
       // Send the current time to the client
       timeFromServer: new Date(),
     },
-  });
-});
+  })
+})
 
 const requestLogger = createMiddleware()
   .middleware([serverTimer])
   .client(async ({ next }) => {
-    const result = await next();
+    const result = await next()
     // Woah! We have the time from the server!
-    console.log("Time from the server:", result.context.timeFromServer);
+    console.log('Time from the server:', result.context.timeFromServer)
 
-    return result;
-  });
+    return result
+  })
 ```
 
 ## Reading/Modifying the Server Response
 
-Middleware that uses the `server` method executes in the same context as server functions, so you can follow the exact same [Server Function Context Utilities](./server-functions#server-function-context) to read and modify anything about the request headers, status codes, etc.
+Middleware that uses the `server` method executes in the same context as server functions, so you can follow the exact same [Server Function Context Utilities](mdc:server-functions#server-function-context) to read and modify anything about the request headers, status codes, etc.
 
 ## Modifying the Client Request
 
@@ -1594,15 +1575,15 @@ Middleware that uses the `client` method executes in a **completely different cl
 Here's an example of adding an `Authorization` header any request using this middleware:
 
 ```tsx
-import { getToken } from "my-auth-library";
+import { getToken } from 'my-auth-library'
 
 const authMiddleware = createMiddleware().client(async ({ next }) => {
   return next({
     headers: {
       Authorization: `Bearer ${getToken()}`,
     },
-  });
-});
+  })
+})
 ```
 
 ## Using Middleware
@@ -1622,12 +1603,12 @@ Here's how to register global middleware:
 
 ```tsx
 // app/global-middleware.ts
-import { registerGlobalMiddleware } from "@tanstack/react-start";
-import { authMiddleware } from "./middleware";
+import { registerGlobalMiddleware } from '@tanstack/react-start'
+import { authMiddleware } from './middleware'
 
 registerGlobalMiddleware({
   middleware: [authMiddleware],
-});
+})
 ```
 
 ### Global Middleware Type Safety
@@ -1638,15 +1619,15 @@ Global middleware types are inherently **detached** from server functions themse
 // app/global-middleware.ts
 registerGlobalMiddleware({
   middleware: [authMiddleware],
-});
+})
 ```
 
 ```tsx
 // authMiddleware.ts
 const authMiddleware = createMiddleware().server(({ next, context }) => {
-  console.log(context.user); // <-- This will not be typed!
+  console.log(context.user) // <-- This will not be typed!
   // ...
-});
+})
 ```
 
 To solve this, add the global middleware you are trying to reference to the server function's middleware array. **The global middleware will be deduped to a single entry (the global instance), and your server function will receive the correct types.**
@@ -1654,14 +1635,14 @@ To solve this, add the global middleware you are trying to reference to the serv
 Here's an example of how this works:
 
 ```tsx
-import { authMiddleware } from "./authMiddleware";
+import { authMiddleware } from './authMiddleware'
 
 const fn = createServerFn()
   .middleware([authMiddleware])
   .handler(async ({ context }) => {
-    console.log(context.user);
+    console.log(context.user)
     // ...
-  });
+  })
 ```
 
 ## Middleware Execution Order
@@ -1677,49 +1658,49 @@ Middleware is executed dependency-first, starting with global middleware, follow
 
 ```tsx
 const globalMiddleware1 = createMiddleware().server(async ({ next }) => {
-  console.log("globalMiddleware1");
-  return next();
-});
+  console.log('globalMiddleware1')
+  return next()
+})
 
 const globalMiddleware2 = createMiddleware().server(async ({ next }) => {
-  console.log("globalMiddleware2");
-  return next();
-});
+  console.log('globalMiddleware2')
+  return next()
+})
 
 registerGlobalMiddleware({
   middleware: [globalMiddleware1, globalMiddleware2],
-});
+})
 
 const a = createMiddleware().server(async ({ next }) => {
-  console.log("a");
-  return next();
-});
+  console.log('a')
+  return next()
+})
 
 const b = createMiddleware()
   .middleware([a])
   .server(async ({ next }) => {
-    console.log("b");
-    return next();
-  });
+    console.log('b')
+    return next()
+  })
 
 const c = createMiddleware()
   .middleware()
   .server(async ({ next }) => {
-    console.log("c");
-    return next();
-  });
+    console.log('c')
+    return next()
+  })
 
 const d = createMiddleware()
   .middleware([b, c])
   .server(async () => {
-    console.log("d");
-  });
+    console.log('d')
+  })
 
 const fn = createServerFn()
   .middleware([d])
   .server(async () => {
-    console.log("fn");
-  });
+    console.log('fn')
+  })
 ```
 
 ## Environment Tree Shaking
@@ -1732,12 +1713,9 @@ Middleware functionality is tree-shaken based on the environment for each bundle
 ================
 File: framework/react/observability.md
 ================
-
 ---
-
 id: observability
 title: Observability
-
 ---
 
 Observability is a critical aspect of modern web development, enabling you to monitor, trace, and debug your application’s performance and errors. TanStack Start integrates seamlessly with observability tools to provide comprehensive insights into how your application behaves in production, helping you ensure that everything runs smoothly.
@@ -1746,7 +1724,7 @@ Observability is a critical aspect of modern web development, enabling you to mo
 
 TanStack Start is **designed to work with any observability tool**, so you can integrate your preferred solution using the full-stack APIs provided by TanStack Start. Whether you need logging, tracing, or error monitoring, TanStack Start is flexible enough to meet your observability needs.
 
-However, for the best observability experience, we highly recommend using [Sentry](https://sentry.io?utm_source=tanstack). Sentry is a powerful, full-featured observability platform that provides real-time insights into your application's performance and error tracking.
+However, for the best observability experience, we highly recommend using [Sentry](mdc:https:/sentry.io?utm_source=tanstack). Sentry is a powerful, full-featured observability platform that provides real-time insights into your application's performance and error tracking.
 
 ## What is Sentry?
 
@@ -1762,8 +1740,8 @@ Sentry is a leading observability platform that helps developers monitor and fix
 
 Sentry’s comprehensive dashboards, alerting capabilities, and in-depth error analysis tools make it an invaluable resource for any development team looking to maintain control over their application’s health in production.
 
-- To learn more about Sentry, visit the [Sentry website](https://sentry.io?utm_source=tanstack)
-- To sign up, visit the [Sentry dashboard](https://sentry.io/signup?utm_source=tanstack)
+- To learn more about Sentry, visit the [Sentry website](mdc:https:/sentry.io?utm_source=tanstack)
+- To sign up, visit the [Sentry dashboard](mdc:https:/sentry.io/signup?utm_source=tanstack)
 
 ## Documentation & APIs
 
@@ -1772,15 +1750,12 @@ Documentation for integrating different observability tools with TanStack Start 
 ================
 File: framework/react/overview.md
 ================
-
 ---
-
 id: overview
 title: TanStack Start Overview
-
 ---
 
-TanStack Start is a full-stack React framework powered by TanStack Router. It provides a full-document SSR, streaming, server functions, bundling, and more using tools like [Nitro](https://nitro.unjs.io/) and [Vite](https://vitejs.dev/). It is ready to deploy to your favorite hosting provider!
+TanStack Start is a full-stack React framework powered by TanStack Router. It provides a full-document SSR, streaming, server functions, bundling, and more using tools like [Nitro](mdc:https:/nitro.unjs.io) and [Vite](mdc:https:/vitejs.dev). It is ready to deploy to your favorite hosting provider!
 
 ## Router or Start?
 
@@ -1816,7 +1791,7 @@ What you get with TanStack Start:
 
 ## How does it work?
 
-TanStack Start uses [Nitro](https://nitro.unjs.io/) and [Vite](https://vitejs.dev/) to bundle and deploy your application. In fact, these are the same tools that power Solid Start! With these tools, we can do a few things we couldn't do before:
+TanStack Start uses [Nitro](mdc:https:/nitro.unjs.io) and [Vite](mdc:https:/vitejs.dev) to bundle and deploy your application. In fact, these are the same tools that power Solid Start! With these tools, we can do a few things we couldn't do before:
 
 - Provide a unified API for SSR, streaming, and hydration
 - Extract server-only code from your client-side code (e.g. server functions)
@@ -1889,12 +1864,9 @@ Proceed to the next page to learn how to install TanStack Start and create your 
 ================
 File: framework/react/path-aliases.md
 ================
-
 ---
-
 id: path-aliases
 title: Path Aliases
-
 ---
 
 Path aliases are a useful feature of TypeScript that allows you to define a shortcut for a path that could be distant in your project's directory structure. This can help you avoid long relative imports in your code and make it easier to refactor your project's structure. This is especially useful for avoiding long relative imports in your code.
@@ -1924,46 +1896,43 @@ Now, you'll need to update your `app.config.ts` file to include the following:
 
 ```ts
 // app.config.ts
-import { defineConfig } from "@tanstack/react-start/config";
-import viteTsConfigPaths from "vite-tsconfig-paths";
+import { defineConfig } from '@tanstack/react-start/config'
+import viteTsConfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
   vite: {
     plugins: [
       // this is the plugin that enables path aliases
       viteTsConfigPaths({
-        projects: ["./tsconfig.json"],
+        projects: ['./tsconfig.json'],
       }),
     ],
   },
-});
+})
 ```
 
 Once this configuration has completed, you'll now be able to import files using the path alias like so:
 
 ```ts
 // app/routes/posts/$postId/edit.tsx
-import { Input } from "~/components/ui/input";
+import { Input } from '~/components/ui/input'
 
 // instead of
 
-import { Input } from "../../../components/ui/input";
+import { Input } from '../../../components/ui/input'
 ```
 
 ================
 File: framework/react/quick-start.md
 ================
-
 ---
-
 id: quick-start
 title: Quick Start
-
 ---
 
 ## Impatient?
 
-If you're impatient, you can clone and run the [Basic](../examples/start-basic) example right away with the following commands:
+If you're impatient, you can clone and run the [Basic](mdc:../examples/start-basic) example right away with the following commands:
 
 ```bash
 npx degit https://github.com/tanstack/router/examples/react/start-basic start-basic
@@ -1974,21 +1943,21 @@ npm run dev
 
 If you'd like to use a different example, you can replace `start-basic` above with the slug of the example you'd like to use from the list below.
 
-Once you've cloned the example you want, head back to the [Learn the Basics](../learn-the-basics) guide to learn how to use TanStack Start!
+Once you've cloned the example you want, head back to the [Learn the Basics](mdc:../learn-the-basics) guide to learn how to use TanStack Start!
 
 ## Examples
 
 TanStack Start has load of examples to get you started. Pick one of the examples below to get started!
 
-- [Basic](../examples/start-basic) (start-basic)
-- [Basic + Auth](../examples/start-basic-auth) (start-basic-auth)
-- [Basic + Counter](../examples/start-basic-counter) (start-basic-counter)
-- [Basic + React Query](../examples/start-basic-react-query) (start-basic-react-query)
-- [Clerk Auth](../examples/start-clerk-basic) (start-clerk-basic)
-- [Convex + Trellaux](../examples/start-convex-trellaux) (start-convex-trellaux)
-- [Supabase](../examples/start-supabase-basic) (start-supabase-basic)
-- [Trellaux](../examples/start-trellaux) (start-trellaux)
-- [Material UI](../examples/start-material-ui) (start-material-ui)
+- [Basic](mdc:../examples/start-basic) (start-basic)
+- [Basic + Auth](mdc:../examples/start-basic-auth) (start-basic-auth)
+- [Basic + Counter](mdc:../examples/start-basic-counter) (start-basic-counter)
+- [Basic + React Query](mdc:../examples/start-basic-react-query) (start-basic-react-query)
+- [Clerk Auth](mdc:../examples/start-clerk-basic) (start-clerk-basic)
+- [Convex + Trellaux](mdc:../examples/start-convex-trellaux) (start-convex-trellaux)
+- [Supabase](mdc:../examples/start-supabase-basic) (start-supabase-basic)
+- [Trellaux](mdc:../examples/start-trellaux) (start-trellaux)
+- [Material UI](mdc:../examples/start-material-ui) (start-material-ui)
 
 ### Stackblitz
 
@@ -2009,39 +1978,36 @@ npm install
 npm run dev
 ```
 
-Once you've clone or deployed an example, head back to the [Learn the Basics](../learn-the-basics) guide to learn how to use TanStack Start!
+Once you've clone or deployed an example, head back to the [Learn the Basics](mdc:../learn-the-basics) guide to learn how to use TanStack Start!
 
 ## Other Router Examples
 
 While not Start-specific examples, these may help you understand more about how TanStack Router works:
 
-- [Quickstart (file-based)](../examples/quickstart-file-based)
-- [Quickstart (code-based)](../examples/quickstart)
-- [Basic (file-based)](../examples/basic-file-based)
-- [Basic (code-based)](../examples/basic)
-- [Kitchen Sink (file-based)](../examples/kitchen-sink-file-based)
-- [Kitchen Sink (code-based)](../examples/kitchen-sink)
-- [Kitchen Sink + React Query (file-based)](../examples/kitchen-sink-react-query-file-based)
-- [Kitchen Sink + React Query (code-based)](../examples/kitchen-sink-react-query)
-- [Location Masking](../examples/location-masking)
-- [Authenticated Routes](../examples/authenticated-routes)
-- [Scroll Restoration](../examples/scroll-restoration)
-- [Deferred Data](../examples/deferred-data)
-- [Navigation Blocking](../examples/navigation-blocking)
-- [With tRPC](../examples/with-trpc)
-- [With tRPC + React Query](../examples/with-trpc-react-query)
-- [Monorepo basic](../examples/router-monorepo-simple)
-- [Monorepo with React Query](../examples/router-monorepo-react-query)
+- [Quickstart (file-based)](mdc:../examples/quickstart-file-based)
+- [Quickstart (code-based)](mdc:../examples/quickstart)
+- [Basic (file-based)](mdc:../examples/basic-file-based)
+- [Basic (code-based)](mdc:../examples/basic)
+- [Kitchen Sink (file-based)](mdc:../examples/kitchen-sink-file-based)
+- [Kitchen Sink (code-based)](mdc:../examples/kitchen-sink)
+- [Kitchen Sink + React Query (file-based)](mdc:../examples/kitchen-sink-react-query-file-based)
+- [Kitchen Sink + React Query (code-based)](mdc:../examples/kitchen-sink-react-query)
+- [Location Masking](mdc:../examples/location-masking)
+- [Authenticated Routes](mdc:../examples/authenticated-routes)
+- [Scroll Restoration](mdc:../examples/scroll-restoration)
+- [Deferred Data](mdc:../examples/deferred-data)
+- [Navigation Blocking](mdc:../examples/navigation-blocking)
+- [With tRPC](mdc:../examples/with-trpc)
+- [With tRPC + React Query](mdc:../examples/with-trpc-react-query)
+- [Monorepo basic](mdc:../examples/router-monorepo-simple)
+- [Monorepo with React Query](mdc:../examples/router-monorepo-react-query)
 
 ================
 File: framework/react/server-functions.md
 ================
-
 ---
-
 id: server-functions
 title: Server Functions
-
 ---
 
 ## What are Server Functions?
@@ -2073,24 +2039,24 @@ Server functions can be defined anywhere in your application, but must be define
 
 ## Server Function Middleware
 
-Server functions can use middleware to share logic, context, common operations, prerequisites, and much more. To learn more about server function middleware, be sure to read about them in the [Middleware guide](./middleware.md).
+Server functions can use middleware to share logic, context, common operations, prerequisites, and much more. To learn more about server function middleware, be sure to read about them in the [Middleware guide](mdc:middleware.md).
 
 ## Defining Server Functions
 
-> We'd like to thank the [tRPC](https://trpc.io/) team for both the inspiration of TanStack Start's server function design and guidance while implementing it. We love (and recommend) using tRPC for API Routes so much that we insisted on server functions getting the same 1st class treatment and developer experience. Thank you!
+> We'd like to thank the [tRPC](mdc:https:/trpc.io) team for both the inspiration of TanStack Start's server function design and guidance while implementing it. We love (and recommend) using tRPC for API Routes so much that we insisted on server functions getting the same 1st class treatment and developer experience. Thank you!
 
 Server functions are defined with the `createServerFn` function, from the `@tanstack/react-start` package. This function takes an optional `options` argument for specifying configuration like the HTTP method and response type, and allows you to chain off the result to define things like the body of the server function, input validation, middleware, etc. Here's a simple example:
 
 ```tsx
 // getServerTime.ts
-import { createServerFn } from "@tanstack/react-start";
+import { createServerFn } from '@tanstack/react-start'
 
 export const getServerTime = createServerFn().handler(async () => {
   // Wait for 1 second
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await new Promise((resolve) => setTimeout(resolve, 1000))
   // Return the current time
-  return new Date().toISOString();
-});
+  return new Date().toISOString()
+})
 ```
 
 ### Configuration Options
@@ -2098,14 +2064,14 @@ export const getServerTime = createServerFn().handler(async () => {
 When creating a server function, you can provide configuration options to customize its behavior:
 
 ```tsx
-import { createServerFn } from "@tanstack/react-start";
+import { createServerFn } from '@tanstack/react-start'
 
 export const getData = createServerFn({
-  method: "GET", // HTTP method to use
-  response: "data", // Response handling mode
+  method: 'GET', // HTTP method to use
+  response: 'data', // Response handling mode
 }).handler(async () => {
   // Function implementation
-});
+})
 ```
 
 #### Available Options
@@ -2159,19 +2125,19 @@ Server functions accept a single parameter, which can be a variety of types:
 Here's an example of a server function that accepts a simple string parameter:
 
 ```tsx
-import { createServerFn } from "@tanstack/react-start";
+import { createServerFn } from '@tanstack/react-start'
 
 export const greet = createServerFn({
-  method: "GET",
+  method: 'GET',
 })
   .validator((data: string) => data)
   .handler(async (ctx) => {
-    return `Hello, ${ctx.data}!`;
-  });
+    return `Hello, ${ctx.data}!`
+  })
 
 greet({
-  data: "John",
-});
+  data: 'John',
+})
 ```
 
 ## Runtime Input Validation / Type Safety
@@ -2187,27 +2153,27 @@ Validators also integrate seamlessly with external validators, if you want to us
 Here's a simple example of a server function that validates the input parameter:
 
 ```tsx
-import { createServerFn } from "@tanstack/react-start";
+import { createServerFn } from '@tanstack/react-start'
 
 type Person = {
-  name: string;
-};
+  name: string
+}
 
-export const greet = createServerFn({ method: "GET" })
+export const greet = createServerFn({ method: 'GET' })
   .validator((person: unknown): Person => {
-    if (typeof person !== "object" || person === null) {
-      throw new Error("Person must be an object");
+    if (typeof person !== 'object' || person === null) {
+      throw new Error('Person must be an object')
     }
 
-    if ("name" in person && typeof person.name !== "string") {
-      throw new Error("Person.name must be a string");
+    if ('name' in person && typeof person.name !== 'string') {
+      throw new Error('Person.name must be a string')
     }
 
-    return person as Person;
+    return person as Person
   })
   .handler(async ({ data }) => {
-    return `Hello, ${data.name}!`;
-  });
+    return `Hello, ${data.name}!`
+  })
 ```
 
 ### Using a Validation Library
@@ -2215,27 +2181,27 @@ export const greet = createServerFn({ method: "GET" })
 Validation libraries like Zod can be used like so:
 
 ```tsx
-import { createServerFn } from "@tanstack/react-start";
+import { createServerFn } from '@tanstack/react-start'
 
-import { z } from "zod";
+import { z } from 'zod'
 
 const Person = z.object({
   name: z.string(),
-});
+})
 
-export const greet = createServerFn({ method: "GET" })
+export const greet = createServerFn({ method: 'GET' })
   .validator((person: unknown) => {
-    return Person.parse(person);
+    return Person.parse(person)
   })
   .handler(async (ctx) => {
-    return `Hello, ${ctx.data.name}!`;
-  });
+    return `Hello, ${ctx.data.name}!`
+  })
 
 greet({
   data: {
-    name: "John",
+    name: 'John',
   },
-});
+})
 ```
 
 ## Type Safety
@@ -2243,35 +2209,35 @@ greet({
 Since server-functions cross the network boundary, it's important to ensure the data being passed to them is not only the right type, but also validated at runtime. This is especially important when dealing with user input, as it can be unpredictable. To ensure developers validate their I/O data, types are reliant on validation. The return type of the `validator` function will be the input to the server function's handler.
 
 ```tsx
-import { createServerFn } from "@tanstack/react-start";
+import { createServerFn } from '@tanstack/react-start'
 
 type Person = {
-  name: string;
-};
+  name: string
+}
 
-export const greet = createServerFn({ method: "GET" })
+export const greet = createServerFn({ method: 'GET' })
   .validator((person: unknown): Person => {
-    if (typeof person !== "object" || person === null) {
-      throw new Error("Person must be an object");
+    if (typeof person !== 'object' || person === null) {
+      throw new Error('Person must be an object')
     }
 
-    if ("name" in person && typeof person.name !== "string") {
-      throw new Error("Person.name must be a string");
+    if ('name' in person && typeof person.name !== 'string') {
+      throw new Error('Person.name must be a string')
     }
 
-    return person as Person;
+    return person as Person
   })
   .handler(
     async ({
       data, // Person
     }) => {
-      return `Hello, ${data.name}!`;
-    }
-  );
+      return `Hello, ${data.name}!`
+    },
+  )
 
 function test() {
-  greet({ data: { name: "John" } }); // OK
-  greet({ data: { name: 123 } }); // Error: Argument of type '{ name: number; }' is not assignable to parameter of type 'Person'.
+  greet({ data: { name: 'John' } }) // OK
+  greet({ data: { name: 123 } }) // Error: Argument of type '{ name: number; }' is not assignable to parameter of type 'Person'.
 }
 ```
 
@@ -2282,24 +2248,24 @@ Server functions infer their input, and output types based on the input to the `
 To illustrate this, let's take a look at an example using the `zod` validation library:
 
 ```tsx
-import { createServerFn } from "@tanstack/react-start";
-import { z } from "zod";
+import { createServerFn } from '@tanstack/react-start'
+import { z } from 'zod'
 
 const transactionSchema = z.object({
   amount: z.string().transform((val) => parseInt(val, 10)),
-});
+})
 
 const createTransaction = createServerFn()
   .validator(transactionSchema)
   .handler(({ data }) => {
-    return data.amount; // Returns a number
-  });
+    return data.amount // Returns a number
+  })
 
 createTransaction({
   data: {
-    amount: "123", // Accepts a string
+    amount: '123', // Accepts a string
   },
-});
+})
 ```
 
 ## Non-Validated Inference
@@ -2307,23 +2273,23 @@ createTransaction({
 While we highly recommend using a validation library to validate your network I/O data, you may, for whatever reason _not_ want to validate your data, but still have type safety. To do this, provide type information to the server function using an identity function as the `validator`, that types the input, and or output to the correct types:
 
 ```tsx
-import { createServerFn } from "@tanstack/react-start";
+import { createServerFn } from '@tanstack/react-start'
 
 type Person = {
-  name: string;
-};
+  name: string
+}
 
-export const greet = createServerFn({ method: "GET" })
+export const greet = createServerFn({ method: 'GET' })
   .validator((d: Person) => d)
   .handler(async (ctx) => {
-    return `Hello, ${ctx.data.name}!`;
-  });
+    return `Hello, ${ctx.data.name}!`
+  })
 
 greet({
   data: {
-    name: "John",
+    name: 'John',
   },
-});
+})
 ```
 
 ## JSON Parameters
@@ -2331,25 +2297,25 @@ greet({
 Server functions can accept JSON-serializable objects as parameters. This is useful for passing complex data structures to the server:
 
 ```tsx
-import { createServerFn } from "@tanstack/react-start";
+import { createServerFn } from '@tanstack/react-start'
 
 type Person = {
-  name: string;
-  age: number;
-};
+  name: string
+  age: number
+}
 
-export const greet = createServerFn({ method: "GET" })
+export const greet = createServerFn({ method: 'GET' })
   .validator((data: Person) => data)
   .handler(async ({ data }) => {
-    return `Hello, ${data.name}! You are ${data.age} years old.`;
-  });
+    return `Hello, ${data.name}! You are ${data.age} years old.`
+  })
 
 greet({
   data: {
-    name: "John",
+    name: 'John',
     age: 34,
   },
-});
+})
 ```
 
 ## FormData Parameters
@@ -2357,51 +2323,51 @@ greet({
 Server functions can accept `FormData` objects as parameters
 
 ```tsx
-import { createServerFn } from "@tanstack/react-start";
+import { createServerFn } from '@tanstack/react-start'
 
-export const greetUser = createServerFn({ method: "POST" })
+export const greetUser = createServerFn({ method: 'POST' })
   .validator((data) => {
     if (!(data instanceof FormData)) {
-      throw new Error("Invalid form data");
+      throw new Error('Invalid form data')
     }
-    const name = data.get("name");
-    const age = data.get("age");
+    const name = data.get('name')
+    const age = data.get('age')
 
     if (!name || !age) {
-      throw new Error("Name and age are required");
+      throw new Error('Name and age are required')
     }
 
     return {
       name: name.toString(),
       age: parseInt(age.toString(), 10),
-    };
+    }
   })
   .handler(async ({ data: { name, age } }) => {
-    return `Hello, ${name}! You are ${age} years old.`;
-  });
+    return `Hello, ${name}! You are ${age} years old.`
+  })
 
 // Usage
 function Test() {
   return (
     <form
       onSubmit={async (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const response = await greetUser({ data: formData });
-        console.log(response);
+        event.preventDefault()
+        const formData = new FormData(event.currentTarget)
+        const response = await greetUser({ data: formData })
+        console.log(response)
       }}
     >
       <input name="name" />
       <input name="age" />
       <button type="submit">Submit</button>
     </form>
-  );
+  )
 }
 ```
 
 ## Server Function Context
 
-In addition to the single parameter that server functions accept, you can also access server request context from within any server function using utilities from `@tanstack/react-start/server`. Under the hood, we use [Unjs](https://unjs.io/)'s `h3` package to perform cross-platform HTTP requests.
+In addition to the single parameter that server functions accept, you can also access server request context from within any server function using utilities from `@tanstack/react-start/server`. Under the hood, we use [Unjs](mdc:https:/unjs.io)'s `h3` package to perform cross-platform HTTP requests.
 
 There are many context functions available to you for things like:
 
@@ -2412,7 +2378,7 @@ There are many context functions available to you for things like:
 - Dealing with multi-part form data
 - Reading/Setting custom server context properties
 
-For a full list of available context functions, see all of the available [h3 Methods](https://h3.unjs.io/utils/request) or inspect the [@tanstack/react-start/server Source Code](https://github.com/tanstack/router/tree/main/packages/start/src/server/index.tsx).
+For a full list of available context functions, see all of the available [h3 Methods](mdc:https:/h3.unjs.io/utils/request) or inspect the [@tanstack/react-start/server Source Code](mdc:https:/github.com/tanstack/router/tree/main/packages/start/src/server/index.tsx).
 
 For starters, here are a few examples:
 
@@ -2421,18 +2387,18 @@ For starters, here are a few examples:
 Let's use the `getWebRequest` function to access the request itself from within a server function:
 
 ```tsx
-import { createServerFn } from "@tanstack/react-start";
-import { getWebRequest } from "@tanstack/react-start/server";
+import { createServerFn } from '@tanstack/react-start'
+import { getWebRequest } from '@tanstack/react-start/server'
 
-export const getServerTime = createServerFn({ method: "GET" }).handler(
+export const getServerTime = createServerFn({ method: 'GET' }).handler(
   async () => {
-    const request = getWebRequest();
+    const request = getWebRequest()
 
-    console.log(request.method); // GET
+    console.log(request.method) // GET
 
-    console.log(request.headers.get("User-Agent")); // Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3
-  }
-);
+    console.log(request.headers.get('User-Agent')) // Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3
+  },
+)
 ```
 
 ## Accessing Headers
@@ -2440,12 +2406,12 @@ export const getServerTime = createServerFn({ method: "GET" }).handler(
 Use the `getHeaders` function to access all headers from within a server function:
 
 ```tsx
-import { createServerFn } from "@tanstack/react-start";
-import { getHeaders } from "@tanstack/react-start/server";
+import { createServerFn } from '@tanstack/react-start'
+import { getHeaders } from '@tanstack/react-start/server'
 
-export const getServerTime = createServerFn({ method: "GET" }).handler(
+export const getServerTime = createServerFn({ method: 'GET' }).handler(
   async () => {
-    console.log(getHeaders());
+    console.log(getHeaders())
     // {
     //   "accept": "*/*",
     //   "accept-encoding": "gzip, deflate, br",
@@ -2454,21 +2420,21 @@ export const getServerTime = createServerFn({ method: "GET" }).handler(
     //   "host": "localhost:3000",
     //   ...
     // }
-  }
-);
+  },
+)
 ```
 
 You can also access individual headers using the `getHeader` function:
 
 ```tsx
-import { createServerFn } from "@tanstack/react-start";
-import { getHeader } from "@tanstack/react-start/server";
+import { createServerFn } from '@tanstack/react-start'
+import { getHeader } from '@tanstack/react-start/server'
 
-export const getServerTime = createServerFn({ method: "GET" }).handler(
+export const getServerTime = createServerFn({ method: 'GET' }).handler(
   async () => {
-    console.log(getHeader("User-Agent")); // Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3
-  }
-);
+    console.log(getHeader('User-Agent')) // Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3
+  },
+)
 ```
 
 ## Returning Values
@@ -2486,21 +2452,21 @@ Server functions can return a few different types of values:
 To return any primitive or JSON-serializable object, simply return the value from the server function:
 
 ```tsx
-import { createServerFn } from "@tanstack/react-start";
+import { createServerFn } from '@tanstack/react-start'
 
-export const getServerTime = createServerFn({ method: "GET" }).handler(
+export const getServerTime = createServerFn({ method: 'GET' }).handler(
   async () => {
-    return new Date().toISOString();
-  }
-);
+    return new Date().toISOString()
+  },
+)
 
-export const getServerData = createServerFn({ method: "GET" }).handler(
+export const getServerData = createServerFn({ method: 'GET' }).handler(
   async () => {
     return {
-      message: "Hello, World!",
-    };
-  }
-);
+      message: 'Hello, World!',
+    }
+  },
+)
 ```
 
 By default, server functions assume that any non-Response object returned is either a primitive or JSON-serializable object.
@@ -2510,15 +2476,15 @@ By default, server functions assume that any non-Response object returned is eit
 To respond with custom headers, you can use the `setHeader` function:
 
 ```tsx
-import { createServerFn } from "@tanstack/react-start";
-import { setHeader } from "@tanstack/react-start/server";
+import { createServerFn } from '@tanstack/react-start'
+import { setHeader } from '@tanstack/react-start/server'
 
-export const getServerTime = createServerFn({ method: "GET" }).handler(
+export const getServerTime = createServerFn({ method: 'GET' }).handler(
   async () => {
-    setHeader("X-Custom-Header", "value");
-    return new Date().toISOString();
-  }
-);
+    setHeader('X-Custom-Header', 'value')
+    return new Date().toISOString()
+  },
+)
 ```
 
 ## Responding with Custom Status Codes
@@ -2526,15 +2492,15 @@ export const getServerTime = createServerFn({ method: "GET" }).handler(
 To respond with a custom status code, you can use the `setResponseStatus` function:
 
 ```tsx
-import { createServerFn } from "@tanstack/react-start";
-import { setResponseStatus } from "@tanstack/react-start/server";
+import { createServerFn } from '@tanstack/react-start'
+import { setResponseStatus } from '@tanstack/react-start/server'
 
-export const getServerTime = createServerFn({ method: "GET" }).handler(
+export const getServerTime = createServerFn({ method: 'GET' }).handler(
   async () => {
-    setResponseStatus(201);
-    return new Date().toISOString();
-  }
-);
+    setResponseStatus(201)
+    return new Date().toISOString()
+  },
+)
 ```
 
 ## Returning Raw Response objects
@@ -2542,72 +2508,72 @@ export const getServerTime = createServerFn({ method: "GET" }).handler(
 To return a raw Response object, return a Response object from the server function and set `response: 'raw'`:
 
 ```tsx
-import { createServerFn } from "@tanstack/react-start";
+import { createServerFn } from '@tanstack/react-start'
 
 export const getServerTime = createServerFn({
-  method: "GET",
-  response: "raw",
+  method: 'GET',
+  response: 'raw',
 }).handler(async () => {
   // Read a file from s3
-  return fetch("https://example.com/time.txt");
-});
+  return fetch('https://example.com/time.txt')
+})
 ```
 
 The response: 'raw' option also allows for streaming responses among other things:
 
 ```tsx
-import { createServerFn } from "@tanstack/react-start";
+import { createServerFn } from '@tanstack/react-start'
 
 export const streamEvents = createServerFn({
-  method: "GET",
-  response: "raw",
+  method: 'GET',
+  response: 'raw',
 }).handler(async ({ signal }) => {
   // Create a ReadableStream to send chunks of data
   const stream = new ReadableStream({
     async start(controller) {
       // Send initial response immediately
-      controller.enqueue(new TextEncoder().encode("Connection established\n"));
+      controller.enqueue(new TextEncoder().encode('Connection established\n'))
 
-      let count = 0;
+      let count = 0
       const interval = setInterval(() => {
         // Check if the client disconnected
         if (signal.aborted) {
-          clearInterval(interval);
-          controller.close();
-          return;
+          clearInterval(interval)
+          controller.close()
+          return
         }
 
         // Send a data chunk
         controller.enqueue(
           new TextEncoder().encode(
-            `Event ${++count}: ${new Date().toISOString()}\n`
-          )
-        );
+            `Event ${++count}: ${new Date().toISOString()}\n`,
+          ),
+        )
 
         // End after 10 events
         if (count >= 10) {
-          clearInterval(interval);
-          controller.close();
+          clearInterval(interval)
+          controller.close()
         }
-      }, 1000);
+      }, 1000)
 
       // Ensure we clean up if the request is aborted
-      signal.addEventListener("abort", () => {
-        clearInterval(interval);
-        controller.close();
-      });
+      signal.addEventListener('abort', () => {
+        clearInterval(interval)
+        controller.close()
+      })
     },
-  });
+  })
 
   // Return a streaming response
   return new Response(stream, {
     headers: {
-      "Content-Type": "text/event-stream",
-      "Cache-Control": "no-cache",
-      Connection: "keep-alive",
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      Connection: 'keep-alive',
     },
-  });
-});
+  })
+})
 ```
 
 The `response: 'raw'` option is particularly useful for:
@@ -2622,18 +2588,18 @@ The `response: 'raw'` option is particularly useful for:
 Aside from special `redirect` and `notFound` errors, server functions can throw any custom error. These errors will be serialized and sent to the client as a JSON response along with a 500 status code.
 
 ```tsx
-import { createServerFn } from "@tanstack/react-start";
+import { createServerFn } from '@tanstack/react-start'
 
-export const doStuff = createServerFn({ method: "GET" }).handler(async () => {
-  throw new Error("Something went wrong!");
-});
+export const doStuff = createServerFn({ method: 'GET' }).handler(async () => {
+  throw new Error('Something went wrong!')
+})
 
 // Usage
 function Test() {
   try {
-    await doStuff();
+    await doStuff()
   } catch (error) {
-    console.error(error);
+    console.error(error)
     // {
     //   message: "Something went wrong!",
     //   stack: "Error: Something went wrong!\n    at doStuff (file:///path/to/file.ts:3:3)"
@@ -2648,41 +2614,41 @@ On the client, server function calls can be cancelled via an `AbortSignal`.
 On the server, an `AbortSignal` will notify if the request closed before execution finished.
 
 ```tsx
-import { createServerFn } from "@tanstack/react-start";
+import { createServerFn } from '@tanstack/react-start'
 
 export const abortableServerFn = createServerFn().handler(
   async ({ signal }) => {
     return new Promise<string>((resolve, reject) => {
       if (signal.aborted) {
-        return reject(new Error("Aborted before start"));
+        return reject(new Error('Aborted before start'))
       }
       const timerId = setTimeout(() => {
-        console.log("server function finished");
-        resolve("server function result");
-      }, 1000);
+        console.log('server function finished')
+        resolve('server function result')
+      }, 1000)
       const onAbort = () => {
-        clearTimeout(timerId);
-        console.log("server function aborted");
-        reject(new Error("Aborted"));
-      };
-      signal.addEventListener("abort", onAbort, { once: true });
-    });
-  }
-);
+        clearTimeout(timerId)
+        console.log('server function aborted')
+        reject(new Error('Aborted'))
+      }
+      signal.addEventListener('abort', onAbort, { once: true })
+    })
+  },
+)
 
 // Usage
 function Test() {
-  const controller = new AbortController();
+  const controller = new AbortController()
   const serverFnPromise = abortableServerFn({
     signal: controller.signal,
-  });
-  await new Promise((resolve) => setTimeout(resolve, 500));
-  controller.abort();
+  })
+  await new Promise((resolve) => setTimeout(resolve, 500))
+  controller.abort()
   try {
-    const serverFnResult = await serverFnPromise;
-    console.log(serverFnResult); // should never get here
+    const serverFnResult = await serverFnPromise
+    console.log(serverFnResult) // should never get here
   } catch (error) {
-    console.error(error); // "signal is aborted without reason"
+    console.error(error) // "signal is aborted without reason"
   }
 }
 ```
@@ -2692,17 +2658,17 @@ function Test() {
 Server functions can be called normally from route `loader`s, `beforeLoad`s, or any other router-controlled APIs. These APIs are equipped to handle errors, redirects, and notFounds thrown by server functions automatically.
 
 ```tsx
-import { getServerTime } from "./getServerTime";
+import { getServerTime } from './getServerTime'
 
-export const Route = createFileRoute("/time")({
+export const Route = createFileRoute('/time')({
   loader: async () => {
-    const time = await getServerTime();
+    const time = await getServerTime()
 
     return {
       time,
-    };
+    }
   },
-});
+})
 ```
 
 ## Calling server functions from hooks and components
@@ -2710,17 +2676,17 @@ export const Route = createFileRoute("/time")({
 Server functions can throw `redirect`s or `notFound`s and while not required, it is recommended to catch these errors and handle them appropriately. To make this easier, the `@tanstack/react-start` package exports a `useServerFn` hook that can be used to bind server functions to components and hooks:
 
 ```tsx
-import { useServerFn } from "@tanstack/react-start";
-import { useQuery } from "@tanstack/react-query";
-import { getServerTime } from "./getServerTime";
+import { useServerFn } from '@tanstack/react-start'
+import { useQuery } from '@tanstack/react-query'
+import { getServerTime } from './getServerTime'
 
 export function Time() {
-  const getTime = useServerFn(getServerTime);
+  const getTime = useServerFn(getServerTime)
 
   const timeQuery = useQuery({
-    queryKey: "time",
+    queryKey: 'time',
     queryFn: () => getTime(),
-  });
+  })
 }
 ```
 
@@ -2743,15 +2709,15 @@ Server functions can throw a `redirect` error to redirect the user to a differen
 To throw a redirect, you can use the `redirect` function exported from the `@tanstack/react-router` package:
 
 ```tsx
-import { redirect } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
+import { redirect } from '@tanstack/react-router'
+import { createServerFn } from '@tanstack/react-start'
 
-export const doStuff = createServerFn({ method: "GET" }).handler(async () => {
+export const doStuff = createServerFn({ method: 'GET' }).handler(async () => {
   // Redirect the user to the home page
   throw redirect({
-    to: "/",
-  });
-});
+    to: '/',
+  })
+})
 ```
 
 Redirects can utilize all of the same options as `router.navigate`, `useNavigate()` and `<Link>` components. So feel free to also pass:
@@ -2763,30 +2729,30 @@ Redirects can utilize all of the same options as `router.navigate`, `useNavigate
 Redirects can also set the status code of the response by passing a `status` option:
 
 ```tsx
-import { redirect } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
+import { redirect } from '@tanstack/react-router'
+import { createServerFn } from '@tanstack/react-start'
 
-export const doStuff = createServerFn({ method: "GET" }).handler(async () => {
+export const doStuff = createServerFn({ method: 'GET' }).handler(async () => {
   // Redirect the user to the home page with a 301 status code
   throw redirect({
-    to: "/",
+    to: '/',
     status: 301,
-  });
-});
+  })
+})
 ```
 
 You can also redirect to an external target using `href`:
 
 ```tsx
-import { redirect } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
+import { redirect } from '@tanstack/react-router'
+import { createServerFn } from '@tanstack/react-start'
 
-export const auth = createServerFn({ method: "GET" }).handler(async () => {
+export const auth = createServerFn({ method: 'GET' }).handler(async () => {
   // Redirect the user to the auth provider
   throw redirect({
-    href: "https://authprovider.com/login",
-  });
-});
+    href: 'https://authprovider.com/login',
+  })
+})
 ```
 
 > ⚠️ Do not use `@tanstack/react-start/server`'s `sendRedirect` function to send soft redirects from within server functions. This will send the redirect using the `Location` header and will force a full page hard navigation on the client.
@@ -2796,18 +2762,18 @@ export const auth = createServerFn({ method: "GET" }).handler(async () => {
 You can also set custom headers on a redirect by passing a `headers` option:
 
 ```tsx
-import { redirect } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
+import { redirect } from '@tanstack/react-router'
+import { createServerFn } from '@tanstack/react-start'
 
-export const doStuff = createServerFn({ method: "GET" }).handler(async () => {
+export const doStuff = createServerFn({ method: 'GET' }).handler(async () => {
   // Redirect the user to the home page with a custom header
   throw redirect({
-    to: "/",
+    to: '/',
     headers: {
-      "X-Custom-Header": "value",
+      'X-Custom-Header': 'value',
     },
-  });
-});
+  })
+})
 ```
 
 ## Not Found
@@ -2817,30 +2783,30 @@ While calling a server function from a `loader` or `beforeLoad` route lifecycle,
 To throw a notFound, you can use the `notFound` function exported from the `@tanstack/react-router` package:
 
 ```tsx
-import { notFound } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
+import { notFound } from '@tanstack/react-router'
+import { createServerFn } from '@tanstack/react-start'
 
-const getStuff = createServerFn({ method: "GET" }).handler(async () => {
+const getStuff = createServerFn({ method: 'GET' }).handler(async () => {
   // Randomly return a not found error
   if (Math.random() < 0.5) {
-    throw notFound();
+    throw notFound()
   }
 
   // Or return some stuff
   return {
-    stuff: "stuff",
-  };
-});
+    stuff: 'stuff',
+  }
+})
 
-export const Route = createFileRoute("/stuff")({
+export const Route = createFileRoute('/stuff')({
   loader: async () => {
-    const stuff = await getStuff();
+    const stuff = await getStuff()
 
     return {
       stuff,
-    };
+    }
   },
-});
+})
 ```
 
 Not found errors are a core feature of TanStack Router,
@@ -2850,16 +2816,16 @@ Not found errors are a core feature of TanStack Router,
 If a server function throws a (non-redirect/non-notFound) error, it will be serialized and sent to the client as a JSON response along with a 500 status code. This is useful for debugging, but you may want to handle these errors in a more user-friendly way. You can do this by catching the error and handling it in your route lifecycle, component, or hook as you normally would.
 
 ```tsx
-import { createServerFn } from "@tanstack/react-start";
+import { createServerFn } from '@tanstack/react-start'
 
-export const doStuff = createServerFn({ method: "GET" }).handler(async () => {
-  undefined.foo();
-});
+export const doStuff = createServerFn({ method: 'GET' }).handler(async () => {
+  undefined.foo()
+})
 
-export const Route = createFileRoute("/stuff")({
+export const Route = createFileRoute('/stuff')({
   loader: async () => {
     try {
-      await doStuff();
+      await doStuff()
     } catch (error) {
       // Handle the error:
       // error === {
@@ -2867,7 +2833,7 @@ export const Route = createFileRoute("/stuff")({
       //   stack: "TypeError: Cannot read property 'foo' of undefined\n    at doStuff (file:///path/to/file.ts:3:3)"
     }
   },
-});
+})
 ```
 
 ## No-JS Server Functions
@@ -2875,13 +2841,13 @@ export const Route = createFileRoute("/stuff")({
 Without JavaScript enabled, there's only one way to execute server functions: by submitting a form.
 
 This is done by adding a `form` element to the page
-with [the HTML attribute `action`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/action).
+with [the HTML attribute `action`](mdc:https:/developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/action).
 
 > Notice that we mentioned the **HTML** attribute `action`. This attribute only accepts a string in HTML, just like all
 > other attributes.
 >
 > While React
-> 19 [added support for passing a function to `action`](https://react.dev/reference/react-dom/components/form#form),
+> 19 [added support for passing a function to `action`](mdc:https:/react.dev/reference/react-dom/components/form#form),
 > it's
 > a React-specific feature and not part of the HTML standard.
 
@@ -2891,25 +2857,25 @@ to send the form data to the server function.
 To do this, we can utilize the `url` property of the server function:
 
 ```ts
-const yourFn = createServerFn({ method: "POST" })
+const yourFn = createServerFn({ method: 'POST' })
   .validator((formData) => {
     if (!(formData instanceof FormData)) {
-      throw new Error("Invalid form data");
+      throw new Error('Invalid form data')
     }
 
-    const name = formData.get("name");
+    const name = formData.get('name')
 
     if (!name) {
-      throw new Error("Name is required");
+      throw new Error('Name is required')
     }
 
-    return name;
+    return name
   })
   .handler(async ({ data: name }) => {
-    console.log(name); // 'John'
-  });
+    console.log(name) // 'John'
+  })
 
-console.info(yourFn.url);
+console.info(yourFn.url)
 ```
 
 And pass this to the `action` attribute of the form:
@@ -2921,7 +2887,7 @@ function Component() {
       <input name="name" defaultValue="John" />
       <button type="submit">Click me!</button>
     </form>
-  );
+  )
 }
 ```
 
@@ -2930,29 +2896,29 @@ When the form is submitted, the server function will be executed.
 ### No-JS Server Function Arguments
 
 To pass arguments to a server function when submitting a form, you can use the `input` element with the `name` attribute
-to attach the argument to the [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData) passed to your
+to attach the argument to the [`FormData`](mdc:https:/developer.mozilla.org/en-US/docs/Web/API/FormData) passed to your
 server function:
 
 ```tsx
-const yourFn = createServerFn({ method: "POST" })
+const yourFn = createServerFn({ method: 'POST' })
   .validator((formData) => {
     if (!(formData instanceof FormData)) {
-      throw new Error("Invalid form data");
+      throw new Error('Invalid form data')
     }
 
-    const age = formData.get("age");
+    const age = formData.get('age')
 
     if (!age) {
-      throw new Error("age is required");
+      throw new Error('age is required')
     }
 
-    return age.toString();
+    return age.toString()
   })
   .handler(async ({ data: formData }) => {
     // `age` will be '123'
-    const age = formData.get("age");
+    const age = formData.get('age')
     // ...
-  });
+  })
 
 function Component() {
   return (
@@ -2961,7 +2927,7 @@ function Component() {
       <input name="age" defaultValue="34" />
       <button type="submit">Click me!</button>
     </form>
-  );
+  )
 }
 ```
 
@@ -2977,11 +2943,11 @@ JavaScript code.
 
 ```ts
 const yourFn = createServerFn().handler(async () => {
-  return "Hello, world!";
-});
+  return 'Hello, world!'
+})
 
 // `.then` is not available when JavaScript is disabled
-yourFn().then(console.log);
+yourFn().then(console.log)
 ```
 
 However, when JavaScript is disabled, there is no way to access the return value of the server function in the client's
@@ -2994,52 +2960,52 @@ JavaScript is disabled;
 all by telling the browser to reload the current page with new data piped through the `loader`:
 
 ```tsx
-import * as fs from "fs";
-import { createFileRoute } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
+import * as fs from 'fs'
+import { createFileRoute } from '@tanstack/react-router'
+import { createServerFn } from '@tanstack/react-start'
 
-const filePath = "count.txt";
+const filePath = 'count.txt'
 
 async function readCount() {
   return parseInt(
-    await fs.promises.readFile(filePath, "utf-8").catch(() => "0")
-  );
+    await fs.promises.readFile(filePath, 'utf-8').catch(() => '0'),
+  )
 }
 
 const getCount = createServerFn({
-  method: "GET",
+  method: 'GET',
 }).handler(() => {
-  return readCount();
-});
+  return readCount()
+})
 
-const updateCount = createServerFn({ method: "POST" })
+const updateCount = createServerFn({ method: 'POST' })
   .validator((formData) => {
     if (!(formData instanceof FormData)) {
-      throw new Error("Invalid form data");
+      throw new Error('Invalid form data')
     }
 
-    const addBy = formData.get("addBy");
+    const addBy = formData.get('addBy')
 
     if (!addBy) {
-      throw new Error("addBy is required");
+      throw new Error('addBy is required')
     }
 
-    return parseInt(addBy.toString());
+    return parseInt(addBy.toString())
   })
   .handler(async ({ data: addByAmount }) => {
-    const count = await readCount();
-    await fs.promises.writeFile(filePath, `${count + addByAmount}`);
+    const count = await readCount()
+    await fs.promises.writeFile(filePath, `${count + addByAmount}`)
     // Reload the page to trigger the loader again
-    return new Response("ok", { status: 301, headers: { Location: "/" } });
-  });
+    return new Response('ok', { status: 301, headers: { Location: '/' } })
+  })
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute('/')({
   component: Home,
   loader: async () => await getCount(),
-});
+})
 
 function Home() {
-  const state = Route.useLoaderData();
+  const state = Route.useLoaderData()
 
   return (
     <div>
@@ -3053,7 +3019,7 @@ function Home() {
       </form>
       <pre>{state}</pre>
     </div>
-  );
+  )
 }
 ```
 
@@ -3061,7 +3027,7 @@ function Home() {
 
 When using prerendering/static-generation, server functions can also be "static", which enables their results to be cached at build time and served as static assets.
 
-Learn all about this pattern on the [Static Server Functions](../static-server-functions) page.
+Learn all about this pattern on the [Static Server Functions](mdc:../static-server-functions) page.
 
 ## How are server functions compiled?
 
@@ -3079,12 +3045,9 @@ The process looks like this:
 ================
 File: framework/react/ssr.md
 ================
-
 ---
-
 id: ssr
 title: SSR
-
 ---
 
 Server-side rendering (SSR) is the process of rendering your application on the server and sending or streaming the rendered HTML to the client. This can be useful for both improving the performance of your application and improving SEO, as it allows users to see the content of your application faster and allows search engines to crawl your application more easily.
@@ -3099,15 +3062,15 @@ TanStack Start supports server-side rendering out of the box. To enable server-s
 import {
   createStartHandler,
   defaultStreamHandler,
-} from "@tanstack/react-start/server";
-import { getRouterManifest } from "@tanstack/react-start/router-manifest";
+} from '@tanstack/react-start/server'
+import { getRouterManifest } from '@tanstack/react-start/router-manifest'
 
-import { createRouter } from "./router";
+import { createRouter } from './router'
 
 export default createStartHandler({
   createRouter,
   getRouterManifest,
-})(defaultStreamHandler);
+})(defaultStreamHandler)
 ```
 
 This file exports a function that creates a server-side rendering handler. The handler is created using the `createStartHandler` function from `@tanstack/react-start/server`, which takes an object with the following properties:
@@ -3120,12 +3083,9 @@ The handler is then called with the `defaultStreamHandler` function from `@tanst
 ================
 File: framework/react/static-prerendering.md
 ================
-
 ---
-
 id: static-prerendering
 title: Static Prerendering
-
 ---
 
 > Static Prerendering is a feature of Nitro, and while it is available in TanStack Start, we are still exploring the best practices for using it. Tread lightly!
@@ -3139,19 +3099,19 @@ TanStack Start is built on Nitro, which means we can take advantage of Nitro's p
 ```js
 // app.config.js
 
-import { defineConfig } from "@tanstack/react-start/config";
+import { defineConfig } from '@tanstack/react-start/config'
 
 export default defineConfig({
   server: {
     prerender: {
-      routes: ["/"],
+      routes: ['/'],
       crawlLinks: true,
     },
   },
-});
+})
 ```
 
-Many of the options available for prerendering are documented in the [Nitro config prerender documentation](https://nitro.unjs.io/config#prerender).
+Many of the options available for prerendering are documented in the [Nitro config prerender documentation](mdc:https:/nitro.unjs.io/config#prerender).
 
 ## Prerendering dynamic routes with Nitro
 
@@ -3161,41 +3121,38 @@ For this example, let's pretend we have a blog with a list of posts. We want to 
 
 ```ts
 // app.config.ts
-import { defineConfig } from "@tanstack/react-start/config";
+import { defineConfig } from '@tanstack/react-start/config'
 
 export default defineConfig({
   server: {
     hooks: {
-      "prerender:routes": async (routes) => {
+      'prerender:routes': async (routes) => {
         // fetch the pages you want to render
-        const posts = await fetch("https://api.example.com/posts");
-        const postsData = await posts.json();
+        const posts = await fetch('https://api.example.com/posts')
+        const postsData = await posts.json()
 
         // add each post path to the routes set
         postsData.forEach((post) => {
-          routes.add(`/posts/${post.id}`);
-        });
+          routes.add(`/posts/${post.id}`)
+        })
       },
     },
     prerender: {
-      routes: ["/"],
+      routes: ['/'],
       crawlLinks: true,
     },
   },
-});
+})
 ```
 
-As of writing, the [Nitro hooks documentation](https://nitro.build/config#hooks) does not include any information on the provided hooks.
+As of writing, the [Nitro hooks documentation](mdc:https:/nitro.build/config#hooks) does not include any information on the provided hooks.
 
 ================
 File: framework/react/static-server-functions.md
 ================
-
 ---
-
 id: static-server-functions
 title: Static Server Functions
-
 ---
 
 ## What are Static Server Functions?
@@ -3203,9 +3160,9 @@ title: Static Server Functions
 Static server functions are server functions that are executed at build time and cached as static assets when using prerendering/static-generation. They can be set to "static" mode by passing the `type: 'static'` option to `createServerFn`:
 
 ```tsx
-const myServerFn = createServerFn({ type: "static" }).handler(async () => {
-  return "Hello, world!";
-});
+const myServerFn = createServerFn({ type: 'static' }).handler(async () => {
+  return 'Hello, world!'
+})
 ```
 
 This pattern goes as follows:
@@ -3229,7 +3186,7 @@ This interface can be customized by importing and calling the `createServerFnSta
 import {
   createServerFnStaticCache,
   setServerFnStaticCache,
-} from "@tanstack/react-start/client";
+} from '@tanstack/react-start/client'
 
 const myCustomStaticCache = createServerFnStaticCache({
   setItem: async (ctx, data) => {
@@ -3241,10 +3198,12 @@ const myCustomStaticCache = createServerFnStaticCache({
   fetchItem: async (ctx) => {
     // During runtime, fetch the static data from your custom cache
   },
-});
+})
 
-setServerFnStaticCache(myCustomStaticCache);
+setServerFnStaticCache(myCustomStaticCache)
 ```
+
+
 
 ================================================================
 End of Codebase

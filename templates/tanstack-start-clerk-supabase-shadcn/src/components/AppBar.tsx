@@ -103,6 +103,25 @@ export function AppBar() {
               >
                 Subscription
               </Link>
+              {/* Test Page Link - Comment this out to hide it */}
+              <Link
+                to="/test"
+                activeProps={{
+                  className: "border-indigo-500 text-gray-900 dark:text-white",
+                }}
+                className="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+              >
+                Test
+              </Link>
+              <Link
+                to="/form"
+                activeProps={{
+                  className: "border-indigo-500 text-gray-900 dark:text-white",
+                }}
+                className="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+              >
+                Form
+              </Link>
             </div>
           </div>
           <div className="flex items-center space-x-4">

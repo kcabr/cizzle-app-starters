@@ -80,7 +80,7 @@ export async function searchNews({
   data,
 }: SearchParams): Promise<NewsResponse> {
   const params = new URLSearchParams({
-    apiKey: "2601710ac62f4a5c800a804de80b17cb", // TODO: Hide this better but .env is not working.
+    apiKey: process.env.NEWSAPI_KEY || import.meta.env.NEWSAPI_KEY || "",
     q: data.query,
     pageSize: (data.pageSize || 10).toString(),
     page: (data.page || 1).toString(),
