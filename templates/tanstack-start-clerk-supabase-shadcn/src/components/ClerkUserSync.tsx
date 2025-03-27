@@ -21,11 +21,13 @@ import { useUser } from "@clerk/tanstack-start";
 import { useAppDispatch, useAppSelector } from "~/store/hooks";
 import { setUser, clearUser } from "~/store/slices/userSlice";
 import { updateUserProfile } from "~/utils/auth";
+import { useServerFn } from "@tanstack/react-start";
 
 export function ClerkUserSync() {
   const { isLoaded, isSignedIn, user } = useUser();
   const dispatch = useAppDispatch();
   const reduxUser = useAppSelector((state) => state.user);
+  const updateUserProfileFn = useServerFn(updateUserProfile);
 
   useEffect(() => {
     if (!isLoaded) return;
@@ -51,14 +53,21 @@ export function ClerkUserSync() {
           })
         );
 
-        // Also sync with Prisma database
-        updateUserProfile({ data: userData });
+        // Call the server function to sync with Prisma database
+        //updateUserProfileFn({ data: userData });
       }
     } else if (reduxUser.isLoaded) {
       // Only clear if there's a user to clear
       dispatch(clearUser());
     }
-  }, [isLoaded, isSignedIn, user, dispatch, reduxUser.isLoaded]);
+  }, [
+    isLoaded,
+    isSignedIn,
+    user,
+    dispatch,
+    reduxUser.isLoaded,
+    //updateUserProfileFn,
+  ]);
 
   // This is a utility component that doesn't render anything
   return null;
