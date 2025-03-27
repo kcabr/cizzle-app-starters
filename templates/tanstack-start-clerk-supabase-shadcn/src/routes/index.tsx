@@ -28,13 +28,15 @@ function Home() {
           >
             Get Started
           </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            className="px-8 py-6 text-lg border-indigo-400 dark:border-indigo-600 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950"
-          >
-            Learn More
-          </Button>
+          <Link to="/showcase">
+            <Button
+              size="lg"
+              variant="outline"
+              className="px-8 py-6 text-lg border-indigo-400 dark:border-indigo-600 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950"
+            >
+              Learn More
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
