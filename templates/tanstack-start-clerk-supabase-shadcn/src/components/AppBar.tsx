@@ -13,15 +13,12 @@ export function AppBar() {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-900 shadow-md">
+    <div className="bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-800 dark:to-purple-900 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
-              <Link
-                to="/"
-                className="text-2xl font-bold text-indigo-600 dark:text-indigo-400"
-              >
+              <Link to="/" className="text-2xl font-bold text-white">
                 Cizzle's TanStack Starter
               </Link>
             </div>
@@ -29,10 +26,10 @@ export function AppBar() {
               <Link
                 to="/"
                 activeProps={{
-                  className: "border-indigo-500 text-gray-900 dark:text-white",
+                  className: "border-white text-white",
                 }}
                 activeOptions={{ exact: true }}
-                className="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                className="border-transparent text-indigo-100 hover:border-indigo-200 hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
               >
                 Home
               </Link>
@@ -40,9 +37,9 @@ export function AppBar() {
               <Link
                 to="/showcase"
                 activeProps={{
-                  className: "border-indigo-500 text-gray-900 dark:text-white",
+                  className: "border-white text-white",
                 }}
-                className="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                className="border-transparent text-indigo-100 hover:border-indigo-200 hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
               >
                 Showcase
               </Link>
@@ -50,9 +47,9 @@ export function AppBar() {
               <Link
                 to="/subscription"
                 activeProps={{
-                  className: "border-indigo-500 text-gray-900 dark:text-white",
+                  className: "border-white text-white",
                 }}
-                className="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                className="border-transparent text-indigo-100 hover:border-indigo-200 hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
               >
                 Subscription
               </Link>
@@ -61,7 +58,7 @@ export function AppBar() {
           <div className="flex items-center space-x-4">
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-300"
+              className="p-2 rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-colors"
             >
               {mode === "dark" ? (
                 <svg

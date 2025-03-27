@@ -114,7 +114,7 @@ function NotesPage() {
             <CardHeader>
               <CardTitle>Your Notes</CardTitle>
             </CardHeader>
-            <CardContent>{renderRsc(<NoteListRSC />)}</CardContent>
+            {/* <CardContent>{renderRsc(<NoteListRSC />)}</CardContent> */}
           </Card>
         </div>
       </main>

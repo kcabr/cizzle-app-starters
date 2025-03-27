@@ -19,10 +19,10 @@ function Showcase() {
     <div className="container py-10 mx-auto">
       <header>
         <div className="mx-auto max-w-7xl">
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">
+          <h1 className="text-4xl font-bold tracking-tight text-foreground mb-2 bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-300 dark:to-purple-400">
             Feature Showcase
           </h1>
-          <p className="mt-2 text-gray-600 dark:text-gray-400">
+          <p className="mt-2 text-gray-600 dark:text-gray-400 text-xl">
             Explore the different features and components available in this
             template
           </p>
@@ -36,11 +36,14 @@ function Showcase() {
               description="Manage your todos with a simple CRUD interface. Uses Prisma ORM with Supabase."
               link="/todos"
             />
+            {/* 
+            RSCs are TBD
+            
             <FeatureCard
               title="Notes"
               description="Create and manage your notes. Demonstrates RSC (React Server Components)."
               link="/notes"
-            />
+            /> */}
             <FeatureCard
               title="Counter"
               description="Simple counter example. Shows Redux Toolkit for state management."
@@ -68,7 +71,7 @@ function Showcase() {
               isHighlighted={true}
             />
             <FeatureCard
-              title="Test"
+              title="AI Text Fixer"
               description="A test page for development and experimentation."
               link="/test"
             />
@@ -104,10 +107,20 @@ function FeatureCard({
 }) {
   const content = (
     <Card
-      className={`h-full transition-all hover:shadow-md ${isHighlighted ? "border-primary" : ""}`}
+      className={`h-full transition-all hover:shadow-xl hover:scale-105 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border ${
+        isHighlighted
+          ? "border-indigo-400 dark:border-indigo-600"
+          : "border-gray-200 dark:border-gray-700"
+      }`}
     >
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
+        <CardTitle
+          className={
+            isHighlighted ? "text-indigo-600 dark:text-indigo-400" : ""
+          }
+        >
+          {title}
+        </CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardFooter>
