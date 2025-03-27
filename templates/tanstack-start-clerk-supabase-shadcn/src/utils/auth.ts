@@ -92,6 +92,8 @@ export const updateUserProfile = createServerFn({ method: "POST" })
           id: data.id,
           email: data.email || data.id, // Fallback to id if email is null
           lastLoginAt: new Date(),
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
       });
     } catch (error) {
