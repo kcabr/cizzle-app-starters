@@ -1,14 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "../components/ui/card";
-import { AccentButton } from "../components/AccentButton";
+import { Button } from "../components/ui/button";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -16,102 +8,24 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   return (
-    <div className="container py-10 mx-auto">
-      <header>
-        <div className="mx-auto max-w-7xl">
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">
-            Welcome to Cizzle's TanStack Starter App Template
-          </h1>
+    <div className="container py-16 mx-auto text-center">
+      <div className="flex flex-col items-center justify-center min-h-[60vh]">
+        <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground mb-6">
+          YOUR BIG TEXT SAAS SERVICE
+        </h1>
+        <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-3xl mb-10">
+          This is the subtext describing your amazing service. Explain the core
+          value proposition here briefly and compellingly.
+        </p>
+        <div className="flex gap-4">
+          <Button size="lg" className="px-8 py-6 text-lg">
+            Get Started
+          </Button>
+          <Button size="lg" variant="outline" className="px-8 py-6 text-lg">
+            Learn More
+          </Button>
         </div>
-      </header>
-      <main>
-        <div className="mx-auto max-w-7xl mt-8">
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            <FeatureCard
-              title="Todos"
-              description="Manage your todos with a simple CRUD interface. Uses Prisma ORM with Supabase."
-              link="/todos"
-            />
-            <FeatureCard
-              title="Notes"
-              description="Create and manage your notes. Demonstrates RSC (React Server Components)."
-              link="/notes"
-            />
-            <FeatureCard
-              title="Counter"
-              description="Simple counter example. Shows Redux Toolkit for state management."
-              link="/counter"
-            />
-            <FeatureCard
-              title="Posts"
-              description="Post list from API. Uses React Query for data fetching."
-              link="/posts"
-            />
-            <FeatureCard
-              title="Profile"
-              description="Authenticated user profile. Shows integration with Clerk authentication."
-              link="/profile"
-            />
-            <FeatureCard
-              title="News"
-              description="Browse and search news articles. Shows React Query and external API integration."
-              link="/news"
-            />
-            <FeatureCard
-              title="UI Components"
-              description="Explore the shadcn UI components available in this template."
-              link="/ui-showcase"
-              isHighlighted={true}
-            />
-            <FeatureCard
-              title="Subscription"
-              description="Manage your subscription with Stripe. Shows Stripe integration for payments."
-              link="/subscription"
-              isHighlighted={true}
-            />
-          </div>
-        </div>
-      </main>
+      </div>
     </div>
   );
-}
-
-function FeatureCard({
-  title,
-  description,
-  link,
-  onClick,
-  isHighlighted = false,
-}: {
-  title: string;
-  description: string;
-  link: string;
-  onClick?: () => void;
-  isHighlighted?: boolean;
-}) {
-  const content = (
-    <Card
-      className={`h-full transition-all hover:shadow-md ${isHighlighted ? "border-primary" : ""}`}
-    >
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
-      </CardHeader>
-      <CardFooter>
-        <AccentButton to={link} isHighlighted={isHighlighted}>
-          Explore
-        </AccentButton>
-      </CardFooter>
-    </Card>
-  );
-
-  if (onClick) {
-    return (
-      <button onClick={onClick} className="text-left block w-full">
-        {content}
-      </button>
-    );
-  }
-
-  return <div className="block w-full">{content}</div>;
 }

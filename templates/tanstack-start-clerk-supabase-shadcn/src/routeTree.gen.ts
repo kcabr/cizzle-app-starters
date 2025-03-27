@@ -13,6 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as UiShowcaseImport } from './routes/ui-showcase'
 import { Route as TestImport } from './routes/test'
+import { Route as ShowcaseImport } from './routes/showcase'
 import { Route as NewsImport } from './routes/news'
 import { Route as FormImport } from './routes/form'
 import { Route as AuthedImport } from './routes/_authed'
@@ -42,6 +43,12 @@ const UiShowcaseRoute = UiShowcaseImport.update({
 const TestRoute = TestImport.update({
   id: '/test',
   path: '/test',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ShowcaseRoute = ShowcaseImport.update({
+  id: '/showcase',
+  path: '/showcase',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -176,6 +183,13 @@ declare module '@tanstack/react-router' {
       path: '/news'
       fullPath: '/news'
       preLoaderRoute: typeof NewsImport
+      parentRoute: typeof rootRoute
+    }
+    '/showcase': {
+      id: '/showcase'
+      path: '/showcase'
+      fullPath: '/showcase'
+      preLoaderRoute: typeof ShowcaseImport
       parentRoute: typeof rootRoute
     }
     '/test': {
@@ -365,6 +379,7 @@ export interface FileRoutesByFullPath {
   '': typeof AuthedRouteWithChildren
   '/form': typeof FormRoute
   '/news': typeof NewsRouteWithChildren
+  '/showcase': typeof ShowcaseRoute
   '/test': typeof TestRoute
   '/ui-showcase': typeof UiShowcaseRoute
   '/counter': typeof AuthedCounterRoute
@@ -386,6 +401,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof AuthedRouteWithChildren
   '/form': typeof FormRoute
+  '/showcase': typeof ShowcaseRoute
   '/test': typeof TestRoute
   '/ui-showcase': typeof UiShowcaseRoute
   '/counter': typeof AuthedCounterRoute
@@ -408,6 +424,7 @@ export interface FileRoutesById {
   '/_authed': typeof AuthedRouteWithChildren
   '/form': typeof FormRoute
   '/news': typeof NewsRouteWithChildren
+  '/showcase': typeof ShowcaseRoute
   '/test': typeof TestRoute
   '/ui-showcase': typeof UiShowcaseRoute
   '/_authed/counter': typeof AuthedCounterRoute
@@ -432,6 +449,7 @@ export interface FileRouteTypes {
     | ''
     | '/form'
     | '/news'
+    | '/showcase'
     | '/test'
     | '/ui-showcase'
     | '/counter'
@@ -452,6 +470,7 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/form'
+    | '/showcase'
     | '/test'
     | '/ui-showcase'
     | '/counter'
@@ -472,6 +491,7 @@ export interface FileRouteTypes {
     | '/_authed'
     | '/form'
     | '/news'
+    | '/showcase'
     | '/test'
     | '/ui-showcase'
     | '/_authed/counter'
@@ -495,6 +515,7 @@ export interface RootRouteChildren {
   AuthedRoute: typeof AuthedRouteWithChildren
   FormRoute: typeof FormRoute
   NewsRoute: typeof NewsRouteWithChildren
+  ShowcaseRoute: typeof ShowcaseRoute
   TestRoute: typeof TestRoute
   UiShowcaseRoute: typeof UiShowcaseRoute
 }
@@ -504,6 +525,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthedRoute: AuthedRouteWithChildren,
   FormRoute: FormRoute,
   NewsRoute: NewsRouteWithChildren,
+  ShowcaseRoute: ShowcaseRoute,
   TestRoute: TestRoute,
   UiShowcaseRoute: UiShowcaseRoute,
 }
@@ -522,6 +544,7 @@ export const routeTree = rootRoute
         "/_authed",
         "/form",
         "/news",
+        "/showcase",
         "/test",
         "/ui-showcase"
       ]
@@ -550,6 +573,9 @@ export const routeTree = rootRoute
         "/news/search",
         "/news/"
       ]
+    },
+    "/showcase": {
+      "filePath": "showcase.tsx"
     },
     "/test": {
       "filePath": "test.tsx"

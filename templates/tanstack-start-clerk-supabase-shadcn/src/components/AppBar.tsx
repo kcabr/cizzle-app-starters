@@ -36,60 +36,17 @@ export function AppBar() {
               >
                 Home
               </Link>
+
               <Link
-                to="/todos"
+                to="/showcase"
                 activeProps={{
                   className: "border-indigo-500 text-gray-900 dark:text-white",
                 }}
                 className="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
               >
-                Todos
+                Showcase
               </Link>
-              {/* <Link
-                to="/notes"
-                activeProps={{
-                  className: "border-indigo-500 text-gray-900 dark:text-white",
-                }}
-                className="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-              >
-                Notes
-              </Link> */}
-              <Link
-                to="/counter"
-                activeProps={{
-                  className: "border-indigo-500 text-gray-900 dark:text-white",
-                }}
-                className="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-              >
-                Counter
-              </Link>
-              <Link
-                to="/posts"
-                activeProps={{
-                  className: "border-indigo-500 text-gray-900 dark:text-white",
-                }}
-                className="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-              >
-                Posts
-              </Link>
-              <Link
-                to="/news"
-                activeProps={{
-                  className: "border-indigo-500 text-gray-900 dark:text-white",
-                }}
-                className="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-              >
-                News
-              </Link>
-              <Link
-                to="/ui-showcase"
-                activeProps={{
-                  className: "border-indigo-500 text-gray-900 dark:text-white",
-                }}
-                className="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-              >
-                UI Components
-              </Link>
+
               <Link
                 to="/subscription"
                 activeProps={{
@@ -98,34 +55,6 @@ export function AppBar() {
                 className="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
               >
                 Subscription
-              </Link>
-              {/* Test Page Link - Comment this out to hide it */}
-              <Link
-                to="/test"
-                activeProps={{
-                  className: "border-indigo-500 text-gray-900 dark:text-white",
-                }}
-                className="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-              >
-                Test
-              </Link>
-              <Link
-                to="/form"
-                activeProps={{
-                  className: "border-indigo-500 text-gray-900 dark:text-white",
-                }}
-                className="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-              >
-                Form
-              </Link>
-              <Link
-                to="/user-info"
-                activeProps={{
-                  className: "border-indigo-500 text-gray-900 dark:text-white",
-                }}
-                className="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-              >
-                User Info
               </Link>
             </div>
           </div>
