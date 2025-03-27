@@ -14,6 +14,8 @@ function Home() {
           Your Next Big SaaS
         </h1>
         <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-3xl mb-10">
+          Built with:
+          <br />
           TanStack Start/Router/Form . TypeScript . Clerk . Supabase/Prisma .
           Stripe . shadcn/ui . ag-grid
         </p>
@@ -22,12 +24,12 @@ function Home() {
           applications with best practices baked in.
         </p>
         <div className="flex gap-4">
-          <Button
+          {/* <Button
             size="lg"
             className="px-8 py-6 text-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 border-0"
           >
             Get Started
-          </Button>
+          </Button> */}
           <Link to="/showcase">
             <Button
               size="lg"
