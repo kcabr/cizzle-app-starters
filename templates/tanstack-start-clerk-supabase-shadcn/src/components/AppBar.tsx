@@ -3,10 +3,18 @@ import { SignInButton, SignedIn, SignedOut } from "@clerk/tanstack-start";
 import { useAppDispatch, useAppSelector } from "~/store/hooks";
 import { setTheme } from "~/store/slices/themeSlice";
 import { UserDropdown } from "~/components/UserDropdown";
+import { useState } from "react";
+import { MessageSquare } from "lucide-react";
+import { Button } from "~/components/ui/button";
+import { FeedbackModal } from "~/components/FeedbackModal";
+
+// Get environment variables - enabled by default, disabled if explicitly set to "false"
+const FEEDBACK_ENABLED = import.meta.env.VITE_ENABLE_FEEDBACK !== "false";
 
 export function AppBar() {
   const dispatch = useAppDispatch();
   const { mode } = useAppSelector((state) => state.theme);
+  const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
 
   const toggleTheme = () => {
     dispatch(setTheme(mode === "dark" ? "light" : "dark"));
@@ -56,6 +64,21 @@ export function AppBar() {
             </div>
           </div>
           <div className="flex items-center space-x-4">
+            {/* Feedback button - only visible when logged in and feature is enabled */}
+            {FEEDBACK_ENABLED && (
+              <SignedIn>
+                <Button
+                  onClick={() => setFeedbackModalOpen(true)}
+                  variant="outline"
+                  size="sm"
+                  className="bg-white/10 text-white hover:bg-white/20 border-transparent"
+                >
+                  <MessageSquare className="h-4 w-4 mr-2" />
+                  Feedback
+                </Button>
+              </SignedIn>
+            )}
+            
             <button
               onClick={toggleTheme}
               className="p-2 rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-colors"
@@ -95,6 +118,9 @@ export function AppBar() {
           </div>
         </div>
       </div>
+      
+      {/* Feedback Modal */}
+      <FeedbackModal open={feedbackModalOpen} onOpenChange={setFeedbackModalOpen} />
     </div>
   );
 }

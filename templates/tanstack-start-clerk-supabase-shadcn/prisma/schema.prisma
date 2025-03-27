@@ -28,6 +28,7 @@ model User {
   todos               Todo[]
   notes               Note[]
   subscriptions       Subscription[]
+  feedback            Feedback[]
 }
 
 model Todo {
@@ -73,4 +74,20 @@ model Subscription {
   user               User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
+}
+
+model Feedback {
+  id                String   @id @default(cuid())
+  title             String
+  feedback          String   @db.Text
+  image_data        String?  @db.Text
+  azdo_work_item_id String?
+  userId            String
+  createdAt         DateTime @default(now())
+  
+  // Define relation to User model
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Add index for querying by user
+  @@index([userId])
 }

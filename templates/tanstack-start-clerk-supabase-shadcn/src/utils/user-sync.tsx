@@ -15,7 +15,7 @@ export async function syncUserProfile(userData: {
 }) {
   try {
     // Update the user in the database
-    await prisma.user.upsert({
+    return await prisma.user.upsert({
       where: { id: userData.id },
       update: {
         // Only update email if provided and valid

@@ -25,6 +25,10 @@ import { store } from "~/store";
 import appCss from "~/styles/app.css?url";
 import { handleSuccessfulLogin } from "~/utils/auth";
 import { ClerkUserSync } from "~/components/ClerkUserSync";
+import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
+
+// Register all Community features
+ModuleRegistry.registerModules([AllCommunityModule]);
 
 const fetchClerkAuth = createServerFn({ method: "GET" }).handler(async () => {
   const { userId } = await getAuth(getWebRequest()!);

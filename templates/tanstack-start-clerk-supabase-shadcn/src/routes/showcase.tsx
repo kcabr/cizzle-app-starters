@@ -81,6 +81,11 @@ function Showcase() {
               link="/form"
             />
             <FeatureCard
+              title="Grid"
+              description="Example grid implementation using ag-grid."
+              link="/grid"
+            />
+            <FeatureCard
               title="User Info"
               description="View detailed user information and settings."
               link="/user-info"

@@ -15,6 +15,7 @@ import { Route as UiShowcaseImport } from './routes/ui-showcase'
 import { Route as TestImport } from './routes/test'
 import { Route as ShowcaseImport } from './routes/showcase'
 import { Route as NewsImport } from './routes/news'
+import { Route as GridImport } from './routes/grid'
 import { Route as FormImport } from './routes/form'
 import { Route as AuthedImport } from './routes/_authed'
 import { Route as IndexImport } from './routes/index'
@@ -55,6 +56,12 @@ const ShowcaseRoute = ShowcaseImport.update({
 const NewsRoute = NewsImport.update({
   id: '/news',
   path: '/news',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const GridRoute = GridImport.update({
+  id: '/grid',
+  path: '/grid',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -176,6 +183,13 @@ declare module '@tanstack/react-router' {
       path: '/form'
       fullPath: '/form'
       preLoaderRoute: typeof FormImport
+      parentRoute: typeof rootRoute
+    }
+    '/grid': {
+      id: '/grid'
+      path: '/grid'
+      fullPath: '/grid'
+      preLoaderRoute: typeof GridImport
       parentRoute: typeof rootRoute
     }
     '/news': {
@@ -378,6 +392,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof AuthedRouteWithChildren
   '/form': typeof FormRoute
+  '/grid': typeof GridRoute
   '/news': typeof NewsRouteWithChildren
   '/showcase': typeof ShowcaseRoute
   '/test': typeof TestRoute
@@ -401,6 +416,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof AuthedRouteWithChildren
   '/form': typeof FormRoute
+  '/grid': typeof GridRoute
   '/showcase': typeof ShowcaseRoute
   '/test': typeof TestRoute
   '/ui-showcase': typeof UiShowcaseRoute
@@ -423,6 +439,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authed': typeof AuthedRouteWithChildren
   '/form': typeof FormRoute
+  '/grid': typeof GridRoute
   '/news': typeof NewsRouteWithChildren
   '/showcase': typeof ShowcaseRoute
   '/test': typeof TestRoute
@@ -448,6 +465,7 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/form'
+    | '/grid'
     | '/news'
     | '/showcase'
     | '/test'
@@ -470,6 +488,7 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/form'
+    | '/grid'
     | '/showcase'
     | '/test'
     | '/ui-showcase'
@@ -490,6 +509,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authed'
     | '/form'
+    | '/grid'
     | '/news'
     | '/showcase'
     | '/test'
@@ -514,6 +534,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthedRoute: typeof AuthedRouteWithChildren
   FormRoute: typeof FormRoute
+  GridRoute: typeof GridRoute
   NewsRoute: typeof NewsRouteWithChildren
   ShowcaseRoute: typeof ShowcaseRoute
   TestRoute: typeof TestRoute
@@ -524,6 +545,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthedRoute: AuthedRouteWithChildren,
   FormRoute: FormRoute,
+  GridRoute: GridRoute,
   NewsRoute: NewsRouteWithChildren,
   ShowcaseRoute: ShowcaseRoute,
   TestRoute: TestRoute,
@@ -543,6 +565,7 @@ export const routeTree = rootRoute
         "/",
         "/_authed",
         "/form",
+        "/grid",
         "/news",
         "/showcase",
         "/test",
@@ -566,6 +589,9 @@ export const routeTree = rootRoute
     },
     "/form": {
       "filePath": "form.tsx"
+    },
+    "/grid": {
+      "filePath": "grid.tsx"
     },
     "/news": {
       "filePath": "news.tsx",
