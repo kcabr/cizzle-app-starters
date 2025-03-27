@@ -19,6 +19,7 @@ import { Route as AuthedImport } from './routes/_authed'
 import { Route as IndexImport } from './routes/index'
 import { Route as NewsIndexImport } from './routes/news.index'
 import { Route as NewsSearchImport } from './routes/news.search'
+import { Route as AuthedUserInfoImport } from './routes/_authed/user-info'
 import { Route as AuthedTodosImport } from './routes/_authed/todos'
 import { Route as AuthedSubscriptionImport } from './routes/_authed/subscription'
 import { Route as AuthedProfileImport } from './routes/_authed/profile'
@@ -77,6 +78,12 @@ const NewsSearchRoute = NewsSearchImport.update({
   id: '/search',
   path: '/search',
   getParentRoute: () => NewsRoute,
+} as any)
+
+const AuthedUserInfoRoute = AuthedUserInfoImport.update({
+  id: '/user-info',
+  path: '/user-info',
+  getParentRoute: () => AuthedRoute,
 } as any)
 
 const AuthedTodosRoute = AuthedTodosImport.update({
@@ -227,6 +234,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedTodosImport
       parentRoute: typeof AuthedImport
     }
+    '/_authed/user-info': {
+      id: '/_authed/user-info'
+      path: '/user-info'
+      fullPath: '/user-info'
+      preLoaderRoute: typeof AuthedUserInfoImport
+      parentRoute: typeof AuthedImport
+    }
     '/news/search': {
       id: '/news/search'
       path: '/search'
@@ -318,6 +332,7 @@ interface AuthedRouteChildren {
   AuthedProfileRoute: typeof AuthedProfileRouteWithChildren
   AuthedSubscriptionRoute: typeof AuthedSubscriptionRouteWithChildren
   AuthedTodosRoute: typeof AuthedTodosRoute
+  AuthedUserInfoRoute: typeof AuthedUserInfoRoute
 }
 
 const AuthedRouteChildren: AuthedRouteChildren = {
@@ -327,6 +342,7 @@ const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedProfileRoute: AuthedProfileRouteWithChildren,
   AuthedSubscriptionRoute: AuthedSubscriptionRouteWithChildren,
   AuthedTodosRoute: AuthedTodosRoute,
+  AuthedUserInfoRoute: AuthedUserInfoRoute,
 }
 
 const AuthedRouteWithChildren =
@@ -357,6 +373,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof AuthedProfileRouteWithChildren
   '/subscription': typeof AuthedSubscriptionRouteWithChildren
   '/todos': typeof AuthedTodosRoute
+  '/user-info': typeof AuthedUserInfoRoute
   '/news/search': typeof NewsSearchRoute
   '/news/': typeof NewsIndexRoute
   '/posts/$postId': typeof AuthedPostsPostIdRoute
@@ -376,6 +393,7 @@ export interface FileRoutesByTo {
   '/profile': typeof AuthedProfileRouteWithChildren
   '/subscription': typeof AuthedSubscriptionRouteWithChildren
   '/todos': typeof AuthedTodosRoute
+  '/user-info': typeof AuthedUserInfoRoute
   '/news/search': typeof NewsSearchRoute
   '/news': typeof NewsIndexRoute
   '/posts/$postId': typeof AuthedPostsPostIdRoute
@@ -398,6 +416,7 @@ export interface FileRoutesById {
   '/_authed/profile': typeof AuthedProfileRouteWithChildren
   '/_authed/subscription': typeof AuthedSubscriptionRouteWithChildren
   '/_authed/todos': typeof AuthedTodosRoute
+  '/_authed/user-info': typeof AuthedUserInfoRoute
   '/news/search': typeof NewsSearchRoute
   '/news/': typeof NewsIndexRoute
   '/_authed/posts/$postId': typeof AuthedPostsPostIdRoute
@@ -421,6 +440,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/subscription'
     | '/todos'
+    | '/user-info'
     | '/news/search'
     | '/news/'
     | '/posts/$postId'
@@ -439,6 +459,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/subscription'
     | '/todos'
+    | '/user-info'
     | '/news/search'
     | '/news'
     | '/posts/$postId'
@@ -459,6 +480,7 @@ export interface FileRouteTypes {
     | '/_authed/profile'
     | '/_authed/subscription'
     | '/_authed/todos'
+    | '/_authed/user-info'
     | '/news/search'
     | '/news/'
     | '/_authed/posts/$postId'
@@ -515,7 +537,8 @@ export const routeTree = rootRoute
         "/_authed/posts",
         "/_authed/profile",
         "/_authed/subscription",
-        "/_authed/todos"
+        "/_authed/todos",
+        "/_authed/user-info"
       ]
     },
     "/form": {
@@ -566,6 +589,10 @@ export const routeTree = rootRoute
     },
     "/_authed/todos": {
       "filePath": "_authed/todos.tsx",
+      "parent": "/_authed"
+    },
+    "/_authed/user-info": {
+      "filePath": "_authed/user-info.tsx",
       "parent": "/_authed"
     },
     "/news/search": {

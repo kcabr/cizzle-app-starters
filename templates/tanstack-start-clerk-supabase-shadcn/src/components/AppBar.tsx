@@ -1,12 +1,8 @@
 import { Link } from "@tanstack/react-router";
-import {
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/tanstack-start";
+import { SignInButton, SignedIn, SignedOut } from "@clerk/tanstack-start";
 import { useAppDispatch, useAppSelector } from "~/store/hooks";
 import { setTheme } from "~/store/slices/themeSlice";
+import { UserDropdown } from "~/components/UserDropdown";
 
 export function AppBar() {
   const dispatch = useAppDispatch();
@@ -49,7 +45,7 @@ export function AppBar() {
               >
                 Todos
               </Link>
-              <Link
+              {/* <Link
                 to="/notes"
                 activeProps={{
                   className: "border-indigo-500 text-gray-900 dark:text-white",
@@ -57,7 +53,7 @@ export function AppBar() {
                 className="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
               >
                 Notes
-              </Link>
+              </Link> */}
               <Link
                 to="/counter"
                 activeProps={{
@@ -122,6 +118,15 @@ export function AppBar() {
               >
                 Form
               </Link>
+              <Link
+                to="/user-info"
+                activeProps={{
+                  className: "border-indigo-500 text-gray-900 dark:text-white",
+                }}
+                className="border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+              >
+                User Info
+              </Link>
             </div>
           </div>
           <div className="flex items-center space-x-4">
@@ -155,7 +160,7 @@ export function AppBar() {
             </button>
             <div className="ml-auto">
               <SignedIn>
-                <UserButton afterSignOutUrl="/" />
+                <UserDropdown />
               </SignedIn>
               <SignedOut>
                 <SignInButton mode="modal" />

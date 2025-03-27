@@ -24,6 +24,7 @@ import { NotFound } from "~/components/NotFound.js";
 import { store } from "~/store";
 import appCss from "~/styles/app.css?url";
 import { handleSuccessfulLogin } from "~/utils/auth";
+import { ClerkUserSync } from "~/components/ClerkUserSync";
 
 const fetchClerkAuth = createServerFn({ method: "GET" }).handler(async () => {
   const { userId } = await getAuth(getWebRequest()!);
@@ -99,6 +100,7 @@ function RootComponent() {
       <QueryClientProvider client={queryClient}>
         <ClerkProvider>
           <StripeProvider>
+            <ClerkUserSync />
             <RootDocument>
               <Outlet />
               <ReactQueryDevtools initialIsOpen={false} />
