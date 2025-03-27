@@ -122,10 +122,6 @@ export async function manageSubscriptionStatusChange(
   customerId: string,
   productId: string
 ) {
-  console.error(
-    `TEST-manageSubscriptionStatusChange: ${subscriptionId} ${customerId} ${productId}`
-  );
-
   try {
     if (!subscriptionId || !customerId || !productId) {
       throw new Error(

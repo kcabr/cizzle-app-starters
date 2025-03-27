@@ -1,3 +1,19 @@
+/*
+<ai_context>
+This file defines a Redux slice for managing user state in the application.
+It handles user authentication data and subscription information.
+
+The slice provides:
+- A typed interface for user properties (id, name, email, etc.)
+- Default initial state with null values
+- Reducers for setting user data and clearing user state
+- Action creators that can be dispatched throughout the app
+
+This state would typically be updated when users log in/out or when 
+their subscription status changes through payment processing.
+</ai_context>
+*/
+
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface UserState {
@@ -7,6 +23,7 @@ interface UserState {
   email: string | null;
   profileImageUrl: string | null;
   isLoaded: boolean;
+  subscriptionPeriodEnd: Date | null;
 }
 
 const initialState: UserState = {
@@ -16,6 +33,7 @@ const initialState: UserState = {
   email: null,
   profileImageUrl: null,
   isLoaded: false,
+  subscriptionPeriodEnd: null,
 };
 
 export const userSlice = createSlice({

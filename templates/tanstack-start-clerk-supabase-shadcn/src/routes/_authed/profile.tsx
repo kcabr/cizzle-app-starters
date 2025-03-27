@@ -1,29 +1,29 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { useClerk, useUser } from '@clerk/tanstack-start'
-import { useCallback, useState } from 'react'
-import toast from 'react-hot-toast'
+import { createFileRoute } from "@tanstack/react-router";
+import { useClerk, useUser } from "@clerk/tanstack-start";
+import { useCallback, useState } from "react";
+import toast from "react-hot-toast";
 
-export const Route = createFileRoute('/_authed/profile')({
+export const Route = createFileRoute("/_authed/profile")({
   component: ProfilePage,
-})
+});
 
 function ProfilePage() {
-  const { user } = useUser()
-  const { signOut } = useClerk()
-  const [isLoading, setIsLoading] = useState(false)
+  const { user } = useUser();
+  const { signOut } = useClerk();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSignOut = useCallback(async () => {
     try {
-      setIsLoading(true)
-      await signOut()
-      toast.success('Signed out successfully')
+      setIsLoading(true);
+      await signOut();
+      toast.success("Signed out successfully");
     } catch (error) {
-      console.error('Error signing out:', error)
-      toast.error('Failed to sign out')
+      console.error("Error signing out:", error);
+      toast.error("Failed to sign out");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }, [signOut])
+  }, [signOut]);
 
   if (!user) {
     return (
@@ -34,7 +34,7 @@ function ProfilePage() {
           <div className="h-4 bg-slate-300 dark:bg-slate-700 rounded w-1/2 mx-auto"></div>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -55,21 +55,24 @@ function ProfilePage() {
             <div className="p-8 sm:p-10 text-center">
               <div className="relative mx-auto h-24 w-24 overflow-hidden rounded-full">
                 {user.imageUrl ? (
-                  <img 
-                    src={user.imageUrl} 
-                    alt={user.fullName || "User profile"} 
+                  <img
+                    src={user.imageUrl}
+                    alt={user.fullName || "User profile"}
                     className="h-full w-full object-cover"
                   />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center bg-gray-200 dark:bg-gray-700">
                     <span className="text-xl font-medium text-gray-600 dark:text-gray-300">
-                      {user.firstName?.charAt(0) || user.emailAddresses[0]?.emailAddress?.charAt(0)?.toUpperCase()}
+                      {user.firstName?.charAt(0) ||
+                        user.emailAddresses[0]?.emailAddress
+                          ?.charAt(0)
+                          ?.toUpperCase()}
                     </span>
                   </div>
                 )}
               </div>
               <h2 className="mt-4 text-2xl font-bold text-gray-900 dark:text-white">
-                {user.fullName || 'User'}
+                {user.fullName || "User"}
               </h2>
               <p className="text-gray-500 dark:text-gray-400">
                 {user.primaryEmailAddress?.emailAddress}
@@ -78,33 +81,43 @@ function ProfilePage() {
             <div className="border-t border-gray-200 dark:border-gray-700 px-8 py-6">
               <dl className="divide-y divide-gray-200 dark:divide-gray-700">
                 <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4">
-                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Full name</dt>
+                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                    Full name
+                  </dt>
                   <dd className="mt-1 text-sm text-gray-900 dark:text-white sm:col-span-2 sm:mt-0">
-                    {user.fullName || 'Not provided'}
+                    {user.fullName || "Not provided"}
                   </dd>
                 </div>
                 <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4">
-                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Email address</dt>
+                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                    Email address
+                  </dt>
                   <dd className="mt-1 text-sm text-gray-900 dark:text-white sm:col-span-2 sm:mt-0">
                     {user.primaryEmailAddress?.emailAddress}
                   </dd>
                 </div>
                 <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4">
-                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Phone number</dt>
+                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                    Phone number
+                  </dt>
                   <dd className="mt-1 text-sm text-gray-900 dark:text-white sm:col-span-2 sm:mt-0">
-                    {user.primaryPhoneNumber?.phoneNumber || 'Not provided'}
+                    {user.primaryPhoneNumber?.phoneNumber || "Not provided"}
                   </dd>
                 </div>
                 <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4">
-                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Account ID</dt>
+                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                    Account ID
+                  </dt>
                   <dd className="mt-1 text-sm text-gray-900 dark:text-white sm:col-span-2 sm:mt-0">
                     {user.id}
                   </dd>
                 </div>
                 <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4">
-                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">Created at</dt>
+                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                    Created at
+                  </dt>
                   <dd className="mt-1 text-sm text-gray-900 dark:text-white sm:col-span-2 sm:mt-0">
-                    {new Date(user.createdAt).toLocaleString()}
+                    {new Date(user.createdAt as Date).toLocaleString()}
                   </dd>
                 </div>
               </dl>
@@ -116,12 +129,12 @@ function ProfilePage() {
                 disabled={isLoading}
                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
               >
-                {isLoading ? 'Signing out...' : 'Sign out'}
+                {isLoading ? "Signing out..." : "Sign out"}
               </button>
             </div>
           </div>
         </div>
       </main>
     </div>
-  )
+  );
 }

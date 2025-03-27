@@ -1,3 +1,17 @@
+/*
+<ai_context>
+This webhook handler processes Stripe payment gateway events. It verifies 
+incoming webhook signatures and handles subscription-related events including:
+
+- checkout.session.completed: When a customer completes payment
+- customer.subscription.updated: When subscription details change
+- customer.subscription.deleted: When a subscription is canceled
+
+The handler updates the application database with subscription status changes
+and customer information to keep payment records in sync with Stripe.
+</ai_context>
+*/
+
 import { createAPIFileRoute } from "@tanstack/react-start/api";
 import Stripe from "stripe";
 import { stripe } from "~/utils/stripe";
@@ -13,6 +27,7 @@ const relevantEvents = new Set([
   "customer.subscription.updated",
   "customer.subscription.deleted",
   "payment_link.created",
+  "customer.subscription.created",
 ]);
 
 export const APIRoute = createAPIFileRoute("/api/stripe/webhooks")({
@@ -43,6 +58,7 @@ export const APIRoute = createAPIFileRoute("/api/stripe/webhooks")({
     if (relevantEvents.has(event.type)) {
       try {
         switch (event.type) {
+          case "customer.subscription.created":
           case "customer.subscription.updated":
           case "customer.subscription.deleted":
             await handleSubscriptionChange(event);
@@ -93,6 +109,8 @@ async function handleSubscriptionChange(event: Stripe.Event) {
 
 async function handleCheckoutSession(event: Stripe.Event) {
   const checkoutSession = event.data.object as Stripe.Checkout.Session;
+
+  //console.error(`TEST-handleCheckoutSession: ${checkoutSession}`);
 
   if (checkoutSession.mode === "subscription") {
     const subscriptionId = checkoutSession.subscription as string;

@@ -20,30 +20,43 @@ import { useEffect } from "react";
 import { useUser } from "@clerk/tanstack-start";
 import { useAppDispatch, useAppSelector } from "~/store/hooks";
 import { setUser, clearUser } from "~/store/slices/userSlice";
-import { updateUserProfile } from "~/utils/auth";
-import { useServerFn } from "@tanstack/react-start";
+import { syncUserProfile } from "~/utils/user-sync";
 
 export function ClerkUserSync() {
   const { isLoaded, isSignedIn, user } = useUser();
   const dispatch = useAppDispatch();
   const reduxUser = useAppSelector((state) => state.user);
-  const updateUserProfileFn = useServerFn(updateUserProfile);
 
   useEffect(() => {
-    if (!isLoaded) return;
-
     if (isSignedIn && user) {
       // Only set user if not already in Redux
       if (!reduxUser.isLoaded) {
+        // Attempt to load subscription info
+        //const dbUser = loadDBUser(user.id);
+
         const userData = {
           id: user.id,
           firstName: user.firstName,
           lastName: user.lastName,
           email: user.primaryEmailAddress?.emailAddress || null,
           profileImageUrl: user.imageUrl,
+          subscriptionPeriodEnd: null, //dbUser?.subscriptionPeriodEnd,
         };
 
         //console.log("KC-DEBUG: userData", userData);
+
+        // try {
+        const resUser = syncUserProfile(userData);
+
+        // resUser
+        //   .then((res) => {
+        //     console.log("KC-DEBUG: res", res);
+        //   })
+        //   .catch((err) => {
+        //     console.error("KC-DEBUG: err", err);
+        //   });
+
+        // Now you can safely use resUser here
 
         // Update user in Redux
         dispatch(
@@ -52,22 +65,15 @@ export function ClerkUserSync() {
             isLoaded: true,
           })
         );
-
-        // Call the server function to sync with Prisma database
-        //updateUserProfileFn({ data: userData });
+        //} catch (error) {
+        //  console.error("Error syncing user:", error);
+        //}
       }
     } else if (reduxUser.isLoaded) {
       // Only clear if there's a user to clear
       dispatch(clearUser());
     }
-  }, [
-    isLoaded,
-    isSignedIn,
-    user,
-    dispatch,
-    reduxUser.isLoaded,
-    //updateUserProfileFn,
-  ]);
+  }, [isSignedIn, user, dispatch, reduxUser.isLoaded]);
 
   // This is a utility component that doesn't render anything
   return null;

@@ -87,6 +87,18 @@ function UserInfoPage() {
                     {user.email}
                   </p>
                 </div>
+                <div>
+                  <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                    Sub. Expiry
+                  </h3>
+                  <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                    {user.subscriptionPeriodEnd
+                      ? new Date(
+                          user.subscriptionPeriodEnd as Date
+                        ).toLocaleString()
+                      : "No subscription"}
+                  </p>
+                </div>
               </div>
             </CardContent>
           </Card>
