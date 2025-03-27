@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "~/store/hooks";
 import { setTheme } from "~/store/slices/themeSlice";
 import { UserDropdown } from "~/components/UserDropdown";
 import { useState } from "react";
-import { MessageSquare } from "lucide-react";
+import { Bug, MessageSquare } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { FeedbackModal } from "~/components/FeedbackModal";
 
@@ -73,12 +73,13 @@ export function AppBar() {
                   size="sm"
                   className="bg-white/10 text-white hover:bg-white/20 border-transparent"
                 >
-                  <MessageSquare className="h-4 w-4 mr-2" />
+                  {/* <MessageSquare className="h-4 w-4 mr-2" /> */}
+                  <Bug className="h-4 w-4 mr-2" />
                   Feedback
                 </Button>
               </SignedIn>
             )}
-            
+
             <button
               onClick={toggleTheme}
               className="p-2 rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-colors"
@@ -118,9 +119,12 @@ export function AppBar() {
           </div>
         </div>
       </div>
-      
+
       {/* Feedback Modal */}
-      <FeedbackModal open={feedbackModalOpen} onOpenChange={setFeedbackModalOpen} />
+      <FeedbackModal
+        open={feedbackModalOpen}
+        onOpenChange={setFeedbackModalOpen}
+      />
     </div>
   );
 }

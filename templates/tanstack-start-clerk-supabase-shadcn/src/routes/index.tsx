@@ -14,12 +14,6 @@ function Home() {
           Your Next Big SaaS
         </h1>
         <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-3xl mb-10">
-          Built with:
-          <br />
-          TanStack Start/Router/Form . TypeScript . Clerk . Supabase/Prisma .
-          Stripe . shadcn/ui . ag-grid
-        </p>
-        <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-3xl mb-10">
           A production-ready full-stack starter for building modern web
           applications with best practices baked in.
         </p>
@@ -40,6 +34,17 @@ function Home() {
             </Button>
           </Link>
         </div>
+        <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-3xl mt-8">
+          Built with:
+          <ul className="mt-2 space-y-1 text-lg">
+            <li>Auth: Clerk</li>
+            <li>Payment: Stripe</li>
+            <li>DB: Supabase</li>
+            <li>ORM: Prisma</li>
+            <li>UI: shadcn/Tailwind</li>
+            <li>Grid: ag-grid</li>
+          </ul>
+        </p>
       </div>
     </div>
   );
