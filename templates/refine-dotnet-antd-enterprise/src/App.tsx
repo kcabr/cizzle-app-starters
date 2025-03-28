@@ -35,6 +35,21 @@ import {
   CategoryList,
   CategoryShow,
 } from "./pages/categories";
+import {
+  ProductCreate,
+  ProductEdit,
+  ProductList,
+  ProductShow,
+} from "./pages/products";
+import { OrderCreate, OrderEdit, OrderList, OrderShow } from "./pages/orders";
+import {
+  CustomerCreate,
+  CustomerEdit,
+  CustomerList,
+  CustomerShow,
+} from "./pages/customers";
+import { Dashboard } from "./pages/dashboard";
+import { Analytics } from "./pages/analytics";
 import { ForgotPassword } from "./pages/forgotPassword";
 import { Login } from "./pages/login";
 import { Register } from "./pages/register";
@@ -53,6 +68,51 @@ function App() {
                 //authProvider={authProvider}
                 routerProvider={routerBindings}
                 resources={[
+                  {
+                    name: "dashboard",
+                    list: "/dashboard",
+                    meta: {
+                      label: "Dashboard",
+                      icon: <AppIcon />,
+                    },
+                  },
+                  {
+                    name: "products",
+                    list: "/products",
+                    create: "/products/create",
+                    edit: "/products/edit/:id",
+                    show: "/products/show/:id",
+                    meta: {
+                      canDelete: true,
+                    },
+                  },
+                  {
+                    name: "orders",
+                    list: "/orders",
+                    create: "/orders/create",
+                    edit: "/orders/edit/:id",
+                    show: "/orders/show/:id",
+                    meta: {
+                      canDelete: true,
+                    },
+                  },
+                  {
+                    name: "customers",
+                    list: "/customers",
+                    create: "/customers/create",
+                    edit: "/customers/edit/:id",
+                    show: "/customers/show/:id",
+                    meta: {
+                      canDelete: true,
+                    },
+                  },
+                  {
+                    name: "analytics",
+                    list: "/analytics",
+                    meta: {
+                      label: "Analytics",
+                    },
+                  },
                   {
                     name: "blog_posts",
                     list: "/blog-posts",
@@ -79,7 +139,7 @@ function App() {
                   warnWhenUnsavedChanges: true,
                   useNewQueryKeys: true,
                   projectId: "hw1HtQ-7V927x-gmUcR6",
-                  title: { text: "Refine Project", icon: <AppIcon /> },
+                  title: { text: "XDent Admin Portal", icon: <AppIcon /> },
                 }}
               >
                 <Routes>
@@ -100,8 +160,28 @@ function App() {
                   >
                     <Route
                       index
-                      element={<NavigateToResource resource="blog_posts" />}
+                      element={<NavigateToResource resource="dashboard" />}
                     />
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/analytics" element={<Analytics />} />
+                    <Route path="/products">
+                      <Route index element={<ProductList />} />
+                      <Route path="create" element={<ProductCreate />} />
+                      <Route path="edit/:id" element={<ProductEdit />} />
+                      <Route path="show/:id" element={<ProductShow />} />
+                    </Route>
+                    <Route path="/orders">
+                      <Route index element={<OrderList />} />
+                      <Route path="create" element={<OrderCreate />} />
+                      <Route path="edit/:id" element={<OrderEdit />} />
+                      <Route path="show/:id" element={<OrderShow />} />
+                    </Route>
+                    <Route path="/customers">
+                      <Route index element={<CustomerList />} />
+                      <Route path="create" element={<CustomerCreate />} />
+                      <Route path="edit/:id" element={<CustomerEdit />} />
+                      <Route path="show/:id" element={<CustomerShow />} />
+                    </Route>
                     <Route path="/blog-posts">
                       <Route index element={<BlogPostList />} />
                       <Route path="create" element={<BlogPostCreate />} />
