@@ -7,10 +7,10 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../components/ui/card";
-import { AccentButton } from "../components/AccentButton";
+} from "~/components/ui/card";
+import { AccentButton } from "~/components/AccentButton";
 
-export const Route = createFileRoute("/showcase")({
+export const Route = createFileRoute("/_authed/showcase")({
   component: Showcase,
 });
 

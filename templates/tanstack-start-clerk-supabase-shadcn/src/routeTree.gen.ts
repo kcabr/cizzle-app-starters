@@ -13,7 +13,6 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as UiShowcaseImport } from './routes/ui-showcase'
 import { Route as TestImport } from './routes/test'
-import { Route as ShowcaseImport } from './routes/showcase'
 import { Route as NewsImport } from './routes/news'
 import { Route as GridImport } from './routes/grid'
 import { Route as FormImport } from './routes/form'
@@ -24,6 +23,7 @@ import { Route as NewsSearchImport } from './routes/news.search'
 import { Route as AuthedUserInfoImport } from './routes/_authed/user-info'
 import { Route as AuthedTodosImport } from './routes/_authed/todos'
 import { Route as AuthedSubscriptionImport } from './routes/_authed/subscription'
+import { Route as AuthedShowcaseImport } from './routes/_authed/showcase'
 import { Route as AuthedProfileImport } from './routes/_authed/profile'
 import { Route as AuthedPostsImport } from './routes/_authed/posts'
 import { Route as AuthedNotesImport } from './routes/_authed/notes'
@@ -44,12 +44,6 @@ const UiShowcaseRoute = UiShowcaseImport.update({
 const TestRoute = TestImport.update({
   id: '/test',
   path: '/test',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const ShowcaseRoute = ShowcaseImport.update({
-  id: '/showcase',
-  path: '/showcase',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -109,6 +103,12 @@ const AuthedTodosRoute = AuthedTodosImport.update({
 const AuthedSubscriptionRoute = AuthedSubscriptionImport.update({
   id: '/subscription',
   path: '/subscription',
+  getParentRoute: () => AuthedRoute,
+} as any)
+
+const AuthedShowcaseRoute = AuthedShowcaseImport.update({
+  id: '/showcase',
+  path: '/showcase',
   getParentRoute: () => AuthedRoute,
 } as any)
 
@@ -199,13 +199,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NewsImport
       parentRoute: typeof rootRoute
     }
-    '/showcase': {
-      id: '/showcase'
-      path: '/showcase'
-      fullPath: '/showcase'
-      preLoaderRoute: typeof ShowcaseImport
-      parentRoute: typeof rootRoute
-    }
     '/test': {
       id: '/test'
       path: '/test'
@@ -246,6 +239,13 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof AuthedProfileImport
+      parentRoute: typeof AuthedImport
+    }
+    '/_authed/showcase': {
+      id: '/_authed/showcase'
+      path: '/showcase'
+      fullPath: '/showcase'
+      preLoaderRoute: typeof AuthedShowcaseImport
       parentRoute: typeof AuthedImport
     }
     '/_authed/subscription': {
@@ -358,6 +358,7 @@ interface AuthedRouteChildren {
   AuthedNotesRoute: typeof AuthedNotesRoute
   AuthedPostsRoute: typeof AuthedPostsRouteWithChildren
   AuthedProfileRoute: typeof AuthedProfileRouteWithChildren
+  AuthedShowcaseRoute: typeof AuthedShowcaseRoute
   AuthedSubscriptionRoute: typeof AuthedSubscriptionRouteWithChildren
   AuthedTodosRoute: typeof AuthedTodosRoute
   AuthedUserInfoRoute: typeof AuthedUserInfoRoute
@@ -368,6 +369,7 @@ const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedNotesRoute: AuthedNotesRoute,
   AuthedPostsRoute: AuthedPostsRouteWithChildren,
   AuthedProfileRoute: AuthedProfileRouteWithChildren,
+  AuthedShowcaseRoute: AuthedShowcaseRoute,
   AuthedSubscriptionRoute: AuthedSubscriptionRouteWithChildren,
   AuthedTodosRoute: AuthedTodosRoute,
   AuthedUserInfoRoute: AuthedUserInfoRoute,
@@ -394,13 +396,13 @@ export interface FileRoutesByFullPath {
   '/form': typeof FormRoute
   '/grid': typeof GridRoute
   '/news': typeof NewsRouteWithChildren
-  '/showcase': typeof ShowcaseRoute
   '/test': typeof TestRoute
   '/ui-showcase': typeof UiShowcaseRoute
   '/counter': typeof AuthedCounterRoute
   '/notes': typeof AuthedNotesRoute
   '/posts': typeof AuthedPostsRouteWithChildren
   '/profile': typeof AuthedProfileRouteWithChildren
+  '/showcase': typeof AuthedShowcaseRoute
   '/subscription': typeof AuthedSubscriptionRouteWithChildren
   '/todos': typeof AuthedTodosRoute
   '/user-info': typeof AuthedUserInfoRoute
@@ -417,12 +419,12 @@ export interface FileRoutesByTo {
   '': typeof AuthedRouteWithChildren
   '/form': typeof FormRoute
   '/grid': typeof GridRoute
-  '/showcase': typeof ShowcaseRoute
   '/test': typeof TestRoute
   '/ui-showcase': typeof UiShowcaseRoute
   '/counter': typeof AuthedCounterRoute
   '/notes': typeof AuthedNotesRoute
   '/profile': typeof AuthedProfileRouteWithChildren
+  '/showcase': typeof AuthedShowcaseRoute
   '/subscription': typeof AuthedSubscriptionRouteWithChildren
   '/todos': typeof AuthedTodosRoute
   '/user-info': typeof AuthedUserInfoRoute
@@ -441,13 +443,13 @@ export interface FileRoutesById {
   '/form': typeof FormRoute
   '/grid': typeof GridRoute
   '/news': typeof NewsRouteWithChildren
-  '/showcase': typeof ShowcaseRoute
   '/test': typeof TestRoute
   '/ui-showcase': typeof UiShowcaseRoute
   '/_authed/counter': typeof AuthedCounterRoute
   '/_authed/notes': typeof AuthedNotesRoute
   '/_authed/posts': typeof AuthedPostsRouteWithChildren
   '/_authed/profile': typeof AuthedProfileRouteWithChildren
+  '/_authed/showcase': typeof AuthedShowcaseRoute
   '/_authed/subscription': typeof AuthedSubscriptionRouteWithChildren
   '/_authed/todos': typeof AuthedTodosRoute
   '/_authed/user-info': typeof AuthedUserInfoRoute
@@ -467,13 +469,13 @@ export interface FileRouteTypes {
     | '/form'
     | '/grid'
     | '/news'
-    | '/showcase'
     | '/test'
     | '/ui-showcase'
     | '/counter'
     | '/notes'
     | '/posts'
     | '/profile'
+    | '/showcase'
     | '/subscription'
     | '/todos'
     | '/user-info'
@@ -489,12 +491,12 @@ export interface FileRouteTypes {
     | ''
     | '/form'
     | '/grid'
-    | '/showcase'
     | '/test'
     | '/ui-showcase'
     | '/counter'
     | '/notes'
     | '/profile'
+    | '/showcase'
     | '/subscription'
     | '/todos'
     | '/user-info'
@@ -511,13 +513,13 @@ export interface FileRouteTypes {
     | '/form'
     | '/grid'
     | '/news'
-    | '/showcase'
     | '/test'
     | '/ui-showcase'
     | '/_authed/counter'
     | '/_authed/notes'
     | '/_authed/posts'
     | '/_authed/profile'
+    | '/_authed/showcase'
     | '/_authed/subscription'
     | '/_authed/todos'
     | '/_authed/user-info'
@@ -536,7 +538,6 @@ export interface RootRouteChildren {
   FormRoute: typeof FormRoute
   GridRoute: typeof GridRoute
   NewsRoute: typeof NewsRouteWithChildren
-  ShowcaseRoute: typeof ShowcaseRoute
   TestRoute: typeof TestRoute
   UiShowcaseRoute: typeof UiShowcaseRoute
 }
@@ -547,7 +548,6 @@ const rootRouteChildren: RootRouteChildren = {
   FormRoute: FormRoute,
   GridRoute: GridRoute,
   NewsRoute: NewsRouteWithChildren,
-  ShowcaseRoute: ShowcaseRoute,
   TestRoute: TestRoute,
   UiShowcaseRoute: UiShowcaseRoute,
 }
@@ -567,7 +567,6 @@ export const routeTree = rootRoute
         "/form",
         "/grid",
         "/news",
-        "/showcase",
         "/test",
         "/ui-showcase"
       ]
@@ -582,6 +581,7 @@ export const routeTree = rootRoute
         "/_authed/notes",
         "/_authed/posts",
         "/_authed/profile",
+        "/_authed/showcase",
         "/_authed/subscription",
         "/_authed/todos",
         "/_authed/user-info"
@@ -599,9 +599,6 @@ export const routeTree = rootRoute
         "/news/search",
         "/news/"
       ]
-    },
-    "/showcase": {
-      "filePath": "showcase.tsx"
     },
     "/test": {
       "filePath": "test.tsx"
@@ -631,6 +628,10 @@ export const routeTree = rootRoute
       "children": [
         "/_authed/profile/$"
       ]
+    },
+    "/_authed/showcase": {
+      "filePath": "_authed/showcase.tsx",
+      "parent": "/_authed"
     },
     "/_authed/subscription": {
       "filePath": "_authed/subscription.tsx",

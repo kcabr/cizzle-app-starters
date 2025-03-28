@@ -1,12 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
 import { Button } from "../components/ui/button";
+import { seo } from "~/utils/meta";
 
 export const Route = createFileRoute("/")({
-  component: Home,
+  component: Index,
 });
 
-function Home() {
+function Index() {
   return (
     <div className="container py-16 mx-auto text-center">
       <div className="flex flex-col items-center justify-center min-h-[60vh]">
@@ -34,17 +35,20 @@ function Home() {
             </Button>
           </Link>
         </div>
-        <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-3xl mt-8">
-          Built with:
-          <ul className="mt-2 space-y-1 text-lg">
+        <div className="p-4 text-center">
+          <ul className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-3xl mt-8 space-y-1">
+            <li>
+              <b>Tanstack Start/Query/Router/Form</b>
+            </li>
             <li>Auth: Clerk</li>
             <li>Payment: Stripe</li>
             <li>DB: Supabase</li>
             <li>ORM: Prisma</li>
             <li>UI: shadcn/Tailwind</li>
-            <li>Grid: ag-grid</li>
+            <li>Datatable: ag-grid</li>
+            <li>State: Redux</li>
           </ul>
-        </p>
+        </div>
       </div>
     </div>
   );
