@@ -15,8 +15,9 @@ function Index() {
           Your Next Big SaaS
         </h1>
         <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-3xl mb-10">
-          A production-ready full-stack starter for building modern web
-          applications with best practices baked in.
+          A production-ready full-stack starter template for building
+          <br />
+          modern web applications with best practices baked in.
         </p>
         <div className="flex gap-4">
           {/* <Button
