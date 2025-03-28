@@ -21,6 +21,14 @@ import { Label } from "~/components/ui/label";
 import { Checkbox } from "~/components/ui/checkbox";
 import { AccentButton } from "~/components/AccentButton";
 
+// Define an extended Todo type that includes the user relation
+type TodoWithUser = Todo & {
+  user: {
+    firstName: string | null;
+    lastName: string | null;
+  } | null; // User might be null if relation is optional or fetching fails
+};
+
 export const Route = createFileRoute("/_authed/todos")({
   component: TodoList,
 });
@@ -30,12 +38,13 @@ function TodoList() {
   const [newTodoDescription, setNewTodoDescription] = useState("");
   const queryClient = useQueryClient();
 
-  // Load todos
+  // Load todos - Adjust the type annotation for useQuery data
   const {
     data: todos,
     isLoading,
     error,
-  } = useQuery({
+  } = useQuery<TodoWithUser[]>({
+    // Use the extended type here
     queryKey: ["todos"],
     queryFn: () => getTodos(),
   });
@@ -90,7 +99,7 @@ function TodoList() {
     });
   };
 
-  const toggleTodoStatus = (todo: Todo) => {
+  const toggleTodoStatus = (todo: TodoWithUser) => {
     updateTodoMutation.mutate({
       data: {
         id: todo.id,
@@ -180,18 +189,19 @@ function TodoList() {
           <CardContent>
             {todos && todos.length > 0 ? (
               <ul className="space-y-4">
-                {todos.map((todo) => (
+                {todos.map((todo: TodoWithUser) => (
                   <li
                     key={todo.id}
                     className="flex items-start justify-between space-x-2 pb-4 border-b"
                   >
-                    <div className="flex items-start space-x-2">
+                    <div className="flex items-start space-x-2 flex-grow">
                       <Checkbox
                         id={`todo-${todo.id}`}
                         checked={todo.completed}
                         onCheckedChange={() => toggleTodoStatus(todo)}
+                        className="mt-1" // Align checkbox better
                       />
-                      <div>
+                      <div className="flex-grow">
                         <label
                           htmlFor={`todo-${todo.id}`}
                           className={`font-medium cursor-pointer ${
@@ -207,12 +217,21 @@ function TodoList() {
                             {todo.description}
                           </p>
                         )}
+                        {/* Display user's name */}
+                        {todo.user &&
+                          (todo.user.firstName || todo.user.lastName) && (
+                            <p className="text-xs text-gray-500 mt-1">
+                              By: {todo.user.firstName || ""}{" "}
+                              {todo.user.lastName || ""}
+                            </p>
+                          )}
                       </div>
                     </div>
                     <AccentButton
+                      variant="destructive" // Use destructive variant for delete
                       size="sm"
                       onClick={() => handleDeleteTodo(todo.id)}
-                      className="bg-red-100 text-red-800 hover:bg-red-200 dark:bg-red-900 dark:text-red-100 dark:hover:bg-red-800"
+                      // Removed custom classes, rely on variant
                     >
                       Delete
                     </AccentButton>

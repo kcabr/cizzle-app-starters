@@ -6,18 +6,23 @@ import { getWebRequest } from "@tanstack/react-start/server";
 
 // Get all todos for the authenticated user
 export const getTodos = createServerFn({ method: "GET" }).handler(async () => {
-  try {
-    const { userId } = await getAuth(getWebRequest()!);
-    if (!userId) throw new Error("Unauthorized");
-
-    return await prisma.todo.findMany({
-      where: { userId },
-      orderBy: { createdAt: "desc" },
-    });
-  } catch (error) {
-    console.error("Error fetching todos:", error);
-    throw error;
+  const { userId } = await getAuth(getWebRequest()!);
+  if (!userId) {
+    throw new Error("Authentication required");
   }
+
+  return await prisma.todo.findMany({
+    where: { userId },
+    include: {
+      user: {
+        select: {
+          firstName: true,
+          lastName: true,
+        },
+      },
+    },
+    orderBy: { createdAt: "desc" },
+  });
 });
 
 // Get a single todo by ID
