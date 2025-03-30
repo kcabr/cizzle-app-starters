@@ -1,0 +1,22 @@
+[
+  {
+    "name": "api-key",
+    "list": "/api-key",
+    "create": "/api-key/create",
+    "edit": "/api-key/edit/:id",
+    "show": "/api-key/show/:id",
+    "meta": {
+      "canDelete": true
+    }
+  },
+  {
+    "name": "home",
+    "list": "/home",
+    "create": "/home/create",
+    "edit": "/home/edit/:id",
+    "show": "/home/show/:id",
+    "meta": {
+      "canDelete": true
+    }
+  }
+]

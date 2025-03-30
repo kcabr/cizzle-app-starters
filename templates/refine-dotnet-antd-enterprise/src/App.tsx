@@ -53,8 +53,47 @@ import { Analytics } from "./pages/analytics";
 import { ForgotPassword } from "./pages/forgotPassword";
 import { Login } from "./pages/login";
 import { Register } from "./pages/register";
+import {
+  ApiKeyCreate,
+  ApiKeyEdit,
+  ApiKeyList,
+  ApiKeyShow,
+} from "./pages/api-key";
+import resourcesJson from "./refine-resources.autogen.json";
+import { useMemo } from "react";
+import { AutoGenRoutes } from "./components/AutoGenRoutes";
+
+const staticResources = [
+  {
+    name: "home",
+    list: "/home",
+    meta: {
+      label: "Home",
+      icon: <AppIcon />,
+    },
+  },
+  {
+    name: "dashboard",
+    list: "/dashboard",
+    meta: {
+      label: "Dashboard",
+      icon: <AppIcon />,
+    },
+  },
+];
 
 function App() {
+  // Merge static and dynamic resources, with static resources taking precedence
+  const resources = useMemo(
+    () =>
+      // Combine arrays (static first, then dynamic) and transform icons
+      [
+        ...staticResources,
+        ...(Array.isArray(resourcesJson) ? resourcesJson : []),
+      ],
+    []
+  );
+
   return (
     <BrowserRouter>
       {/* <GitHubBanner /> */}
@@ -63,77 +102,11 @@ function App() {
           <AntdApp>
             <DevtoolsProvider>
               <Refine
-                dataProvider={dataProvider("https://api.fake-rest.refine.dev")}
+                dataProvider={dataProvider("/api/crud")}
                 notificationProvider={useNotificationProvider}
                 //authProvider={authProvider}
                 routerProvider={routerBindings}
-                resources={[
-                  {
-                    name: "dashboard",
-                    list: "/dashboard",
-                    meta: {
-                      label: "Dashboard",
-                      icon: <AppIcon />,
-                    },
-                  },
-                  {
-                    name: "products",
-                    list: "/products",
-                    create: "/products/create",
-                    edit: "/products/edit/:id",
-                    show: "/products/show/:id",
-                    meta: {
-                      canDelete: true,
-                    },
-                  },
-                  {
-                    name: "orders",
-                    list: "/orders",
-                    create: "/orders/create",
-                    edit: "/orders/edit/:id",
-                    show: "/orders/show/:id",
-                    meta: {
-                      canDelete: true,
-                    },
-                  },
-                  {
-                    name: "customers",
-                    list: "/customers",
-                    create: "/customers/create",
-                    edit: "/customers/edit/:id",
-                    show: "/customers/show/:id",
-                    meta: {
-                      canDelete: true,
-                    },
-                  },
-                  {
-                    name: "analytics",
-                    list: "/analytics",
-                    meta: {
-                      label: "Analytics",
-                    },
-                  },
-                  {
-                    name: "blog_posts",
-                    list: "/blog-posts",
-                    create: "/blog-posts/create",
-                    edit: "/blog-posts/edit/:id",
-                    show: "/blog-posts/show/:id",
-                    meta: {
-                      canDelete: true,
-                    },
-                  },
-                  {
-                    name: "categories",
-                    list: "/categories",
-                    create: "/categories/create",
-                    edit: "/categories/edit/:id",
-                    show: "/categories/show/:id",
-                    meta: {
-                      canDelete: true,
-                    },
-                  },
-                ]}
+                resources={resources}
                 options={{
                   syncWithLocation: true,
                   warnWhenUnsavedChanges: true,
@@ -163,37 +136,16 @@ function App() {
                       element={<NavigateToResource resource="dashboard" />}
                     />
                     <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/home" element={<Dashboard />} />
                     <Route path="/analytics" element={<Analytics />} />
-                    <Route path="/products">
-                      <Route index element={<ProductList />} />
-                      <Route path="create" element={<ProductCreate />} />
-                      <Route path="edit/:id" element={<ProductEdit />} />
-                      <Route path="show/:id" element={<ProductShow />} />
+                    {/* ROUTE AUTOGEN START HERE */}
+                    <Route path="/api-key">
+                      <Route index element={<ApiKeyList />} />
+                      <Route path="create" element={<ApiKeyCreate />} />
+                      <Route path="edit/:id" element={<ApiKeyEdit />} />
+                      <Route path="show/:id" element={<ApiKeyShow />} />
                     </Route>
-                    <Route path="/orders">
-                      <Route index element={<OrderList />} />
-                      <Route path="create" element={<OrderCreate />} />
-                      <Route path="edit/:id" element={<OrderEdit />} />
-                      <Route path="show/:id" element={<OrderShow />} />
-                    </Route>
-                    <Route path="/customers">
-                      <Route index element={<CustomerList />} />
-                      <Route path="create" element={<CustomerCreate />} />
-                      <Route path="edit/:id" element={<CustomerEdit />} />
-                      <Route path="show/:id" element={<CustomerShow />} />
-                    </Route>
-                    <Route path="/blog-posts">
-                      <Route index element={<BlogPostList />} />
-                      <Route path="create" element={<BlogPostCreate />} />
-                      <Route path="edit/:id" element={<BlogPostEdit />} />
-                      <Route path="show/:id" element={<BlogPostShow />} />
-                    </Route>
-                    <Route path="/categories">
-                      <Route index element={<CategoryList />} />
-                      <Route path="create" element={<CategoryCreate />} />
-                      <Route path="edit/:id" element={<CategoryEdit />} />
-                      <Route path="show/:id" element={<CategoryShow />} />
-                    </Route>
+                    {/* ROUTE AUTOGEN END HERE */}
                     <Route path="*" element={<ErrorComponent />} />
                   </Route>
                   <Route
