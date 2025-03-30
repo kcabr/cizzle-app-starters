@@ -61,8 +61,10 @@ import {
 } from "./pages/api-key";
 import resourcesJson from "./refine-resources.autogen.json";
 import { useMemo } from "react";
-import { AutoGenRoutes } from "./components/AutoGenRoutes";
+/* IMPORT AUTOGEN START HERE */
+/* IMPORT AUTOGEN END HERE */
 
+// Static menu Resources here
 const staticResources = [
   {
     name: "home",
