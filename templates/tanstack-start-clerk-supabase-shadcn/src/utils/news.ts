@@ -51,7 +51,7 @@ export async function getTopHeadlines({
   data,
 }: TopHeadlinesParams): Promise<NewsResponse> {
   const params = new URLSearchParams({
-    apiKey: "2601710ac62f4a5c800a804de80b17cb", // TODO: Hide this better but .env is not working.
+    apiKey: process.env.NEWSAPI_KEY || import.meta.env.NEWSAPI_KEY || "",
     category: data.category || "general",
     country: data.country || "us",
     pageSize: (data.pageSize || 10).toString(),

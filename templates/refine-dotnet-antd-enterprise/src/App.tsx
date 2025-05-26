@@ -53,27 +53,28 @@ import { Analytics } from "./pages/analytics";
 import { ForgotPassword } from "./pages/forgotPassword";
 import { Login } from "./pages/login";
 import { Register } from "./pages/register";
-import {
-  ApiKeyCreate,
-  ApiKeyEdit,
-  ApiKeyList,
-  ApiKeyShow,
-} from "./pages/api-key";
 import resourcesJson from "./refine-resources.autogen.json";
 import { useMemo } from "react";
 /* IMPORT AUTOGEN START HERE */
+import {
+  ApiKeyList,
+  ApiKeyCreate,
+  ApiKeyEdit,
+  ApiKeyShow,
+} from "./pages/api-key";
+import { HomeList, HomeCreate, HomeEdit, HomeShow } from "./pages/home";
 /* IMPORT AUTOGEN END HERE */
 
 // Static menu Resources here
 const staticResources = [
-  {
-    name: "home",
-    list: "/home",
-    meta: {
-      label: "Home",
-      icon: <AppIcon />,
-    },
-  },
+  // {
+  //   name: "home",
+  //   list: "/home",
+  //   meta: {
+  //     label: "Home",
+  //     icon: <AppIcon />,
+  //   },
+  // },
   {
     name: "dashboard",
     list: "/dashboard",
@@ -146,6 +147,12 @@ function App() {
                       <Route path="create" element={<ApiKeyCreate />} />
                       <Route path="edit/:id" element={<ApiKeyEdit />} />
                       <Route path="show/:id" element={<ApiKeyShow />} />
+                    </Route>
+                    <Route path="/home">
+                      <Route index element={<HomeList />} />
+                      <Route path="create" element={<HomeCreate />} />
+                      <Route path="edit/:id" element={<HomeEdit />} />
+                      <Route path="show/:id" element={<HomeShow />} />
                     </Route>
                     {/* ROUTE AUTOGEN END HERE */}
                     <Route path="*" element={<ErrorComponent />} />
