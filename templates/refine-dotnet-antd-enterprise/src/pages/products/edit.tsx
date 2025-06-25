@@ -1,5 +1,4 @@
 import { Edit, useForm, useSelect } from "@refinedev/antd";
-import { useOne } from "@refinedev/core";
 import {
   Form,
   Input,
@@ -14,19 +13,10 @@ import { UploadOutlined } from "@ant-design/icons";
 import MDEditor from "@uiw/react-md-editor";
 
 export const ProductEdit = () => {
-  const { formProps, saveButtonProps, id } = useForm();
+  const { formProps, saveButtonProps, queryResult } = useForm();
 
-  const { data } = useOne({
-    resource: "products",
-    id: id as string,
-    queryOptions: {
-      enabled: !!id,
-    },
-  });
+  const productData = queryResult?.data?.data;
 
-  const productData = data?.data;
-
-  //
   const { selectProps: categorySelectProps } = useSelect({
     resource: "categories",
     defaultValue: productData?.category?.id,

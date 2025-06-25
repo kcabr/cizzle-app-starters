@@ -24,8 +24,9 @@ const { Title, Text } = Typography;
 const { TabPane } = Tabs;
 
 export const CustomerShow = () => {
-  const { query } = useShow();
-  const { data, isLoading } = query;
+  const { queryResult } = useShow();
+  const { data, isLoading } = queryResult;
+
   const record = data?.data;
 
   const { data: orderData, isLoading: orderIsLoading } = useList({
@@ -85,11 +86,8 @@ export const CustomerShow = () => {
                 />
                 <Statistic
                   title="Customer Since"
-                  value={record?.createdAt}
+                  value={<DateField value={record?.createdAt} format="LL" />}
                   prefix={<FieldTimeOutlined />}
-                  formatter={(value) =>
-                    value ? new Date(value).toLocaleDateString() : "N/A"
-                  }
                 />
               </Space>
             </Col>

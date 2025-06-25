@@ -109,7 +109,73 @@ function App() {
                 notificationProvider={useNotificationProvider}
                 //authProvider={authProvider}
                 routerProvider={routerBindings}
-                resources={resources}
+                resources={[
+                  {
+                    name: "dashboard",
+                    list: "/dashboard",
+                    meta: {
+                      label: "Dashboard",
+                      icon: <AppIcon />,
+                    },
+                  },
+                  {
+                    name: "products",
+                    list: "/products",
+                    create: "/products/create",
+                    edit: "/products/edit/:id",
+                    show: "/products/show/:id",
+                    meta: {
+                      canDelete: true,
+                    },
+                  },
+                  {
+                    name: "orders",
+                    list: "/orders",
+                    create: "/orders/create",
+                    edit: "/orders/edit/:id",
+                    show: "/orders/show/:id",
+                    meta: {
+                      canDelete: true,
+                    },
+                  },
+                  {
+                    name: "customers",
+                    list: "/customers",
+                    create: "/customers/create",
+                    edit: "/customers/edit/:id",
+                    show: "/customers/show/:id",
+                    meta: {
+                      canDelete: true,
+                    },
+                  },
+                  {
+                    name: "analytics",
+                    list: "/analytics",
+                    meta: {
+                      label: "Analytics",
+                    },
+                  },
+                  {
+                    name: "blog_posts",
+                    list: "/blog-posts",
+                    create: "/blog-posts/create",
+                    edit: "/blog-posts/edit/:id",
+                    show: "/blog-posts/show/:id",
+                    meta: {
+                      canDelete: true,
+                    },
+                  },
+                  {
+                    name: "categories",
+                    list: "/categories",
+                    create: "/categories/create",
+                    edit: "/categories/edit/:id",
+                    show: "/categories/show/:id",
+                    meta: {
+                      canDelete: true,
+                    },
+                  },
+                ]}
                 options={{
                   syncWithLocation: true,
                   warnWhenUnsavedChanges: true,
@@ -139,14 +205,30 @@ function App() {
                       element={<NavigateToResource resource="dashboard" />}
                     />
                     <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/home" element={<Dashboard />} />
                     <Route path="/analytics" element={<Analytics />} />
-                    {/* ROUTE AUTOGEN START HERE */}
-                    <Route path="/api-key">
-                      <Route index element={<ApiKeyList />} />
-                      <Route path="create" element={<ApiKeyCreate />} />
-                      <Route path="edit/:id" element={<ApiKeyEdit />} />
-                      <Route path="show/:id" element={<ApiKeyShow />} />
+                    <Route path="/products">
+                      <Route index element={<ProductList />} />
+                      <Route path="create" element={<ProductCreate />} />
+                      <Route path="edit/:id" element={<ProductEdit />} />
+                      <Route path="show/:id" element={<ProductShow />} />
+                    </Route>
+                    <Route path="/orders">
+                      <Route index element={<OrderList />} />
+                      <Route path="create" element={<OrderCreate />} />
+                      <Route path="edit/:id" element={<OrderEdit />} />
+                      <Route path="show/:id" element={<OrderShow />} />
+                    </Route>
+                    <Route path="/customers">
+                      <Route index element={<CustomerList />} />
+                      <Route path="create" element={<CustomerCreate />} />
+                      <Route path="edit/:id" element={<CustomerEdit />} />
+                      <Route path="show/:id" element={<CustomerShow />} />
+                    </Route>
+                    <Route path="/blog-posts">
+                      <Route index element={<BlogPostList />} />
+                      <Route path="create" element={<BlogPostCreate />} />
+                      <Route path="edit/:id" element={<BlogPostEdit />} />
+                      <Route path="show/:id" element={<BlogPostShow />} />
                     </Route>
                     <Route path="/home">
                       <Route index element={<HomeList />} />

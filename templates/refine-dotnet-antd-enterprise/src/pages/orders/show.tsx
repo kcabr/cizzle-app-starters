@@ -16,8 +16,9 @@ import {
 const { Title, Text } = Typography;
 
 export const OrderShow = () => {
-  const { query } = useShow();
-  const { data, isLoading } = query;
+  const { queryResult } = useShow();
+  const { data, isLoading } = queryResult;
+
   const record = data?.data;
 
   const { data: customerData, isLoading: customerIsLoading } = useOne({
