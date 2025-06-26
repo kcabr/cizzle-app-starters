@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useUser } from "@clerk/tanstack-start";
+import { useAuth } from "./AuthComponents";
 import { STRIPE_PLANS } from "~/utils/stripe";
 import { useSubscription } from "./StripeProvider";
 import { CheckCircle2 } from "lucide-react";
@@ -14,8 +14,8 @@ import {
 import { Button } from "./ui/button";
 import { Alert, AlertDescription } from "./ui/alert";
 
-export function SubscriptionPlans() {
-  const { isSignedIn, user } = useUser();
+export default function SubscriptionPlans() {
+  const { user } = useAuth();
   const { isActive, planName, refetch } = useSubscription();
   const [error, setError] = useState<string | null>(null);
 
@@ -47,17 +47,6 @@ export function SubscriptionPlans() {
           Select the subscription that best fits your needs and unlock premium
           features
         </p>
-
-        {!isSignedIn && (
-          <Alert
-            variant="default"
-            className="mt-6 max-w-lg mx-auto bg-secondary/50"
-          >
-            <AlertDescription>
-              Please sign in to purchase a subscription
-            </AlertDescription>
-          </Alert>
-        )}
 
         {isCanceled && (
           <Alert
@@ -95,8 +84,8 @@ export function SubscriptionPlans() {
             ? annualPaymentLink
             : monthlyPaymentLink;
 
-          // Add prefilled email and client reference id to the payment link from the clerk user
-          paymentLink = `${paymentLink}?prefilled_email=${user?.primaryEmailAddress?.emailAddress}&client_reference_id=${user?.id}`;
+          // Add prefilled email and client reference id to the payment link from the user
+          paymentLink = `${paymentLink}?prefilled_email=${user?.email}&client_reference_id=${user?.id}`;
 
           return (
             <Card
@@ -146,11 +135,11 @@ export function SubscriptionPlans() {
               <CardFooter>
                 <Button
                   className="w-full"
-                  disabled={!isSignedIn || isActivePlan}
+                  disabled={!user || isActivePlan}
                   onClick={() => {
-                    if (isSignedIn && !isActivePlan && paymentLink) {
+                    if (user && !isActivePlan && paymentLink) {
                       window.location.href = paymentLink;
-                    } else if (!isSignedIn) {
+                    } else if (!user) {
                       setError("You must be logged in to subscribe");
                     }
                   }}

@@ -1,0 +1,6 @@
+import{c}from"./createLucideIcon-BdBzZ_PZ.js";import{r as a,j as s}from"./client-Bm6Vdnqp.js";import{c as i,b as l}from"./button-1p6NbWQA.js";/**
+ * @license lucide-react v0.483.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */const d=[["circle",{cx:"12",cy:"12",r:"10",key:"1mglay"}],["path",{d:"m9 12 2 2 4-4",key:"dzmm74"}]],x=c("CircleCheck",d),n=l("relative w-full rounded-lg border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground",{variants:{variant:{default:"bg-background text-foreground",destructive:"border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive"}},defaultVariants:{variant:"default"}}),m=a.forwardRef(({className:e,variant:t,...r},o)=>s.jsx("div",{ref:o,role:"alert",className:i(n({variant:t}),e),...r}));m.displayName="Alert";const v=a.forwardRef(({className:e,...t},r)=>s.jsx("h5",{ref:r,className:i("mb-1 font-medium leading-none tracking-tight",e),...t}));v.displayName="AlertTitle";const f=a.forwardRef(({className:e,...t},r)=>s.jsx("div",{ref:r,className:i("text-sm [&_p]:leading-relaxed",e),...t}));f.displayName="AlertDescription";export{m as A,x as C,f as a};

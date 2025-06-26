@@ -1,5 +1,11 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { useUser } from "@clerk/tanstack-start";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+import { useAuth } from "./AuthComponents";
 import { checkSubscriptionStatus, STRIPE_PLANS } from "~/utils/stripe";
 import toast from "react-hot-toast";
 
@@ -19,7 +25,8 @@ const defaultContext: SubscriptionContextType = {
   refetch: async () => {},
 };
 
-const SubscriptionContext = createContext<SubscriptionContextType>(defaultContext);
+const SubscriptionContext =
+  createContext<SubscriptionContextType>(defaultContext);
 
 export const useSubscription = () => useContext(SubscriptionContext);
 
@@ -27,15 +34,15 @@ interface StripeProviderProps {
   children: ReactNode;
 }
 
-export function StripeProvider({ children }: StripeProviderProps) {
-  const { isSignedIn, user } = useUser();
+export default function StripeProvider({ children }: StripeProviderProps) {
+  const { user } = useAuth();
   const [isActive, setIsActive] = useState(false);
   const [planId, setPlanId] = useState<string | undefined>(undefined);
   const [planName, setPlanName] = useState<string | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchSubscriptionStatus = async () => {
-    if (!isSignedIn) {
+    if (!user) {
       setIsActive(false);
       setPlanId(undefined);
       setPlanName(undefined);
@@ -45,7 +52,7 @@ export function StripeProvider({ children }: StripeProviderProps) {
 
     try {
       setIsLoading(true);
-      
+
       const status = await checkSubscriptionStatus();
 
       setIsActive(status.isActive);
@@ -62,7 +69,7 @@ export function StripeProvider({ children }: StripeProviderProps) {
 
   useEffect(() => {
     fetchSubscriptionStatus();
-  }, [isSignedIn]);
+  }, [user]);
 
   const value: SubscriptionContextType = {
     isActive,

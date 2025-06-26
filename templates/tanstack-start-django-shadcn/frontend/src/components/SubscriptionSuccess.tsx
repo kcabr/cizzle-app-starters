@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { useUser } from "@clerk/tanstack-start";
+import { useAuth } from "./AuthComponents";
 import { getSubscriptionDetails, stripeUtils } from "~/utils/stripe";
 import { Card, CardContent, CardHeader } from "./ui/card";
 import { Button } from "./ui/button";
@@ -16,7 +16,7 @@ import {
 import { useSubscription } from "./StripeProvider";
 
 export function SubscriptionSuccess() {
-  const { isSignedIn } = useUser();
+  const { user } = useAuth();
   const { refetch } = useSubscription();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -35,16 +35,16 @@ export function SubscriptionSuccess() {
 
     const sessionId = query.get("session_id");
 
-    if (sessionId && isSignedIn) {
+    if (sessionId && user) {
       fetchSubscriptionDetails(sessionId);
-    } else if (!isSignedIn) {
+    } else if (!user) {
       setError("You need to be signed in to view subscription details");
       setLoading(false);
     } else {
       setError("No subscription information found");
       setLoading(false);
     }
-  }, [isSignedIn]);
+  }, [user]);
 
   const fetchSubscriptionDetails = async (sessionId: string) => {
     try {
@@ -66,7 +66,7 @@ export function SubscriptionSuccess() {
   };
 
   const handleManageBilling = async () => {
-    if (!isSignedIn) {
+    if (!user) {
       setError("You must be logged in to manage your subscription");
       return;
     }

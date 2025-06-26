@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { SignInButton, SignedIn, SignedOut } from "@clerk/tanstack-start";
+import { SignInButton, SignedIn, SignedOut } from "~/components/AuthComponents";
 import { useAppDispatch, useAppSelector } from "~/store/hooks";
 import { setTheme } from "~/store/slices/themeSlice";
 import { UserDropdown } from "~/components/UserDropdown";

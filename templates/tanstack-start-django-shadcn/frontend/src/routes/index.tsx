@@ -41,10 +41,8 @@ function Index() {
             <li>
               <b>Tanstack Start/Query/Router/Form</b>
             </li>
-            <li>Auth: Clerk</li>
+            <li>Auth/Backend: Django/Python</li>
             <li>Payment: Stripe</li>
-            <li>DB: Supabase</li>
-            <li>ORM: Prisma</li>
             <li>UI: shadcn/Tailwind</li>
             <li>Datatable: ag-grid</li>
             <li>State: Redux</li>

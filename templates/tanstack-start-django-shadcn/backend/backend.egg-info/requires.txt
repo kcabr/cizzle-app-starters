@@ -1,0 +1,12 @@
+django
+djangorestframework
+django-environ
+djangorestframework-simplejwt
+django-cors-headers
+django-allauth
+
+[dev]
+pytest
+pytest-django
+black
+ruff

@@ -1,0 +1,15 @@
+Metadata-Version: 2.4
+Name: backend
+Version: 0.1.0
+Summary: Django backend for the project.
+Requires-Dist: django
+Requires-Dist: djangorestframework
+Requires-Dist: django-environ
+Requires-Dist: djangorestframework-simplejwt
+Requires-Dist: django-cors-headers
+Requires-Dist: django-allauth
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: pytest-django; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Requires-Dist: ruff; extra == "dev"

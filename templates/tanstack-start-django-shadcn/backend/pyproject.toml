@@ -1,0 +1,22 @@
+[project]
+name = "backend"
+version = "0.1.0"
+description = "Django backend for the project."
+dependencies = [
+    "django",
+    "djangorestframework",
+    "django-environ",
+    "djangorestframework-simplejwt",
+    "django-cors-headers",
+    "django-allauth",
+    "requests",
+    "cryptography",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-django",
+    "black",
+    "ruff",
+]

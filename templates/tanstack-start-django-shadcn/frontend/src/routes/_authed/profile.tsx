@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useClerk, useUser } from "@clerk/tanstack-start";
+import { useAuth } from "~/components/AuthComponents";
 import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -8,14 +8,13 @@ export const Route = createFileRoute("/_authed/profile")({
 });
 
 function ProfilePage() {
-  const { user } = useUser();
-  const { signOut } = useClerk();
+  const { user, logout } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSignOut = useCallback(async () => {
     try {
       setIsLoading(true);
-      await signOut();
+      await logout();
       toast.success("Signed out successfully");
     } catch (error) {
       console.error("Error signing out:", error);
@@ -23,7 +22,7 @@ function ProfilePage() {
     } finally {
       setIsLoading(false);
     }
-  }, [signOut]);
+  }, [logout]);
 
   if (!user) {
     return (
@@ -54,29 +53,20 @@ function ProfilePage() {
           <div className="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden">
             <div className="p-8 sm:p-10 text-center">
               <div className="relative mx-auto h-24 w-24 overflow-hidden rounded-full">
-                {user.imageUrl ? (
-                  <img
-                    src={user.imageUrl}
-                    alt={user.fullName || "User profile"}
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-gray-200 dark:bg-gray-700">
-                    <span className="text-xl font-medium text-gray-600 dark:text-gray-300">
-                      {user.firstName?.charAt(0) ||
-                        user.emailAddresses[0]?.emailAddress
-                          ?.charAt(0)
-                          ?.toUpperCase()}
-                    </span>
-                  </div>
-                )}
+                <div className="flex h-full w-full items-center justify-center bg-gray-200 dark:bg-gray-700">
+                  <span className="text-xl font-medium text-gray-600 dark:text-gray-300">
+                    {user.first_name?.charAt(0) ||
+                      user.username?.charAt(0)?.toUpperCase() ||
+                      "U"}
+                  </span>
+                </div>
               </div>
               <h2 className="mt-4 text-2xl font-bold text-gray-900 dark:text-white">
-                {user.fullName || "User"}
+                {user.first_name && user.last_name
+                  ? `${user.first_name} ${user.last_name}`
+                  : user.username}
               </h2>
-              <p className="text-gray-500 dark:text-gray-400">
-                {user.primaryEmailAddress?.emailAddress}
-              </p>
+              <p className="text-gray-500 dark:text-gray-400">{user.email}</p>
             </div>
             <div className="border-t border-gray-200 dark:border-gray-700 px-8 py-6">
               <dl className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -85,7 +75,9 @@ function ProfilePage() {
                     Full name
                   </dt>
                   <dd className="mt-1 text-sm text-gray-900 dark:text-white sm:col-span-2 sm:mt-0">
-                    {user.fullName || "Not provided"}
+                    {user.first_name && user.last_name
+                      ? `${user.first_name} ${user.last_name}`
+                      : "Not provided"}
                   </dd>
                 </div>
                 <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4">
@@ -93,15 +85,15 @@ function ProfilePage() {
                     Email address
                   </dt>
                   <dd className="mt-1 text-sm text-gray-900 dark:text-white sm:col-span-2 sm:mt-0">
-                    {user.primaryEmailAddress?.emailAddress}
+                    {user.email}
                   </dd>
                 </div>
                 <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4">
                   <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                    Phone number
+                    Username
                   </dt>
                   <dd className="mt-1 text-sm text-gray-900 dark:text-white sm:col-span-2 sm:mt-0">
-                    {user.primaryPhoneNumber?.phoneNumber || "Not provided"}
+                    {user.username}
                   </dd>
                 </div>
                 <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4">
@@ -114,10 +106,10 @@ function ProfilePage() {
                 </div>
                 <div className="py-4 sm:grid sm:grid-cols-3 sm:gap-4">
                   <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                    Created at
+                    Member since
                   </dt>
                   <dd className="mt-1 text-sm text-gray-900 dark:text-white sm:col-span-2 sm:mt-0">
-                    {new Date(user.createdAt as Date).toLocaleString()}
+                    {new Date(user.date_joined).toLocaleString()}
                   </dd>
                 </div>
               </dl>

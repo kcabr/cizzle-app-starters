@@ -1,4 +1,3 @@
-import { useAppSelector } from "~/store/hooks";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,19 +9,16 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
 import { User, LogOut } from "lucide-react";
-import { useClerk } from "@clerk/tanstack-start";
 import { Link } from "@tanstack/react-router";
+import { useAuth } from "~/components/AuthComponents";
 import toast from "react-hot-toast";
 
 export function UserDropdown() {
-  const { firstName, lastName, email, profileImageUrl } = useAppSelector(
-    (state) => state.user
-  );
-  const { signOut } = useClerk();
+  const { user, logout } = useAuth();
 
   const handleSignOut = async () => {
     try {
-      await signOut();
+      logout();
       toast.success("Signed out successfully");
     } catch (error) {
       console.error("Error signing out:", error);
@@ -30,21 +26,19 @@ export function UserDropdown() {
     }
   };
 
+  if (!user) return null;
+
   const initials =
-    firstName && lastName
-      ? `${firstName.charAt(0)}${lastName.charAt(0)}`
-      : email?.charAt(0) || "U";
+    user.first_name && user.last_name
+      ? `${user.first_name.charAt(0)}${user.last_name.charAt(0)}`
+      : user.email?.charAt(0) || "U";
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
-            {profileImageUrl ? (
-              <AvatarImage src={profileImageUrl} alt="Profile" />
-            ) : (
-              <AvatarFallback>{initials}</AvatarFallback>
-            )}
+            <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
@@ -52,10 +46,10 @@ export function UserDropdown() {
         <DropdownMenuLabel>
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">
-              {firstName} {lastName}
+              {user.first_name} {user.last_name}
             </p>
             <p className="text-xs leading-none text-muted-foreground">
-              {email}
+              {user.email}
             </p>
           </div>
         </DropdownMenuLabel>

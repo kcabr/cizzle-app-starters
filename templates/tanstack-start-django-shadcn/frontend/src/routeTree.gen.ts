@@ -20,6 +20,7 @@ import { Route as AuthedImport } from './routes/_authed'
 import { Route as IndexImport } from './routes/index'
 import { Route as NewsIndexImport } from './routes/news.index'
 import { Route as NewsSearchImport } from './routes/news.search'
+import { Route as AuthCallbackImport } from './routes/auth.callback'
 import { Route as AuthedUserInfoImport } from './routes/_authed/user-info'
 import { Route as AuthedTodosImport } from './routes/_authed/todos'
 import { Route as AuthedSubscriptionImport } from './routes/_authed/subscription'
@@ -86,6 +87,12 @@ const NewsSearchRoute = NewsSearchImport.update({
   id: '/search',
   path: '/search',
   getParentRoute: () => NewsRoute,
+} as any)
+
+const AuthCallbackRoute = AuthCallbackImport.update({
+  id: '/auth/callback',
+  path: '/auth/callback',
+  getParentRoute: () => rootRoute,
 } as any)
 
 const AuthedUserInfoRoute = AuthedUserInfoImport.update({
@@ -269,6 +276,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedUserInfoImport
       parentRoute: typeof AuthedImport
     }
+    '/auth/callback': {
+      id: '/auth/callback'
+      path: '/auth/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof AuthCallbackImport
+      parentRoute: typeof rootRoute
+    }
     '/news/search': {
       id: '/news/search'
       path: '/search'
@@ -406,6 +420,7 @@ export interface FileRoutesByFullPath {
   '/subscription': typeof AuthedSubscriptionRouteWithChildren
   '/todos': typeof AuthedTodosRoute
   '/user-info': typeof AuthedUserInfoRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/news/search': typeof NewsSearchRoute
   '/news/': typeof NewsIndexRoute
   '/posts/$postId': typeof AuthedPostsPostIdRoute
@@ -428,6 +443,7 @@ export interface FileRoutesByTo {
   '/subscription': typeof AuthedSubscriptionRouteWithChildren
   '/todos': typeof AuthedTodosRoute
   '/user-info': typeof AuthedUserInfoRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/news/search': typeof NewsSearchRoute
   '/news': typeof NewsIndexRoute
   '/posts/$postId': typeof AuthedPostsPostIdRoute
@@ -453,6 +469,7 @@ export interface FileRoutesById {
   '/_authed/subscription': typeof AuthedSubscriptionRouteWithChildren
   '/_authed/todos': typeof AuthedTodosRoute
   '/_authed/user-info': typeof AuthedUserInfoRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/news/search': typeof NewsSearchRoute
   '/news/': typeof NewsIndexRoute
   '/_authed/posts/$postId': typeof AuthedPostsPostIdRoute
@@ -479,6 +496,7 @@ export interface FileRouteTypes {
     | '/subscription'
     | '/todos'
     | '/user-info'
+    | '/auth/callback'
     | '/news/search'
     | '/news/'
     | '/posts/$postId'
@@ -500,6 +518,7 @@ export interface FileRouteTypes {
     | '/subscription'
     | '/todos'
     | '/user-info'
+    | '/auth/callback'
     | '/news/search'
     | '/news'
     | '/posts/$postId'
@@ -523,6 +542,7 @@ export interface FileRouteTypes {
     | '/_authed/subscription'
     | '/_authed/todos'
     | '/_authed/user-info'
+    | '/auth/callback'
     | '/news/search'
     | '/news/'
     | '/_authed/posts/$postId'
@@ -540,6 +560,7 @@ export interface RootRouteChildren {
   NewsRoute: typeof NewsRouteWithChildren
   TestRoute: typeof TestRoute
   UiShowcaseRoute: typeof UiShowcaseRoute
+  AuthCallbackRoute: typeof AuthCallbackRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -550,6 +571,7 @@ const rootRouteChildren: RootRouteChildren = {
   NewsRoute: NewsRouteWithChildren,
   TestRoute: TestRoute,
   UiShowcaseRoute: UiShowcaseRoute,
+  AuthCallbackRoute: AuthCallbackRoute,
 }
 
 export const routeTree = rootRoute
@@ -568,7 +590,8 @@ export const routeTree = rootRoute
         "/grid",
         "/news",
         "/test",
-        "/ui-showcase"
+        "/ui-showcase",
+        "/auth/callback"
       ]
     },
     "/": {
@@ -647,6 +670,9 @@ export const routeTree = rootRoute
     "/_authed/user-info": {
       "filePath": "_authed/user-info.tsx",
       "parent": "/_authed"
+    },
+    "/auth/callback": {
+      "filePath": "auth.callback.tsx"
     },
     "/news/search": {
       "filePath": "news.search.tsx",
