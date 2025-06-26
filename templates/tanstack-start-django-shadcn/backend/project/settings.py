@@ -168,11 +168,21 @@ AUTHENTICATION_BACKENDS = [
 
 # --- Allauth Specific Settings ---
 
-# Tell allauth that email is the primary identifier
-ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+# Account settings - using new format to avoid deprecation warnings
+ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username'
 ACCOUNT_LOGIN_METHODS = {'email'}
 ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
+ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = 'optional'
+
+# Social account settings
+SOCIALACCOUNT_AUTO_SIGNUP = True
+SOCIALACCOUNT_EMAIL_REQUIRED = True
+SOCIALACCOUNT_EMAIL_VERIFICATION = 'optional'
+SOCIALACCOUNT_QUERY_EMAIL = True
+
+# Use custom adapter for username generation
+SOCIALACCOUNT_ADAPTER = 'api.adapters.CustomSocialAccountAdapter'
 
 # What to do after login/logout
 LOGIN_REDIRECT_URL = 'http://localhost:3000/auth/callback'
