@@ -1,10 +1,12 @@
 // Django authentication utilities
 
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = "http://localhost:8000";
 
 // Helper to get current frontend URL
 const getFrontendUrl = () => {
-  return typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
+  return typeof window !== "undefined"
+    ? window.location.origin
+    : "http://localhost:3000";
 };
 
 interface User {
@@ -35,37 +37,39 @@ interface RegisterData {
 export const authApi = {
   async login(username: string, password: string): Promise<LoginResponse> {
     const response = await fetch(`${API_BASE_URL}/api/auth/token/`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ username, password }),
     });
 
     if (!response.ok) {
-      throw new Error('Login failed');
+      throw new Error("Login failed");
     }
 
     const data = await response.json();
-    
+
     // Store tokens
-    localStorage.setItem('access_token', data.access);
-    localStorage.setItem('refresh_token', data.refresh);
-    
+    if (typeof window !== "undefined") {
+      localStorage.setItem("access_token", data.access);
+      localStorage.setItem("refresh_token", data.refresh);
+    }
+
     return data;
   },
 
   async register(userData: RegisterData): Promise<User> {
     const response = await fetch(`${API_BASE_URL}/api/auth/register/`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(userData),
     });
 
     if (!response.ok) {
-      throw new Error('Registration failed');
+      throw new Error("Registration failed");
     }
 
     return response.json();
@@ -75,7 +79,7 @@ export const authApi = {
     // First try with session cookie (for OAuth users)
     try {
       const response = await fetch(`${API_BASE_URL}/api/auth/user/`, {
-        credentials: 'include', // Include cookies
+        credentials: "include", // Include cookies
       });
 
       if (response.ok) {
@@ -86,17 +90,20 @@ export const authApi = {
     }
 
     // Fallback to JWT token
-    const token = localStorage.getItem('access_token');
-    
+    const token =
+      typeof window !== "undefined"
+        ? localStorage.getItem("access_token")
+        : null;
+
     if (!token) {
-      throw new Error('No authentication found');
+      throw new Error("No authentication found");
     }
 
     const response = await fetch(`${API_BASE_URL}/api/auth/user/`, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
-      credentials: 'include',
+      credentials: "include",
     });
 
     if (!response.ok) {
@@ -107,24 +114,27 @@ export const authApi = {
           return this.getCurrentUser();
         }
       }
-      throw new Error('Failed to get user info');
+      throw new Error("Failed to get user info");
     }
 
     return response.json();
   },
 
   async refreshToken(): Promise<boolean> {
-    const refreshToken = localStorage.getItem('refresh_token');
-    
+    const refreshToken =
+      typeof window !== "undefined"
+        ? localStorage.getItem("refresh_token")
+        : null;
+
     if (!refreshToken) {
       return false;
     }
 
     try {
       const response = await fetch(`${API_BASE_URL}/api/auth/token/refresh/`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ refresh: refreshToken }),
       });
@@ -135,8 +145,10 @@ export const authApi = {
       }
 
       const data = await response.json();
-      localStorage.setItem('access_token', data.access);
-      
+      if (typeof window !== "undefined") {
+        localStorage.setItem("access_token", data.access);
+      }
+
       return true;
     } catch (error) {
       this.logout();
@@ -146,46 +158,53 @@ export const authApi = {
 
   async logout() {
     // Clear JWT tokens
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
+    }
+
     // Clear Django session
     try {
       await fetch(`${API_BASE_URL}/accounts/logout/`, {
-        credentials: 'include',
+        credentials: "include",
       });
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error("Logout error:", error);
     }
-    
-    window.location.href = '/';
+
+    window.location.href = "/";
   },
 
   isAuthenticated(): boolean {
     // Check for either JWT token or try to validate with server
-    return !!localStorage.getItem('access_token');
+    return typeof window !== "undefined"
+      ? !!localStorage.getItem("access_token")
+      : false;
   },
 
   getAuthHeaders(): HeadersInit {
-    const token = localStorage.getItem('access_token');
-    return token ? { 'Authorization': `Bearer ${token}` } : {};
-  }
+    const token =
+      typeof window !== "undefined"
+        ? localStorage.getItem("access_token")
+        : null;
+    return token ? { Authorization: `Bearer ${token}` } : {};
+  },
 };
 
 // OAuth login URLs with redirect parameter
 export const getGoogleLoginUrl = (redirectTo?: string) => {
   const url = new URL(`${API_BASE_URL}/accounts/google/login/`);
-  if (redirectTo) {
+  if (redirectTo && typeof window !== "undefined") {
     // Store redirect URL in sessionStorage for callback
-    sessionStorage.setItem('auth_redirect', redirectTo);
+    sessionStorage.setItem("auth_redirect", redirectTo);
   }
   return url.toString();
 };
 
 export const getGithubLoginUrl = (redirectTo?: string) => {
   const url = new URL(`${API_BASE_URL}/accounts/github/login/`);
-  if (redirectTo) {
-    sessionStorage.setItem('auth_redirect', redirectTo);
+  if (redirectTo && typeof window !== "undefined") {
+    sessionStorage.setItem("auth_redirect", redirectTo);
   }
   return url.toString();
 };

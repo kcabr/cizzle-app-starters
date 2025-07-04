@@ -13,6 +13,7 @@ class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class UserView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
